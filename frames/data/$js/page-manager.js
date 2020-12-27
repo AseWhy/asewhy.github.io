@@ -1,10 +1,10 @@
-(() => {
+{
     const PAGES = new Map()
         , IGNORE = ['type', 'name']
         , CONTENT = document.querySelector('*[rendertarget="true"]')
         , HEAD = document.querySelector('.header');
 
-    let last = '';
+    let last = '', load = false;
 
     const GO_EV = 'page:go'
         , CHANGE_GO = 'page:ch-go'
@@ -55,7 +55,32 @@
             });
     }
 
+    const whell = to => {
+        if(load)
+            return;
+
+        try {
+            let head_d = element.querySelector('#' + to);
+
+            if(head_d){
+                const rect = (HEADERS.includes(head_d.tagName) ? head_d : head_d.parentElement).getBoundingClientRect();
+                const y = rect.top + window.pageYOffset - (HEAD && HEAD.offsetHeight || 0);
+    
+                document.documentElement.scrollTo({top: y, behavior: 'smooth'});
+            } else {
+                window.scrollTo({top: 0, behavior: 'smooth'});
+    
+                window.updateHash(last);
+            }
+        } catch (e) {
+            window.updateHash(last);
+        }
+    }
+
     const loadPage = async (page_id, head) => {
+        if(load)
+            return;
+
         const chunck = PAGES.get(page_id)
             , updated = last != page_id;
 
@@ -69,6 +94,8 @@
                 CONTENT.classList.add('transit');
 
                 CONTENT.innerHTML = '';
+
+                load = true;
 
                 // Искуственная задержка, чтобы все выглядело плавно
                 await wait(1000);
@@ -94,6 +121,8 @@
                 CONTENT.classList.remove('transit');
 
                 await wait(200);
+
+                load = false;
             } else {
                 element = CONTENT.querySelector('.wrap');
             }
@@ -103,24 +132,8 @@
 
             window.updateHash(page_id + (head != undefined ? '/' + head : ''));
 
-            if(head) {
-                try {
-                    let head_d = element.querySelector('#' + head);
-
-                    if(head_d){
-                        const rect = (HEADERS.includes(head_d.tagName) ? head_d : head_d.parentElement).getBoundingClientRect();
-                        const y = rect.top + window.pageYOffset - (HEAD && HEAD.offsetHeight || 0);
-    
-                        document.documentElement.scrollTo({top: y, behavior: 'smooth'});
-                    } else {
-                        window.scrollTo({top: 0, behavior: 'smooth'});
-
-                        window.updateHash(page_id);
-                    }
-                } catch (e) {
-                    window.updateHash(page_id);
-                }
-            };
+            if(head) 
+                whell(head);
 
             if(updated)
                 window.dispatchEvent(new CustomEvent(CHANGE_DONE_EV, { detail: { page_id, head, header: chunck.header, headers: element.querySelectorAll('h1, h2, h3, h4, h5, h6') } }));
@@ -129,7 +142,7 @@
         }
     }
 
-    (() => {
+    {
         const pages = document.querySelectorAll('script[type="page-pattern"]');
 
         for(let i = 0, leng = pages.length, tabw = 0, tabr; i < leng;i++) {
@@ -154,9 +167,9 @@
     
             pages[i].remove();
         }
-    })();
+    }
 
-    (() => {
+    {
         const links = document.querySelectorAll('*[type="c-link"');
 
         function drop(t, e) {
@@ -172,15 +185,9 @@
             links[i].addEventListener('click', drop.bind(null, links[i]));
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            if(window.subloc.path.length === 0) {
-                if(links[0])
-                    links[0].click()
-            } else {
-                loadPage(window.subloc.path[0], window.subloc.path[1]);
-            }
-        });
-
         window.drop = drop;
-    })();
-})()
+    }
+
+    window.loadPage = loadPage;
+    window.whell = whell;
+}

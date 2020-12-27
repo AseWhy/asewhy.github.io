@@ -29,6 +29,53 @@
                     if(await window.notify('Переход по ссылке', `Вы уверены, что хотите перейти на '${data.data}'?`, 'Да', 'Отмена'))
                         window.location = data.data;
                 break;
+                case 'doc.section.change.started':
+                    {
+                        const name = document.getElementById('div-name-target')
+                            , path = document.getElementById('div-path-target');
+
+
+                        name.innerText = data.data.header;
+                        path.innerText = c_docname + ' -> ' + data.data.page_id + (data.data.head != null ? ' -> ' + data.data.head : '');
+                    }
+                break;
+                case 'header.buttons.add':
+                    {
+                        const container = document.getElementById('target-header-buttons')
+                            , button = document.createElement('button')
+                            , sepo = document.createElement('span');
+
+                        button.classList = 'header-button';
+                        button.innerText = data.data.display
+                        button.onclick = load.bind(null, data.data.tag);
+
+                        sepo.innerText = '/';
+                        sepo.classList = 'header-sepo'
+
+                        if(container.children.length > 0)
+                            container.appendChild(sepo);
+
+                        container.appendChild(button);
+                    }
+                break
+                case 'header.buttons.clear':
+                    document.getElementById('target-header-buttons').innerHTML = '';
+                break;
+                case 'header.update.title':
+                    {
+                        const title = document.getElementById('target-header-title');
+
+                        title.innerText = data.data.title;
+                        title.href = data.data.url;
+                    }
+                break;
+                case 'header.update.logo':
+                    {
+                        const logo = document.getElementById('target-header-logo');
+
+                        logo.src = 'frames/' + data.data;
+                    }
+                break;
                 case 'open.notify':
                     window.notify(...data.data);
                 break;
@@ -48,8 +95,41 @@
         };
     }
 
+    async function call(command, data) {
+        frame.contentWindow.postMessage({
+            command: command,
+            receiver: w_id,
+            data
+        })
+    }
+
+    async function whell(tag){
+        console.log('whell ' + c_docname + ' [into]-> ' + tag);
+
+        call('content.whell', tag);
+    }
+
+    async function load(dir){
+        console.log('whell ' + c_docname + ' [into]-> ' + dir);
+
+        call('content.load', dir);
+    }
+
     async function go(docname){
-        console.log(c_docname + ' [to] -> ' + docname)
+        document.getElementById('target-header-buttons').innerHTML = '';
+
+        if(docname != 'router'){
+            const container = document.getElementById('target-header-buttons')
+                , button = document.createElement('button');
+
+            button.classList = 'header-button';
+            button.innerText = '<- На главную'
+            button.onclick = () => window.location.hash = 'router';
+
+            container.appendChild(button);
+        }
+
+        console.log(c_docname + ' [to] -> ' + docname);
 
         if(await isExists(docname)) {
             updatePath([docname]);

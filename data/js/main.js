@@ -1,4 +1,4 @@
-(() => {
+{
     const m_window = document.querySelector('.modal')
         , m_title = document.querySelector('.modal-title')
         , m_body = document.querySelector('.modal-body')
@@ -32,4 +32,20 @@
             m_body.innerText = body;
         })
     }
-})()
+};
+
+{
+    function setUi(ui) {
+        const container = document.querySelector('.container');
+
+        if(container) {
+            container.setAttribute('ui', ui);
+        }
+    }
+
+    if('ontouchstart' in window){
+        window.setUi('mobile');
+    } else {
+        window.setUi('desktop');
+    }
+}

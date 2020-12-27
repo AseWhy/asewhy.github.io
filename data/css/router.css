@@ -79,3 +79,65 @@ body {
         backdrop-filter: blur(1em);
     }
 }
+
+.container[ui='desktop'] .mobile-element {
+	display: none;
+}
+
+.container[ui='mobile'] .desktop-element {
+	display: none;
+}
+
+.container {
+    height: 100%;
+    display: grid;
+    grid-template-rows: 3.5em 5.5em auto;
+}
+
+.header-item {
+    height: 3.5em;
+}
+
+.header {
+    display: grid;
+    grid-template-areas: '. . .';
+    line-height: 3.5em;
+    height: 3.5em;
+    grid-template-columns: max-content max-content max-content;
+    gap: 0.25em;
+}
+
+.header .header-button {
+    border: none;
+    background-color: white;
+}
+
+.header .header-button:hover {
+    text-decoration: underline;
+}
+
+.head {
+    height: 5.5em;
+    width: 100%;
+    display: grid;
+    padding: 0 0.5em;
+    grid-template-rows: 3em 2.5em;
+}
+
+.head .div-name {
+    line-height: 1em;
+    font-size: 3em;
+}
+
+.head .renderpath {
+    margin-top: auto;
+    display: grid;
+    text-transform: uppercase;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: fit-content;
+    padding: 0.25em;
+}
+
+a.header-item {
+    color: var(--darked);
+}

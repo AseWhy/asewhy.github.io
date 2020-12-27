@@ -1,47 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="./data/$img/Bash-logo-vector-01.svg" type="image/x-icon">
 
     <link rel="stylesheet" href="./data/$css/main.css">
-    <link rel="stylesheet" href="./data/router/css/main.css">
+    <link rel="stylesheet" href="./data/$css/layout.css">
+
+    <style>
+        *[rendertarget="true"]::before {
+            background-image: url(./data/$img/Bash-logo-vector-01.svg);
+        }
+    </style>
+
     <title>AseWhy/Astecom</title>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <span class='lg-text'>
-                <a href="https://github.com/AseWhy/">#!AseWhy/Astecom</a>
-            </span>
-            <span class="sign-separator">|</span>
-            <div class="header-buttons">
-                <button class="header-button contentlink" type="c-link" target='main-astecom'>Главная</button>
-                <span class='h-sepo'>/</span>
-                <button class="header-button contentlink" type="c-link" target='main-projects'>Проекты</button>
-                <span class='h-sepo'>/</span>
-                <button class="header-button contentlink" type="c-link" target='main-docs'>Документация</button>
-                <span class='h-sepo'>/</span>
-                <button class="header-button contentlink" type="c-link" target='main-about'>О сайте</button>
-			</div>
-        </div>
+        <script type='page-config'>
+            this.logo = './data/$img/Bash-logo-vector-01.svg';
+
+            this.setStart('main-astecom', null);
+            this.setTitle('#!AseWhy/Astecom', 'https://github.com/AseWhy/');
+
+            this.buttons.add('Главная', 'main-astecom');
+            this.buttons.add('Проекты', 'main-projects');
+            this.buttons.add('Документация', 'main-docs');
+            this.buttons.add('О сайте', 'main-about');
+        </script>
+
         <div class="content">
-            <div class="head">
-                <div class="div-name"></div>
-                <div class="renderpath"></div>
+            <div class="nav-bar" navbartarget='true'>
+
             </div>
 
-            <div class="body">
-                <div class="nav-bar">
+            <div class="content-view" rendertarget="true">
 
-                </div>
-
-                <div class="content-body" rendertarget="true">
-
-                </div>
             </div>
         </div>
     </div>

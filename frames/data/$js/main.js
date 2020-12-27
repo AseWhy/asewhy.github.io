@@ -18,9 +18,13 @@
         })
     }
 
-    window.updateTitle = title => call('update.title', title);
+    window.updateTitle = title => {
+        call('update.title', title);
+    }
 
-    window.updateFav = fav => call('update.fav', fav);
+    window.updateFav = fav => {
+        call('update.fav', fav);
+    }
 
     window.updateHash = hash => {
         window.location.hash = hash;
@@ -47,7 +51,34 @@
             updateTitle(title.innerText);
     }, { once: true });
 
-    (() => {
+    window.addEventListener('click', e => {
+        console.log(e.target)
+
+        if(e.target.tagName == 'A') {
+            if(e.target.href.trim() != '')
+                call('open.link', e.target.href);
+
+            e.preventDefault()
+        }
+    });
+
+    window.addEventListener('page:ch-go', e => {
+        call('doc.location.change.started', e.detail);
+    });
+
+    window.addEventListener('page:go', e => {
+        call('doc.section.change.started', e.detail);
+    })
+
+    window.addEventListener('page:ch-done', e => {
+        call('doc.location.change.ended', { ...e.detail, headers: undefined });
+    });
+
+    window.addEventListener('page:done', e => {
+        call('doc.section.change.ended', { ...e.detail, headers: undefined });
+    })
+
+    {
         const dict = [
             'я,ю,э,ы,щ,ш,ч,ц,х,ф,у,т,с,р,п,о,н,м,л,к,й,и,з,ж,ё,е,д,г,в,б,а,-,ъ,ь'.split(','),
             'ya,yu,eh,yi,sh,sh,ch,c,h,ph,u,t,s,r,p,o,n,m,l,k,y,i,z,zh,yo,e,d,g,v,b,a,-,,'.split(',')
@@ -66,14 +97,69 @@
 
             return outp.join('').toLocaleLowerCase();
         }
-    })();
+    }
 
-    window.addEventListener('click', e => {
-        if(e.target.tagName == 'A') {
-            if(e.target.href.trim() != '')
-                call('open.link', e.target.href);
+    {
+        let start = [];
 
-            e.preventDefault()
+        const config = document.querySelector('script[type="page-config"]');
+
+        class Config {
+            constructor(){
+                this._logo = null;
+
+                this.buttons = new Array();
+
+                this.buttons.add = (display, tag) => {
+                    call('header.buttons.add', { display, tag });
+
+                    this.buttons.push([display, tag]);
+                };
+            }
+
+            setStart(path, tag){
+                start[0] = path;
+                start[1] = tag;
+            }
+
+            setTitle(title, url) {
+                call('header.update.title', { title, url });
+            }
+
+            set logo(logo) {
+                call('header.update.logo', logo);
+
+                this._logo = logo;
+            }
+
+            get logo() {
+                return this._logo;
+            }
         }
-    })
+
+        if(config != null) {
+            new Function('config', '"use strict";' + config.innerText).call(new Config());
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if(window.subloc.path.length === 0) {
+                loadPage(start[0], start[1]);
+            } else {
+                loadPage(window.subloc.path[0], window.subloc.path[1]);
+            }
+        });
+
+        window.addEventListener('message', message => {
+            const data = message.data;
+
+            if(data.receiver != w_id)
+                return;
+            
+            switch(data.command) {
+                case 'content.load':
+                    loadPage(data.data, null);
+                break;
+            }
+        })
+    }
 })()

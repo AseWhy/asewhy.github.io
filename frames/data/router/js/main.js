@@ -1,17 +1,5 @@
 (() => {
-    const path = document.querySelector('.renderpath')
-        , name = document.querySelector('.div-name')
-        , nav = document.querySelector('.nav-bar');
-
-    window.addEventListener('page:ch-go', e => {
-        nav.innerText = 'Загружаю...';
-    });
-
-    window.addEventListener('page:go', e => {
-        name.innerText = e.detail.header;
-
-        path.innerText = '#! ' + e.detail.page_id + (e.detail.head != undefined ? ' -> ' + e.detail.head : '');
-    })
+    const nav = document.querySelector('.nav-bar');
 
     window.addEventListener('page:ch-done', e => {
         nav.innerText = '';
@@ -51,5 +39,5 @@
 
             prev_level = cur_level;
         }
-    })
+    });
 })()
