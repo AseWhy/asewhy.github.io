@@ -25,7 +25,7 @@ body {
     height: 100%;
     display: none;
     z-index: 1000;
-    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, .9);
 }
 
 .modal.active {
@@ -43,6 +43,7 @@ body {
     background-color: white;
     border: 1px dotted;
     padding: 0.5em;
+    box-shadow: 5px 5px 5px var(--darked);
 }
 
 .modal-buttons {
@@ -68,5 +69,13 @@ body {
     .modal-center {
         width: 80%;
         grid-template-rows: 1.5em max-content 3em;
+    }
+}
+
+@supports ((-webkit-backdrop-filter: blur(2em)) or (backdrop-filter: blur(2em))) {
+    .modal {
+        background-color: rgba(255, 255, 255, .25);
+        -webkit-backdrop-filter: blur(1em);
+        backdrop-filter: blur(1em);
     }
 }
