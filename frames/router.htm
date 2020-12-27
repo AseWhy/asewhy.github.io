@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./data/_img/Bash-logo-vector-01.svg" type="image/x-icon">
+
+    <link rel="stylesheet" href="./data/_css/main.css">
+    <link rel="stylesheet" href="./data/router/css/main.css">
+    <title>AseWhy/Astecom - doc router</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <span class='lg-text'>
+                <a href="https://github.com/AseWhy/">#!AseWhy/Astecom</a>
+            </span>
+            <span class="sign-separator">|</span>
+            <div class="header-buttons">
+                <button class="header-button contentlink" type="c-link" target='main-astecom'>Главная</button>
+                <span class='h-sepo'>/</span>
+                <button class="header-button contentlink" type="c-link" target='main-docs'>Документации</button>
+                <span class='h-sepo'>/</span>
+                <button class="header-button contentlink" type="c-link" target='main-about'>О сайте</button>
+                <span class='h-sepo'>/</span>
+				<button class="header-button contentlink" type="c-link" target='main-help'>Зачем</button>
+			</div>
+        </div>
+        <div class="content">
+            <div class="head">
+                <div class="div-name"></div>
+                <div class="renderpath"></div>
+            </div>
+
+            <div class="body">
+                <div class="nav-bar">
+
+                </div>
+
+                <div class="content-body" rendertarget="true">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="page-pattern" name="main-astecom">
+        # Главная
+        **Привет!** Ты на моем импровизированном сайте. Этот сайт я сделал для демонстрации, а так-же роутинга документации написанной мной.
+
+        **Коротко обо мне**: мне 18 лет, я учусь в колледже, на данный момент, на 3-м курсе специальности техник-программист. Увлекаюсь программированием, люблю животных, по ночам допиливаю этот сайт и ещё пару моих проектов.
+
+        Имею опыт работы с несколькими языками программирования:
+        * C/C++
+        * Java
+        * C#
+        * JavaScript
+        * GLSL
+        * Lua
+
+        На данный момент я остановился на js и успешно пишу на нем эти 2 года. Из js среды я знаком с
+        * React
+        * Electron
+        * Express
+
+        Из плюсов многу отметить что я легко учусь, из минусов хочется отметить что их тоже не мало).
+
+        В общем то я не многословен, но если есть что то интересное, то можете написать мне вот [сюда](mailto:astecom@mailru).
+
+        Внимание! Спасибо за внимание.
+
+        ## А теперь о погоде
+        Если коротко пройтись по разделам, то в `документации`, я буду складировать ссылки на свои документации и спецификации (если таковые будут). В разделе `о сайте` вы сможете прочитать общую инормацию об этой странице. В разделе `зачем` можно узнать зачем существует эта страница.
+        
+        ## Несколько моих проектов
+        * [Пунья (Poonya)](https://github.com/AseWhy/Poonya) - текстовый препроцессор.
+        * [VoxReader](https://github.com/AseWhy/Vox-Reader-JS) - библиотека для чтения формата .vox в js.
+        * [GlitchDesktop](https://github.com/AseWhy/glitch-desktop) - обои для программы wp engine, с ипользованием glsl.
+    </script>
+
+    <script type="page-pattern" name="main-docs">
+        # Список документации
+
+        * <a onclick='go("poonya")' class='contentlink'>Документация по препроцессору Poonya</a>
+    </script>
+
+    <script src="./data/_js/main.js"></script>
+    <script src="./data/_js/highlight.pack.js"></script>
+    <script src="./data/_js/marked.min.js"></script>
+    <script src="./data/_js/page-manager.js"></script>
+    <script src="./data/router/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+@keyframes blink {
+	from {
+		opacity: 0;
+	}
+
+	50% {
+		opacity: 1;
+	}
+
+	to {
+		opacity: 0;
+	}
+}
+
+*[type='c-link'] {
+	color: var(--darked);
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+*[type='c-link']:hover {
+	background-color: var(--darked);
+	color: white;
+}
+
+body {
+	margin: 0px;
+	width: 100%;
+	height: 100%;
+}
+
+pre {
+	padding: 0.5em;
+	background-color: whitesmoke;
+}
+
+.container {
+	width: 100%;
+	height: 100%;
+}
+
+.content {
+	display: grid;
+	position: relative;
+    grid-template-areas: '. .';
+	grid-template-columns: max-content auto;
+	gap: 0.5em;
+	top: 3.5em;
+	height: 100%;
+}
+
+.header {
+	height: 3.5em;
+	line-height: 3.5em;
+	display: grid;
+	grid-template-columns: 3.5em max-content max-content;
+	gap: 0.5em;
+	user-select: none;
+	position: fixed;
+	background-color: white;
+	width: 100%;
+	z-index: 1;
+}
+
+.poonya-sign {
+	font-family: 'Courier New', Courier, monospace;
+}
+
+.blinked {
+	opacity: 0;
+	animation: blink 0.75s infinite;
+}
+
+.variator {
+	padding: 0.25em;
+	border-right: 1px dotted;
+	width: clamp(max-content, 25%);
+}
+
+.header-button {
+	line-height: 3.5em;
+	background-color: white;
+	text-decoration: underline;
+	border: none;
+	outline: none;
+}
+
+.sub-level {
+	padding-left: 0.5em;
+}
+
+*[rendertarget="true"]::before {
+	background-image: url(../img/poo_logo.png);
+}
+
+.wrap {
+	width: 50%;
+}
+
+.wrap img {
+	width: 100%;
+}
+
+.sub-level > * {
+	display: block;
+	padding-right: 0.5em;
+	border-left: 1px solid;
+}
+
+.left-variator {
+	white-space: nowrap;
+	padding: 0.25em 0.5em;
+}
+
+.marker {
+	width: 0px;
+	height: 0px;
+	opacity: 0;
+	line-height: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 0;
+}
+
+.logo {
+	height: 3.5em
+}
+
+p {
+	text-align: justify;
+}
+
+th {
+	background-color: var(--darked);
+	color: white;
+	text-transform: capitalize;
+}
+
+td, th {
+	padding: 0.5em;
+	margin: 1px;
+}
+
+@media screen and (max-width: 30cm) {
+	.wrap {
+		width: 100%;
+	}
+}
