@@ -1,0 +1,67 @@
+:root {
+	--darked: rgb(55, 55, 55);
+	--base-transition: 150ms cubic-bezier(0.215, 0.610, 0.355, 1);
+}
+
+a, .contentlink {
+    color: var(--darked);
+	text-decoration: none;
+	cursor: pointer;
+}
+
+a:hover, .contentlink:hover {
+    text-decoration: underline;
+    color: var(--darked);
+}
+
+@keyframes load {
+	from {
+		transform: rotate(0deg) scale(1);
+	}
+
+	50% {
+		transform: rotate(360deg) scale(0.95);
+	}
+
+	to {
+		transform: rotate(360deg) scale(1);
+	}
+}
+
+*[rendertarget="true"] {
+	width: 100%;
+    padding: 0.5em;
+	overflow: hidden;
+	transition: var(--base-transition);
+}
+
+*[rendertarget="true"]::before {
+    content: '';
+    position: relative;
+	background-color: rgba(0, 0, 0, 0);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 100pt;
+	background-image: url(../$img/Bash-logo-vector-01.svg);
+	animation: load 0.85s infinite;
+    transition: var(--base-transition);
+    overflow: hidden;
+	display: block;
+	height: 0px;
+	opacity: 0;
+	z-index: -1000;
+}
+
+*[rendertarget="true"].transit::before {
+    opacity: 1;
+    height: 100%;
+}
+
+*[rendertarget="true"].transit > :not(::before) {
+	opacity: 1;
+	transition: var(--base-transition);
+}
+
+*[rendertarget="true"].transit > :not(::before) {
+	opacity: 0;
+}
