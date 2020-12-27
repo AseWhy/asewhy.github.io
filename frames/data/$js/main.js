@@ -49,8 +49,8 @@
 
     (() => {
         const dict = [
-            'я,ю,э,ы,щ,ш,ч,ц,х,ф,у,т,с,р,п,о,н,м,л,к,й,и,з,ж,ё,е,д,г,в,б,а,-'.split(','),
-            'ya,yu,eh,yi,sh,sh,ch,c,h,ph,u,t,s,r,p,o,n,m,l,k,y,i,z,zh,yo,e,d,g,v,b,a,-'.split(',')
+            'я,ю,э,ы,щ,ш,ч,ц,х,ф,у,т,с,р,п,о,н,м,л,к,й,и,з,ж,ё,е,д,г,в,б,а,-,ъ,ь'.split(','),
+            'ya,yu,eh,yi,sh,sh,ch,c,h,ph,u,t,s,r,p,o,n,m,l,k,y,i,z,zh,yo,e,d,g,v,b,a,-,,'.split(',')
         ]
 
         window.ru_ro_url_pure = npure => {
@@ -59,10 +59,12 @@
             for(let i = 0, leng = npure.length, cur; i < leng; i++) {
                 if((cur = dict[0].indexOf(npure[i])) != -1) {
                     outp.push(dict[1][cur]);
+                } else {
+                    outp.push(npure[i]);
                 }
             }
 
-            return outp.join('')
+            return outp.join('').toLocaleLowerCase();
         }
     })();
 

@@ -9,7 +9,7 @@
 
     <link rel="stylesheet" href="./data/$css/main.css">
     <link rel="stylesheet" href="./data/router/css/main.css">
-    <title>AseWhy/Astecom - doc router</title>
+    <title>AseWhy/Astecom</title>
 </head>
 <body>
     <div class="container">
@@ -20,6 +20,8 @@
             <span class="sign-separator">|</span>
             <div class="header-buttons">
                 <button class="header-button contentlink" type="c-link" target='main-astecom'>Главная</button>
+                <span class='h-sepo'>/</span>
+                <button class="header-button contentlink" type="c-link" target='main-projects'>Проекты</button>
                 <span class='h-sepo'>/</span>
                 <button class="header-button contentlink" type="c-link" target='main-docs'>Документация</button>
                 <span class='h-sepo'>/</span>
@@ -68,14 +70,6 @@
         В общем то я не многословен, но если есть что то интересное, то можете написать мне вот [сюда](mailto:astecom@mailru).
 
         Внимание! Спасибо за внимание.
-
-        ## А теперь о погоде
-        Если коротко пройтись по разделам, то в `документации`, я буду складировать ссылки на свои документации и спецификации (если таковые будут). В разделе `о сайте` вы сможете прочитать общую инормацию об этом сайте.
-        
-        ## Несколько моих проектов
-        * [Пунья (Poonya)](https://github.com/AseWhy/Poonya) - текстовый препроцессор.
-        * [VoxReader](https://github.com/AseWhy/Vox-Reader-JS) - библиотека для чтения формата .vox в js.
-        * [GlitchDesktop](https://github.com/AseWhy/glitch-desktop) - обои для программы wp engine, с ипользованием glsl.
     </script>
 
     <script type="page-pattern" name="main-docs">
@@ -84,12 +78,27 @@
         * <a onclick='go("poonya")' class='contentlink'>Документация по препроцессору Poonya</a>
     </script>
 
+    <script type="page-pattern" name="main-projects">
+        # Список проектов
+
+        ##### [Пунья (Poonya)](https://github.com/AseWhy/Poonya)
+        Текстовый препроцессор.
+        ##### [VoxReader](https://github.com/AseWhy/Vox-Reader-JS)
+        Библиотека для чтения формата .vox в js.
+        ##### [GlitchDesktop](https://github.com/AseWhy/glitch-desktop)
+        Обои для программы wp engine, с ипользованием glsl.
+    </script>
+
     <script type="page-pattern" name="main-about">
         # О сайте
 
         Сайт расположен на GitHub pages. Владею им я [AseWhy](https://github.com/AseWhy/). В названии указано два псевдонима, обычно я использую их, при регистрации на различных сервисах. Сайт был создан для роутинга документации, которой, в будущем, может стать довольно много.
 
+        ### Технологии
         При создании этого сайта небыли использованы никакие js фреймворки, был задействован [**markedjs**](https://github.com/markedjs/marked) для разбора `Markdown` и [**highlight.js**](https://highlightjs.org/) для подстведки синтаксиса в местах где это необходимо. Так-же был использован css фреймворк [**bootstrap**](https://getbootstrap.com/)
+        
+        ### Разделы
+        Если коротко пройтись по разделам, то в разделе `Документация`, я буду складировать ссылки на свои документации и спецификации (если таковые будут). В разделе `О сайте` вы сможете прочитать общую инормацию об этом сайте. В разделе `Проекты` будет список моих проектов.
     </script>
 
     <script src="./data/$js/main.js"></script>

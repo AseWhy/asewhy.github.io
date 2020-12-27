@@ -65,3 +65,26 @@ a:hover, .contentlink:hover {
 *[rendertarget="true"].transit > :not(::before) {
 	opacity: 0;
 }
+
+.left-variator {
+	white-space: nowrap;
+	padding: 0.25em 0.5em;
+}
+
+.wrap {
+	width: 50%;
+}
+
+.wrap img {
+	width: 100%;
+}
+
+.sub-level {
+	padding-left: 0.5em;
+}
+
+.sub-level > * {
+	display: block;
+	padding-right: 0.5em;
+	border-left: 1px solid;
+}

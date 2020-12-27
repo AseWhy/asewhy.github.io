@@ -85,31 +85,8 @@ pre {
 	outline: none;
 }
 
-.sub-level {
-	padding-left: 0.5em;
-}
-
 *[rendertarget="true"]::before {
 	background-image: url(../img/poo_logo.png);
-}
-
-.wrap {
-	width: 50%;
-}
-
-.wrap img {
-	width: 100%;
-}
-
-.sub-level > * {
-	display: block;
-	padding-right: 0.5em;
-	border-left: 1px solid;
-}
-
-.left-variator {
-	white-space: nowrap;
-	padding: 0.25em 0.5em;
 }
 
 .marker {
