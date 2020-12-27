@@ -21,11 +21,9 @@
             <div class="header-buttons">
                 <button class="header-button contentlink" type="c-link" target='main-astecom'>Главная</button>
                 <span class='h-sepo'>/</span>
-                <button class="header-button contentlink" type="c-link" target='main-docs'>Документации</button>
+                <button class="header-button contentlink" type="c-link" target='main-docs'>Документация</button>
                 <span class='h-sepo'>/</span>
                 <button class="header-button contentlink" type="c-link" target='main-about'>О сайте</button>
-                <span class='h-sepo'>/</span>
-				<button class="header-button contentlink" type="c-link" target='main-help'>Зачем</button>
 			</div>
         </div>
         <div class="content">
@@ -72,7 +70,7 @@
         Внимание! Спасибо за внимание.
 
         ## А теперь о погоде
-        Если коротко пройтись по разделам, то в `документации`, я буду складировать ссылки на свои документации и спецификации (если таковые будут). В разделе `о сайте` вы сможете прочитать общую инормацию об этой странице. В разделе `зачем` можно узнать зачем существует эта страница.
+        Если коротко пройтись по разделам, то в `документации`, я буду складировать ссылки на свои документации и спецификации (если таковые будут). В разделе `о сайте` вы сможете прочитать общую инормацию об этом сайте.
         
         ## Несколько моих проектов
         * [Пунья (Poonya)](https://github.com/AseWhy/Poonya) - текстовый препроцессор.
@@ -84,6 +82,14 @@
         # Список документации
 
         * <a onclick='go("poonya")' class='contentlink'>Документация по препроцессору Poonya</a>
+    </script>
+
+    <script type="page-pattern" name="main-about">
+        # О сайте
+
+        Сайт расположен на GitHub pages. Владею им я [AseWhy](https://github.com/AseWhy/). В названии указано два псевдонима, обычно я использую их, при регистрации на различных сервисах. Сайт был создан для роутинга документации, которой, в будущем, может стать довольно много.
+
+        При создании этого сайта небыли использованы никакие js фреймворки, был задействован [**markedjs**](https://github.com/markedjs/marked) для разбора `Markdown` и [**highlight.js**](https://highlightjs.org/) для подстведки синтаксиса в местах где это необходимо. Так-же был использован css фреймворк [**bootstrap**](https://getbootstrap.com/)
     </script>
 
     <script src="./data/$js/main.js"></script>

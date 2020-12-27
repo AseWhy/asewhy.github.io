@@ -72,6 +72,6 @@
         if(path[0] != c_docname)
             go(path[0]);
     })
-
-    go(path[0]);
+    
+    go(path[0] != '' ? path[0] : 'router');
 })();
