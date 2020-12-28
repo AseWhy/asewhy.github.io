@@ -17,7 +17,7 @@ body {
 
 .content {
     display: grid;
-    grid-template-areas: '. .';
+    grid-template-areas: 'nav content';
     grid-template-columns: max-content auto;
     padding: 0.5em;
     gap: 0.5em;
@@ -27,12 +27,14 @@ body {
 .content-view {
     padding-left: 1em;
     border-left: 1px dotted;
-    width: calc(100% - 1.5em);
+    width: calc(100% - 1em - 2px);
+    grid-area: content;
 }
 
 .nav-bar {
     width: max-content;
     padding: 0.25em;
+    grid-area: nav;
 }
 
 .common-label {

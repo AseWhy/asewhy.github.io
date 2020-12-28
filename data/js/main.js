@@ -5,6 +5,8 @@
         , m_ok = document.querySelector('.modal-ok')
         , m_cancel = document.querySelector('.modal-cancel')
 
+    window.ui = 'desktop';
+
     window.notify = (title, body, mc_ok = 'Ок', mc_cancel = 'Отмена') => {
         m_window.classList.add('active');
 
@@ -41,6 +43,8 @@
         if(container) {
             container.setAttribute('ui', ui);
         }
+
+        window.ui = ui;
     }
 
     if('ontouchstart' in window){
@@ -48,4 +52,13 @@
     } else {
         window.setUi('desktop');
     }
+}
+
+{
+    const trigger = document.getElementById('left-menu-target-trigger')
+        , container = document.getElementById('target-header-buttons');
+
+    trigger.addEventListener('click', e => {
+        container.style.left = container.style.left == '0px' ? '-100%' : '0px';
+    })
 }

@@ -1,4 +1,4 @@
-(() => {
+{
     let w_id = 0, c_docname = 'root';
 
     let frame = document.getElementById('main-frame'),
@@ -29,6 +29,14 @@
                     if(await window.notify('Переход по ссылке', `Вы уверены, что хотите перейти на '${data.data}'?`, 'Да', 'Отмена'))
                         window.location = data.data;
                 break;
+                case 'doc.scroll':
+                    {
+                        const block = document.getElementById('div-block-target');
+                        
+                        block.style.opacity = data.data == 0 ? 1 : 0;
+                        block.style.height = data.data == 0 ? '5.5em' : 0;
+                    }
+                break;
                 case 'doc.section.change.started':
                     {
                         const name = document.getElementById('div-name-target')
@@ -50,7 +58,7 @@
                         button.onclick = load.bind(null, data.data.tag);
 
                         sepo.innerText = '/';
-                        sepo.classList = 'header-sepo'
+                        sepo.classList = 'header-sepo desktop-element'
 
                         if(container.children.length > 0)
                             container.appendChild(sepo);
@@ -116,11 +124,14 @@
     }
 
     async function go(docname){
-        document.getElementById('target-header-buttons').innerHTML = '';
+        console.log(c_docname + ' [to] -> ' + docname);
+
+        const container = document.getElementById('target-header-buttons');
+
+        container.innerHTML = '';
 
         if(docname != 'router'){
-            const container = document.getElementById('target-header-buttons')
-                , button = document.createElement('button');
+            const button = document.createElement('button');
 
             button.classList = 'header-button';
             button.innerText = '<- На главную'
@@ -128,8 +139,6 @@
 
             container.appendChild(button);
         }
-
-        console.log(c_docname + ' [to] -> ' + docname);
 
         if(await isExists(docname)) {
             updatePath([docname]);
@@ -140,8 +149,10 @@
 
             frame.src = './frames/' + docname + '.htm#' + path.slice(1).join('/') + '%' + w_id;
         } else {
-            go('notfound')
+            go('notfound');
         }
+
+        frame.addEventListener('load', () => call('update.ui', window.ui), { once: true } );
     }
 
     window.addEventListener('message', message);
@@ -154,4 +165,6 @@
     })
     
     go(path[0] != '' ? path[0] : 'router');
-})();
+
+    window.call = call;
+}

@@ -76,7 +76,11 @@
 
     window.addEventListener('page:done', e => {
         call('doc.section.change.ended', { ...e.detail, headers: undefined });
-    })
+    });
+
+    window.addEventListener('scroll', e => {
+        call('doc.scroll', window.scrollY);
+    });
 
     {
         const dict = [
@@ -156,6 +160,15 @@
                 return;
             
             switch(data.command) {
+                case 'update.ui':
+                    {
+                        const container = document.querySelector('.container');
+
+                        if(container) {
+                            container.setAttribute('ui', data.data);
+                        }
+                    }
+                break;
                 case 'content.load':
                     loadPage(data.data, null);
                 break;
