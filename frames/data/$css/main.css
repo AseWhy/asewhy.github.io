@@ -151,7 +151,7 @@ a:hover, .contentlink:hover {
 						'content'
 						'nav';
 	grid-template-columns: 100%;
-	grid-template-rows: max-content max-content;
+	grid-template-rows: minmax(50%, max-content) max-content;
 	text-align: center;
 }
 
@@ -175,6 +175,7 @@ a:hover, .contentlink:hover {
 
 .container[ui='mobile'] ul {
 	list-style: none;
+	padding-left: 0;
 }
 
 pre {
