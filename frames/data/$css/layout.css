@@ -35,6 +35,9 @@ body {
     width: max-content;
     padding: 0.25em;
     grid-area: nav;
+    position: sticky;
+    height: fit-content;
+    top: 0;
 }
 
 .common-label {

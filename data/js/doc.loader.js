@@ -20,6 +20,12 @@
         window.location.hash = path.join('/');
     }
 
+    function loadFromMenu(tag) {
+        window.leftMenuChange();
+
+        load(tag);
+    }
+
     async function message(message) {
         const data = message.data;
 
@@ -55,7 +61,7 @@
 
                         button.classList = 'header-button';
                         button.innerText = data.data.display
-                        button.onclick = load.bind(null, data.data.tag);
+                        button.onclick = loadFromMenu.bind(null, data.data.tag);
 
                         sepo.innerText = '/';
                         sepo.classList = 'header-sepo desktop-element'
@@ -118,7 +124,7 @@
     }
 
     async function load(dir){
-        console.log('whell ' + c_docname + ' [into]-> ' + dir);
+        console.log('load ' + c_docname + ' [into]-> ' + dir);
 
         call('content.load', dir);
     }
@@ -135,7 +141,11 @@
 
             button.classList = 'header-button';
             button.innerText = '<- На главную'
-            button.onclick = () => window.location.hash = 'router';
+            button.onclick = () => {
+                window.leftMenuChange();
+
+                window.location.hash = 'router';
+            };
 
             container.appendChild(button);
         }

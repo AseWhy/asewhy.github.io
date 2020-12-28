@@ -58,7 +58,9 @@
     const trigger = document.getElementById('left-menu-target-trigger')
         , container = document.getElementById('target-header-buttons');
 
-    trigger.addEventListener('click', e => {
+    window.leftMenuChange = () => {
         container.style.left = container.style.left == '0px' ? '-100%' : '0px';
-    })
+    }
+
+    trigger.addEventListener('click', window.leftMenuChange);
 }

@@ -152,11 +152,12 @@ a:hover, .contentlink:hover {
 						'nav';
 	grid-template-columns: 100%;
 	grid-template-rows: minmax(50%, max-content) max-content;
-	text-align: center;
+	text-align: justify;
 }
 
 .container[ui='mobile'] .nav-bar {
 	width: calc(100% - 0.5em);
+	text-align: center;
 }
 
 .container[ui='mobile'] .sub-level > * {
@@ -173,19 +174,15 @@ a:hover, .contentlink:hover {
 	padding-left: 0;
 }
 
-.container[ui='mobile'] ul {
-	list-style: none;
-	padding-left: 0;
-}
-
 pre {
-	overflow: scroll;
+	overflow-x: scroll;
 	text-align: left;
 	padding: 0.5em;
+	background-color: whitesmoke;
 }
 
 code {
-	font-family: 'FiraCode' 'Courier New', Courier, monospace;
+	font-family: 'FiraCode', 'Courier New', Courier, monospace;
 }
 
 code:not([class]) {

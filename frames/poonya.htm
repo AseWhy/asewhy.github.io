@@ -44,25 +44,30 @@
 				</div>
 				<div class="left-variator contentlink" type="c-link" target='poonya-syntax'>Синтаксис</div>
 				<div class="sub-level">
-					<div class="left-variator contentlink" type="c-link" target='poonya-syntax#main'>Основы синтаксиса</div>
-					<div class="left-variator contentlink" type="c-link" target='poonya-syntax#node'>Операторы</div>
-					<div class="left-variator contentlink" type="c-link" target='poonya-syntax#node'>Выражения</div>
-					<div class="left-variator contentlink" type="c-link" target='poonya-syntax#node'>Переменные</div>
+					<div class="left-variator contentlink" type="c-link" target='poonya-syntax#block'>Блочный синтаксис</div>
 					<div class="sub-level">
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#node'>Объявление и инициализация</div>
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#node'>Область видимости</div>
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#node'>Переопределение</div>
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#node'>Ссылки</div>
+						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#if'>Инструкция: if</div>
+						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#while'>Инструкция: while</div>
+						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#repeat'>Инструкция: repeat</div>
+						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#set'>Инструкция: set</div>
+						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#out'>Оператор вывода</div>
+						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#out'>Оператор добавления</div>
 					</div>
-					<div class="left-variator contentlink" type="c-link" target='poonya-syntax#node'>Функции</div>
+					<div class="left-variator contentlink" type="c-link" target='poonya-syntax#block'>Cинтаксис выражений</div>
 					<div class="sub-level">
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#node'>Вызов Функции</div>
+						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#plus'>Оператор: сложения</div>
+						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#minus'>Оператор: вычитания</div>
+						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#equal'>Оператор: присваивания/равенства</div>
+						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#mult'>Оператор: умножения</div>
+						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#div'>Оператор: деления</div>
+						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#big'>Опертаор: больше</div>
+						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#less'>Оператор: меньше</div>
+						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#and'>Оператор: и</div>
+						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#or'>Оператор: или</div>
+						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#or'>Группы выражений</div>
+						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#or'>Вызов функции</div>
+						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#or'>Конструкторы объектов</div>
 					</div>
-					<div class="left-variator contentlink" type="c-link" target='poonya-syntax#node'>Объекты</div>
-					<div class="sub-level">
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#node'>Создание объекта</div>
-					</div>
-					<div class="left-variator contentlink" type="c-link" target='poonya-syntax#node'>Вывод</div>
 				</div>
 			</div>
 
@@ -228,6 +233,105 @@
 			| input   | **String** \| `typeof` **PatternInput** | Вход шаблона, То есть это строка или другой набор данных которые вы передаете шаблонизатору. 		    |
 			| import  | **Array**`<`**String**`>`				| Нативные библиотеки для импорта. По умолчанию - пустой массив.									    |
 			| logger  | `typeof` **Console**					| Интерфейс вывода, за основу взят **Console**, и по умолчанию используется глбальный объект `console`. |
+		</script>
+
+		<script type="page-pattern" name="poonya-syntax">
+			# Синтаксис
+
+			Синтаксис в poonya почти эквивалентен большинству языков программирования, со своими специфическими особенностями. Синтаксис в poonya можно разделить на две категории:
+			* Блочный синтаксис
+			* Синтаксис выражения
+
+			## Блочный синтаксис ~[block]
+			Блочный синтаксис распостраняется только на блоки кода poonya. Обычно они представляют из себя код poonya в `{}` - фигурных скобках, но есть исключения в виде главного блока, который, по понятным причинам, заключать в скобки не надо.
+
+			Блочный синтаксис представляет из себя последовательность инструкций, которые выполняются интерпритатором poonya в заданом порядке.
+
+			### Инструкция if ~[if]
+			`if` - представляет из себя инструкцию условного блока. Используется она следующим образом: `if`(`<`**условие**`>`) { `//` code `//` } `?`**else** `?`**if** (`<`**условие**`>`) { `//` code `//` }. `if` будет выполнена, если условие `<`**условие**`>` будет выполнено. После завершения выполнения инструкции, интерпритатор перейдет к выполнению следующей инструкции.
+
+			```js
+			set i = 5;
+
+			if(i = 5){
+				> '`i` это 5';
+			} else {
+				> '`i` это не 5';
+			}
+			```
+
+			Обратите внимание что конструкцию `if ... else` можно совмещать:
+
+			```js
+			set i = 6;
+
+			if(i = 5){
+				> '`i` это 5';
+			} else if(i = 6){
+				> '`i` это 6';
+			} else {
+				> '`i` это не 5 и не 6';
+			}
+			```
+
+			Таким образом можно продолжать до бесконечности. 
+
+			### Инструкция while ~[while]
+			`while` - представляет из себя инструкцию условного цикла. Используется она следующим образом: `while`(`<`**условие**`>`) { `//` code `//` }. `while` будет сполнятся до тех пор, пока условие `<`**условие**`>` выполняется. После завершения выполнения инструкции, интерпритатор перейдет к выполнению следующей инструкции.
+
+			```js
+			set i = 0;
+
+			while(i < 100){
+				> 'i = ' + i + endl;
+			}
+			```
+
+			\- выведет `i = 0...99`, обратите внимание 100 не включено, поскольку при `i == 100` условие перестает выполнятся.
+
+			### Инструкция repeat ~[repeat]
+			`repeat` - представляет из себя инструкцию диапазонного цикла. Используется она следующим образом: `repeat`(`<`**с индекс**`>`; `<`**по индекс**`>`) { `//` code `//` }. `repeat` будет выполнятся (`<`**по индекс**`>` - `<`**с индекс**`>`) раз. В теле цикла, так-же доступна переменная `current`, которая содержит текущую итерируемую позицию. После завершения выполнения инструкции, интерпритатор перейдет к выполнению следующей инструкции.
+
+			```js
+			repeat(0; 100){
+				> 'i = ' + current + endl;
+			}
+			```
+
+			\- выведет `i = 0...99`.
+
+			### Инструкция set ~[set]
+			`set` - представляет из себя инструкцию объявления переменной, и её инициазацию. Используется она следующим образом: `set` `<`**название переменной**`>` = `<`**значение**`>`. Установка действует для текущей области действия и дочерних областей действия. Вы можете использовать эту инструкцию для переопределения переменной в текущей области действия.
+
+			```js
+			set i = 2 + 2 * 2;
+
+			> i;
+			```
+
+			Код выше выведет `6`;
+
+			### Оператор вывода ~[out]
+			Оператор вывода, представляет из себя оператор `>`, который интерпритируется как команда вывода в поток вывода, который возвращает шаблон. Используется оператор вывода следующим образом: `>` `<`**выражение**`>`.
+
+			```js
+			> 2 + 2 * 2;
+			```
+
+			Код выше выведет `6`;
+
+			### Оператор добавления ~[add]
+			Оператор добавления, представляет из себя оператор `<-`, который интерпритируется как команда добавления в массив, переменная с которым должна быть расположена слева, а добавляемое значение справа. Используется оператор добавления следующим образом: `<`**массив подобный**`>` `<-` `<`**выражение**`>`.
+
+			```js
+			set array = Array -> *;
+
+			array <- 5;
+
+			> array;
+			```
+
+			Код выше выведет `[ 5 ]`;
 		</script>
 
 		<script src="./data/$js/main.js"></script>
