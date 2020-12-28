@@ -150,6 +150,13 @@
             container.appendChild(button);
         }
 
+        {
+            const block = document.getElementById('div-block-target');
+
+            block.style.opacity = 0;
+            block.style.height = '5.5em';
+        }
+        
         if(await isExists(docname)) {
             updatePath([docname]);
 
