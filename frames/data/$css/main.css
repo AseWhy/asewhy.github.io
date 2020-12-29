@@ -115,7 +115,7 @@ a:hover, .contentlink:hover {
 button.left-variator {
 	white-space: nowrap;
 	padding: 0.5em 0.5em;
-	width: calc(100% - 1em);
+	width: max-content;
 	background-color: white;
 	position: relative;
 	text-align: left;
