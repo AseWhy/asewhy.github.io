@@ -68,7 +68,7 @@ function buildFolder(src, dist){
             break;
             case '.js':
                 series = series.pipe(babel());
-                // series = series.pipe(uglify());
+                series = series.pipe(uglify());
             break;
         }
     
