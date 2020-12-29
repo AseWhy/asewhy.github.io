@@ -4,6 +4,7 @@ const path = require('path')
     , babel = require("gulp-babel")
     , concat = require("gulp-concat")
     , uglify = require("gulp-uglify-es").default
+    , autoprefixer = require('gulp-autoprefixer')
     , cleanCSS = require("gulp-clean-css")
     , tabuext = [
         '.png',
@@ -64,6 +65,7 @@ function buildFolder(src, dist){
     
         switch(ext) {
             case '.css':
+                series = series.pipe(autoprefixer());
                 series = series.pipe(cleanCSS());
             break;
             case '.js':

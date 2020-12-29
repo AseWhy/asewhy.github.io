@@ -187,3 +187,9 @@ span.ripple {
         backdrop-filter: blur(1em);
     }
 }
+
+@supports not ((display: grid) or (display: -ms-grid)) {
+    .header {
+        display: flex;
+    }    
+}
