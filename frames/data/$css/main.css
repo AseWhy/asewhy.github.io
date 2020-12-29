@@ -33,6 +33,13 @@
     font-family: 'FiraCode Light';
 }
 
+@keyframes ripple {
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
 @keyframes load {
 	from {
 		transform: rotate(0deg) scale(1);
@@ -69,7 +76,7 @@ a:hover, .contentlink:hover {
 }
 
 *[rendertarget="true"] {
-	width: 100%;
+	width: calc(100% - 1em);
     padding: 0.5em;
 	overflow: hidden;
 	transition: var(--base-transition);
@@ -105,10 +112,16 @@ a:hover, .contentlink:hover {
 	opacity: 0;
 }
 
-.left-variator {
+button.left-variator {
 	white-space: nowrap;
-	padding: 0.25em 0.5em;
+	padding: 0.5em 0.5em;
 	width: calc(100% - 1em);
+	background-color: white;
+	position: relative;
+	text-align: left;
+	overflow: hidden;
+	margin: 0.25em 0;
+	border: none;
 }
 
 .wrap {
@@ -123,10 +136,10 @@ a:hover, .contentlink:hover {
 	padding-left: 0.5em;
 }
 
-.sub-level > * {
+.sub-level > button.left-variator, .sub-level > .sub-level {
 	display: block;
 	padding-right: 0.5em;
-	border-left: 1px solid;
+	border-left: 1px dotted;
 }
 
 .container[ui='desktop'] .mobile-element {
@@ -172,6 +185,25 @@ a:hover, .contentlink:hover {
 .container[ui='mobile'] .content-view {
 	border: none;
 	padding-left: 0;
+}
+
+.nav-container {
+	width: 100%;
+	height: calc(100vh - 2em);
+	overflow-y: auto;
+	padding: 1em 0;
+}
+
+span.ripple {
+	width: 0;
+	height: 0;
+	border-radius: 50%;
+	background: rgba(0, 0, 0, 0.4);
+	transform: scale(0);
+	position: absolute;
+	animation: ripple 0.5s linear;
+	pointer-events: none;
+	opacity: 1;
 }
 
 pre {

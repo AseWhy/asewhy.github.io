@@ -1,13 +1,15 @@
 {
+    window.root = new Object();
+
     const m_window = document.querySelector('.modal')
         , m_title = document.querySelector('.modal-title')
         , m_body = document.querySelector('.modal-body')
         , m_ok = document.querySelector('.modal-ok')
         , m_cancel = document.querySelector('.modal-cancel')
 
-    window.ui = 'desktop';
+    window.root.ui = 'desktop';
 
-    window.notify = (title, body, mc_ok = 'Ок', mc_cancel = 'Отмена') => {
+    window.root.notify = (title, body, mc_ok = 'Ок', mc_cancel = 'Отмена') => {
         m_window.classList.add('active');
 
         return new Promise(res => {
@@ -37,30 +39,75 @@
 };
 
 {
-    function setUi(ui) {
-        const container = document.querySelector('.container');
+    window.root.setUi = ui => {
+        $('.container').attr('ui', ui);
 
-        if(container) {
-            container.setAttribute('ui', ui);
-        }
-
-        window.ui = ui;
+        window.root.ui = ui;
     }
 
     if('ontouchstart' in window){
-        window.setUi('mobile');
+        window.root.setUi('mobile');
     } else {
-        window.setUi('desktop');
+        window.root.setUi('desktop');
     }
 }
 
 {
-    const trigger = document.getElementById('left-menu-target-trigger')
-        , container = document.getElementById('target-header-buttons');
-
-    window.leftMenuChange = () => {
-        container.style.left = container.style.left == '0px' ? '-100%' : '0px';
+    window.root.leftMenuActive = () => {
+        return $('#target-header-buttons').css('left') == '0px';
     }
 
-    trigger.addEventListener('click', window.leftMenuChange);
+    window.root.leftMenuChange = () => {
+        $('#target-header-buttons').css('left', window.root.leftMenuActive() ? '-100%' : '0px');
+    }
+
+    $('#left-menu-target-trigger').on('click', window.root.leftMenuChange);
 }
+
+{
+    $(window).on('click', e => {
+        if(e.target.tagName == 'A') {
+            (async () => {
+                if(await window.root.notify('Переход по ссылке', 'Вы уверены, что хотите перейти на \'' + e.target.href + '\'?', 'Да', 'Отмена'))
+                    window.location = e.target.href;
+            })()
+
+            e.preventDefault()
+        } else if(e.target.tagName == 'BUTTON') {
+            e.preventDefault();
+
+            // Remove any old one
+            $('.ripple').remove();
+        
+            // Setup
+            let buttonWidth = e.target.offsetWidth, 
+                buttonHeight = e.target.offsetHeight;
+        
+            // Make it round!
+            if(buttonWidth >= buttonHeight) {
+                buttonHeight = buttonWidth;
+            } else {
+                buttonWidth = buttonHeight;
+            }
+        
+            // Get the center of the element
+            const x = e.offsetX == undefined ? e.layerX : e.offsetX - buttonWidth / 2
+                , y = e.offsetY == undefined ? e.layerY : e.offsetY - buttonHeight / 2;
+        
+            // Add the element
+            const span = document.createElement('span');
+
+            span.className = 'ripple';
+
+            const s = span.style;
+
+            s.width = buttonWidth + 'px';
+            s.height = buttonHeight + 'px';
+
+            s.top = y + 'px';
+            s.left = x + 'px';
+
+            e.target.appendChild(span);
+        }
+    });
+};

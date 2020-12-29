@@ -1,12 +1,6 @@
 (() => {
     const foreced = document.querySelectorAll('*[type="forced"]');
 
-    function rnd() {
-        const max = libt.length, min = 0;
-
-        return libt[Math.floor(Math.random() * (max - min + 1)) + min];
-    }
-
     function force(el, to) {
         let leng = to.length, buffer = '';
 
@@ -37,4 +31,4 @@
     for(let i = 0, leng = foreced.length; i < leng; i++){
         force(foreced[i], foreced[i].getAttribute('to'));
     }
-})()
+})();

@@ -2,22 +2,21 @@
 <html>
 <head>
 	<title>Poonya документация</title>
-	<link rel="shortcut icon" href="./data/poonya/img/poo_logo.png" type="image/x-icon">
+	<link rel="shortcut icon" href="./dist/poonya/img/poo_logo.png" type="image/x-icon">
 
-	<link rel="stylesheet" href="./data/$css/main.css">
-	<link rel="stylesheet" href="./data/$css/layout.css">
-	<link rel="stylesheet" href="./data/poonya/css/stackoverflow-light.css">
+	<link rel="stylesheet" href="./dist/$css/css.bundle.css">
+	<link rel="stylesheet" href="./dist/poonya/css/css.bundle.css">
 
 	<style>
         *[rendertarget="true"]::before {
-            background-image: url(./data/poonya/img/poo_logo.png);
+            background-image: url(./dist/poonya/img/poo_logo.png);
         }
     </style>
 </head>
 <body>
 	<div class="container">
 		<script type='page-config'>
-			this.logo = './data/poonya/img/poo_logo.png';
+			this.logo = './dist/poonya/img/poo_logo.png';
 			
 			this.setStart('main-poonya', null);
 			this.setTitle('#!Poonya', 'https://github.com/AseWhy/Poonya');
@@ -30,43 +29,45 @@
 
 		<div class="content">
 			<div class="nav-bar">
-				<div class="left-variator contentlink" type="c-link" target='main-poonya'>Пунья</div>
-				<div class="sub-level">
-					<div class="left-variator contentlink" type="c-link" target='main-poonya#about_name'>О названии</div>
-					<div class="left-variator contentlink" type="c-link" target='main-poonya#links'>Ссылки</div>
-				</div>
-				<div class="left-variator contentlink" type="c-link" target='get-started'>Начиная</div>
-				<div class="left-variator contentlink" type="c-link" target='poonya-integration'>Интеграция</div>
-				<div class="sub-level">
-					<div class="left-variator contentlink" type="c-link" target='poonya-integration#message'>MessagePattern</div>
-					<div class="left-variator contentlink" type="c-link" target='poonya-integration#execution'>ExecutionPattern</div>
-					<div class="left-variator contentlink" type="c-link" target='poonya-integration#expression'>ExpressionPattern</div>
-				</div>
-				<div class="left-variator contentlink" type="c-link" target='poonya-syntax'>Синтаксис</div>
-				<div class="sub-level">
-					<div class="left-variator contentlink" type="c-link" target='poonya-syntax#block'>Блочный синтаксис</div>
+				<div class="nav-container">
+					<button class="left-variator contentlink" type="c-link" target='main-poonya'>Пунья</button>
 					<div class="sub-level">
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#if'>Инструкция: if</div>
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#while'>Инструкция: while</div>
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#repeat'>Инструкция: repeat</div>
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#set'>Инструкция: set</div>
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#out'>Оператор вывода</div>
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#out'>Оператор добавления</div>
+						<button class="left-variator contentlink" type="c-link" target='main-poonya#about_name'>О названии</button>
+						<button class="left-variator contentlink" type="c-link" target='main-poonya#links'>Ссылки</button>
 					</div>
-					<div class="left-variator contentlink" type="c-link" target='poonya-syntax#block'>Cинтаксис выражений</div>
+					<button class="left-variator contentlink" type="c-link" target='get-started'>Начиная</button>
+					<button class="left-variator contentlink" type="c-link" target='poonya-integration'>Интеграция</button>
 					<div class="sub-level">
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#plus'>Оператор: сложения</div>
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#minus'>Оператор: вычитания</div>
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#equal'>Оператор: присваивания/равенства</div>
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#mult'>Оператор: умножения</div>
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#div'>Оператор: деления</div>
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#big'>Опертаор: больше</div>
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#less'>Оператор: меньше</div>
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#and'>Оператор: и</div>
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#or'>Оператор: или</div>
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#or'>Группы выражений</div>
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#or'>Вызов функции</div>
-						<div class="left-variator contentlink" type="c-link" target='poonya-syntax#or'>Конструкторы объектов</div>
+						<button class="left-variator contentlink" type="c-link" target='poonya-integration#message'>MessagePattern</button>
+						<button class="left-variator contentlink" type="c-link" target='poonya-integration#execution'>ExecutionPattern</button>
+						<button class="left-variator contentlink" type="c-link" target='poonya-integration#expression'>ExpressionPattern</button>
+					</div>
+					<button class="left-variator contentlink" type="c-link" target='poonya-syntax'>Синтаксис</button>
+					<div class="sub-level">
+						<button class="left-variator contentlink" type="c-link" target='poonya-syntax#block'>Блочный синтаксис</button>
+						<div class="sub-level">
+							<button class="left-variator contentlink" type="c-link" target='poonya-syntax#if'>Инструкция: if</button>
+							<button class="left-variator contentlink" type="c-link" target='poonya-syntax#while'>Инструкция: while</button>
+							<button class="left-variator contentlink" type="c-link" target='poonya-syntax#repeat'>Инструкция: repeat</button>
+							<button class="left-variator contentlink" type="c-link" target='poonya-syntax#set'>Инструкция: set</button>
+							<button class="left-variator contentlink" type="c-link" target='poonya-syntax#out'>Оператор вывода</button>
+							<button class="left-variator contentlink" type="c-link" target='poonya-syntax#out'>Оператор добавления</button>
+						</div>
+						<button class="left-variator contentlink" type="c-link" target='poonya-syntax#block'>Cинтаксис выражений</button>
+						<div class="sub-level">
+							<button class="left-variator contentlink" type="c-link" target='poonya-syntax#plus'>Оператор: сложения</button>
+							<button class="left-variator contentlink" type="c-link" target='poonya-syntax#minus'>Оператор: вычитания</button>
+							<button class="left-variator contentlink" type="c-link" target='poonya-syntax#equal'>Оператор: присваивания/равенства</button>
+							<button class="left-variator contentlink" type="c-link" target='poonya-syntax#mult'>Оператор: умножения</button>
+							<button class="left-variator contentlink" type="c-link" target='poonya-syntax#div'>Оператор: деления</button>
+							<button class="left-variator contentlink" type="c-link" target='poonya-syntax#big'>Опертаор: больше</button>
+							<button class="left-variator contentlink" type="c-link" target='poonya-syntax#less'>Оператор: меньше</button>
+							<button class="left-variator contentlink" type="c-link" target='poonya-syntax#and'>Оператор: и</button>
+							<button class="left-variator contentlink" type="c-link" target='poonya-syntax#or'>Оператор: или</button>
+							<button class="left-variator contentlink" type="c-link" target='poonya-syntax#or'>Группы выражений</button>
+							<button class="left-variator contentlink" type="c-link" target='poonya-syntax#or'>Вызов функции</button>
+							<button class="left-variator contentlink" type="c-link" target='poonya-syntax#or'>Конструкторы объектов</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -334,10 +335,7 @@
 			Код выше выведет `[ 5 ]`;
 		</script>
 
-		<script src="./data/$js/main.js"></script>
-		<script src="./data/$js/highlight.pack.js"></script>
-		<script src="./data/$js/marked.min.js"></script>
-		<script src="./data/$js/page-manager.js"></script>
+		<script src="./dist/$js/js.bundle.js"></script>
 	</div>
 </body>
 </html>

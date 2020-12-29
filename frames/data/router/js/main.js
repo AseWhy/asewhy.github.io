@@ -1,15 +1,15 @@
-(() => {
+{
     const nav = document.querySelector('.nav-bar');
 
     window.addEventListener('page:ch-done', e => {
         nav.innerText = '';
 
         for(let i = 0, leng = e.detail.headers.length, cur_level = -1, prev_level = -1, stack = [ nav ];i < leng; i++) {
-            const label = document.createElement('div');
+            const label = document.createElement('button');
 
             label.innerText = e.detail.headers[i].innerText;
 
-            e.detail.headers[i].id = window.ru_ro_url_pure(e.detail.headers[i].id);
+            e.detail.headers[i].id = window.root.utils.ruToUrlPure(e.detail.headers[i].id);
 
             label.setAttribute('target', e.detail.page_id + '#' + e.detail.headers[i].id)
 
@@ -40,4 +40,4 @@
             prev_level = cur_level;
         }
     });
-})()
+};

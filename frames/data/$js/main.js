@@ -5,39 +5,41 @@
 
     window.name = 'child#' + w_id;
 
-    window.subloc = {
+    window.root = new Object();
+
+    window.root.subloc = {
         get path() {
             return Array.from(path);
         }
     };
 
-    window.call = (command, data) => {
+    window.root.call = (command, data) => {
         window.parent.postMessage({
             sender: w_id,
             command, data
         })
     }
 
-    window.updateTitle = title => {
-        call('update.title', title);
+    window.root.updateTitle = title => {
+        window.root.call('update.title', title);
     }
 
-    window.updateFav = fav => {
-        call('update.fav', fav);
+    window.root.updateFav = fav => {
+        window.root.call('update.fav', fav);
     }
 
-    window.updateHash = hash => {
+    window.root.updateHash = hash => {
         window.location.hash = hash;
 
-        call('update.hash', hash);
+        window.root.call('update.hash', hash);
     };
     
-    window.open = url => {
-        call('open.link', url);
+    window.root.open = url => {
+        window.root.call('open.link', url);
     }
 
-    window.go = page_id => {
-        call('update.location', page_id);
+    window.root.go = page_id => {
+        window.root.call('update.location', page_id);
     };
 
     window.addEventListener('load', () => {
@@ -45,50 +47,21 @@
             , title = document.querySelector('title');
 
         if(fav != null)
-            updateFav(fav.href);
+            window.root.updateFav(fav.href);
 
         if(title != null)
-            updateTitle(title.innerText);
+            window.root.updateTitle(title.innerText);
     }, { once: true });
 
-    window.addEventListener('click', e => {
-        console.log(e.target)
+    {   
+        window.root.utils = new Object();
 
-        if(e.target.tagName == 'A') {
-            if(e.target.href.trim() != '')
-                call('open.link', e.target.href);
-
-            e.preventDefault()
-        }
-    });
-
-    window.addEventListener('page:ch-go', e => {
-        call('doc.location.change.started', e.detail);
-    });
-
-    window.addEventListener('page:go', e => {
-        call('doc.section.change.started', e.detail);
-    })
-
-    window.addEventListener('page:ch-done', e => {
-        call('doc.location.change.ended', { ...e.detail, headers: undefined });
-    });
-
-    window.addEventListener('page:done', e => {
-        call('doc.section.change.ended', { ...e.detail, headers: undefined });
-    });
-
-    window.addEventListener('scroll', e => {
-        call('doc.scroll', window.scrollY);
-    });
-
-    {
         const dict = [
             'я,ю,э,ы,щ,ш,ч,ц,х,ф,у,т,с,р,п,о,н,м,л,к,й,и,з,ж,ё,е,д,г,в,б,а,-,ъ,ь'.split(','),
             'ya,yu,eh,yi,sh,sh,ch,c,h,ph,u,t,s,r,p,o,n,m,l,k,y,i,z,zh,yo,e,d,g,v,b,a,-,,'.split(',')
         ]
 
-        window.ru_ro_url_pure = npure => {
+        window.root.utils.ruToUrlPure = npure => {
             let outp = new Array();
 
             for(let i = 0, leng = npure.length, cur; i < leng; i++) {
@@ -103,10 +76,9 @@
         }
     }
 
+    // Load config
     {
-        let start = [];
-
-        const config = document.querySelector('script[type="page-config"]');
+        let config = document.querySelector('script[type="page-config"]'), start = new Array();
 
         class Config {
             constructor(){
@@ -115,7 +87,7 @@
                 this.buttons = new Array();
 
                 this.buttons.add = (display, tag) => {
-                    call('header.buttons.add', { display, tag });
+                    window.root.call('header.buttons.add', { display, tag });
 
                     this.buttons.push([display, tag]);
                 };
@@ -127,11 +99,11 @@
             }
 
             setTitle(title, url) {
-                call('header.update.title', { title, url });
+                window.root.call('header.update.title', { title, url });
             }
 
             set logo(logo) {
-                call('header.update.logo', logo);
+                window.root.call('header.update.logo', logo);
 
                 this._logo = logo;
             }
@@ -145,12 +117,94 @@
             new Function('config', '"use strict";' + config.innerText).call(new Config());
         }
 
+        // При полной загрузке контента, загружаем переданный через location hash путь, или путь установленный в конфигурации
         window.addEventListener('DOMContentLoaded', () => {
-            if(window.subloc.path.length === 0) {
-                loadPage(start[0], start[1]);
+            if(window.root.subloc.path.length === 0) {
+                window.page.loadPage(start[0], start[1]);
             } else {
-                loadPage(window.subloc.path[0], window.subloc.path[1]);
+                window.page.loadPage(window.root.subloc.path[0], window.root.subloc.path[1]);
             }
+        }, { once: true });
+    }
+
+    // Регистрирую слушатели
+    {
+        window.addEventListener('click', e => {
+            if(e.target.tagName == 'A') {
+                if(e.target.href.trim() != '')
+                    window.root.call('open.link', e.target.href);
+    
+                e.preventDefault()
+            } else if(e.target.tagName == 'BUTTON') {
+                e.preventDefault();
+
+                // Remove any old one
+                const ripple = document.querySelectorAll('.ripple');
+
+                if (ripple) {
+                    for(let i = 0, leng = ripple.length; i < leng; i++)
+                        ripple[i].remove();
+                }
+            
+                // Setup
+                let buttonWidth = e.target.offsetWidth, 
+                    buttonHeight = e.target.offsetHeight;
+            
+                // Make it round!
+                if(buttonWidth >= buttonHeight) {
+                    buttonHeight = buttonWidth;
+                } else {
+                    buttonWidth = buttonHeight;
+                }
+            
+                // Get the center of the element
+                const x = e.offsetX == undefined ? e.layerX : e.offsetX - buttonWidth / 2
+                    , y = e.offsetY == undefined ? e.layerY : e.offsetY - buttonHeight / 2;
+            
+                // Add the element
+                const span = document.createElement('span');
+
+                span.className = 'ripple';
+
+                const s = span.style;
+
+                s.width = buttonWidth + 'px';
+                s.height = buttonHeight + 'px';
+
+                s.top = y + 'px';
+                s.left = x + 'px';
+
+                e.target.appendChild(span);
+            }
+        });
+
+        window.addEventListener('page:ch-go', e => {
+            window.root.call('doc.location.change.started', e.detail);
+        });
+    
+        window.addEventListener('page:go', e => {
+            // Показываем заголовок при переходе на другой документ
+            window.root.call('header.show');
+            // Вызываем событие изменения текущей секции
+            window.root.call('doc.section.change.started', e.detail);
+        })
+    
+        window.addEventListener('page:ch-done', e => {
+            // 
+            window.root.call('doc.location.change.ended', { ...e.detail, headers: undefined });
+        });
+    
+        window.addEventListener('page:done', e => {
+            window.root.updateHash(e.detail.page_id + (e.detail.head != undefined ? '/' + e.detail.head : ''));
+
+            window.root.call('doc.section.change.ended', { ...e.detail, headers: undefined });
+        });
+    
+        window.addEventListener('scroll', e => {
+            if(window.scrollY === 0)
+                window.root.call('header.show');
+            else
+                window.root.call('header.hide');
         });
 
         window.addEventListener('message', message => {
@@ -170,9 +224,9 @@
                     }
                 break;
                 case 'content.load':
-                    loadPage(data.data, null);
+                    window.page.loadPage(data.data, null);
                 break;
             }
-        })
+        });
     }
-})()
+})();

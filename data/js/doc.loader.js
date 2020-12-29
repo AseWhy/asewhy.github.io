@@ -4,6 +4,12 @@
     let frame = document.getElementById('main-frame'),
         path = window.location.hash.substring(1).split('/');
 
+    function setHash(hash) {
+        window.location.hash = hash;
+
+        path = hash.substring(1).split('/');
+    }
+
     function isExists(docname) {
         return new Promise(res => {
             fetch('./frames/' + docname + '.htm')
@@ -21,37 +27,37 @@
     }
 
     function loadFromMenu(tag) {
-        window.leftMenuChange();
+        window.root.leftMenuChange();
 
         load(tag);
     }
 
     async function message(message) {
-        const data = message.data;
+        const data = message.originalEvent.data;
 
         if(data.sender === w_id) {
             switch(data.command){
                 case 'open.link':
-                    if(await window.notify('Переход по ссылке', `Вы уверены, что хотите перейти на '${data.data}'?`, 'Да', 'Отмена'))
+                    if(await window.root.notify('Переход по ссылке', 'Вы уверены, что хотите перейти на \'' + data.data + '\'?', 'Да', 'Отмена'))
                         window.location = data.data;
                 break;
-                case 'doc.scroll':
-                    {
-                        const block = document.getElementById('div-block-target');
-                        
-                        block.style.opacity = data.data == 0 ? 1 : 0;
-                        block.style.height = data.data == 0 ? '5.5em' : 0;
-                    }
+                case 'header.hide':
+                    $('#div-block-target')
+                        .css({ 
+                            opacity: 0,
+                            height: 0
+                        });
+                break;
+                case 'header.show':
+                    $('#div-block-target')
+                        .css({ 
+                            opacity: 1,
+                            height: '5.5em'
+                        });
                 break;
                 case 'doc.section.change.started':
-                    {
-                        const name = document.getElementById('div-name-target')
-                            , path = document.getElementById('div-path-target');
-
-
-                        name.innerText = data.data.header;
-                        path.innerText = c_docname + ' -> ' + data.data.page_id + (data.data.head != null ? ' -> ' + data.data.head : '');
-                    }
+                    $('#div-name-target').text(data.data.header);
+                    $('#div-path-target').text(c_docname + ' -> ' + data.data.page_id + (data.data.head != null ? ' -> ' + data.data.head : ''));
                 break;
                 case 'header.buttons.add':
                     {
@@ -73,37 +79,31 @@
                     }
                 break
                 case 'header.buttons.clear':
-                    document.getElementById('target-header-buttons').innerHTML = '';
+                    $('#target-header-buttons').html('');
                 break;
                 case 'header.update.title':
-                    {
-                        const title = document.getElementById('target-header-title');
-
-                        title.innerText = data.data.title;
-                        title.href = data.data.url;
-                    }
+                    $('#target-header-title')
+                        .text(data.data.title)
+                        .attr('href', data.data.url);
                 break;
                 case 'header.update.logo':
-                    {
-                        const logo = document.getElementById('target-header-logo');
-
-                        logo.src = 'frames/' + data.data;
-                    }
+                    $('#target-header-logo')
+                        .attr('src', './frames/' + data.data);
                 break;
                 case 'open.notify':
-                    window.notify(...data.data);
+                    window.root.notify(...data.data);
                 break;
                 case 'update.hash':
-                    window.location.hash = c_docname + '/' + data.data;
+                    setHash(c_docname + '/' + data.data);
                 break;
                 case 'update.location':
-                    window.location.hash = data.data;
+                    setHash(data.data);
                 break;
                 case 'update.fav':
-                    document.getElementById('fav').href = data.data;
+                    $('#fav').attr('href', data.data);
                 break;
                 case 'update.title':
-                    document.getElementById('title').innerText = data.data;
+                    $('#title').text(data.data);
                 break;
             }
         };
@@ -132,33 +132,26 @@
     async function go(docname){
         console.log(c_docname + ' [to] -> ' + docname);
 
-        const container = document.getElementById('target-header-buttons');
-
-        container.innerHTML = '';
+        $('#target-header-buttons').html('');
 
         if(docname != 'router'){
             const button = document.createElement('button');
 
             button.classList = 'header-button';
-            button.innerText = '<- На главную'
+            button.innerText = '🏠 На главную'
             button.onclick = () => {
-                window.leftMenuChange();
+                window.root.leftMenuChange();
 
                 window.location.hash = 'router';
             };
 
-            container.appendChild(button);
+            $('#target-header-buttons').append(button);
         }
 
-        {
-            const block = document.getElementById('div-block-target');
-
-            block.style.opacity = 0;
-            block.style.height = '5.5em';
-        }
+        $('#div-block-target').css({ opacity: 1, height: '5.5em' });
         
         if(await isExists(docname)) {
-            updatePath([docname]);
+            updatePath( [docname] );
 
             c_docname = docname;
 
@@ -169,12 +162,12 @@
             go('notfound');
         }
 
-        frame.addEventListener('load', () => call('update.ui', window.ui), { once: true } );
+        $(frame).one('load', () => call('update.ui', window.root.ui));
     }
 
-    window.addEventListener('message', message);
+    $(window).on('message', message);
 
-    window.addEventListener('hashchange', () => {
+    $(window).on('hashchange', () => {
         path = window.location.hash.substring(1).split('/');
 
         if(path[0] != c_docname)
@@ -184,4 +177,4 @@
     go(path[0] != '' ? path[0] : 'router');
 
     window.call = call;
-}
+};

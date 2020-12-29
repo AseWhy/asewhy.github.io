@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="./data/$img/Bash-logo-vector-01.svg" type="image/x-icon">
 
-    <link rel="stylesheet" href="./data/$css/main.css">
-    <link rel="stylesheet" href="./data/$css/layout.css">
+    <link rel="shortcut icon" href="./dist/$img/Bash-logo-vector-01.svg" type="image/x-icon">
+    <link rel="stylesheet" href="./dist/$css/css.bundle.css">
 
     <style>
         *[rendertarget="true"]::before {
-            background-image: url(./data/$img/Bash-logo-vector-01.svg);
+            background-image: url(./dist/$img/Bash-logo-vector-01.svg);
         }
     </style>
 
@@ -19,7 +18,7 @@
 <body>
     <div class="container">
         <script type='page-config'>
-            this.logo = './data/$img/Bash-logo-vector-01.svg';
+            this.logo = './dist/$img/Bash-logo-vector-01.svg';
 
             this.setStart('main-astecom', null);
             this.setTitle('#!AseWhy/Astecom', 'https://github.com/AseWhy/');
@@ -31,8 +30,10 @@
         </script>
 
         <div class="content">
-            <div class="nav-bar" navbartarget='true'>
+            <div class="nav-bar">
+                <div class="nav-container" navbartarget='true'>
 
+                </div>
             </div>
 
             <div class="content-view" rendertarget="true">
@@ -77,7 +78,7 @@
     <script type="page-pattern" name="main-docs">
         # Список документации
 
-        * <a onclick='go("poonya")' class='contentlink'>Документация по препроцессору Poonya</a>
+        * <a onclick='window.root.go("poonya")' class='contentlink'>Документация по препроцессору Poonya</a>
     </script>
 
     <script type="page-pattern" name="main-projects">
@@ -103,10 +104,7 @@
         Если коротко пройтись по разделам, то в разделе `Документация`, я буду складировать ссылки на свои документации и спецификации (если таковые будут). В разделе `О сайте` вы сможете прочитать общую инормацию об этом сайте. В разделе `Проекты` будет список моих проектов.
     </script>
 
-    <script src="./data/$js/main.js"></script>
-    <script src="./data/$js/highlight.pack.js"></script>
-    <script src="./data/$js/marked.min.js"></script>
-    <script src="./data/$js/page-manager.js"></script>
-    <script src="./data/router/js/main.js"></script>
+    <script src="./dist/router/js/js.bundle.js"></script>
+    <script src="./dist/$js/js.bundle.js"></script>
 </body>
 </html>

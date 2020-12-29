@@ -1,4 +1,6 @@
 {
+    window.page = new Object();
+
     const PAGES = new Map()
         , IGNORE = ['type', 'name']
         , CONTENT = document.querySelector('*[rendertarget="true"]')
@@ -70,10 +72,10 @@
             } else {
                 window.scrollTo({top: 0, behavior: 'smooth'});
     
-                window.updateHash(last);
+                window.root.updateHash(last);
             }
         } catch (e) {
-            window.updateHash(last);
+            window.root.updateHash(last);
         }
     }
 
@@ -130,8 +132,6 @@
             // Ожидаем окончания загрузки
             await onAllLoaded(element.getElementsByTagName('img'));
 
-            window.updateHash(page_id + (head != undefined ? '/' + head : ''));
-
             if(head) 
                 whell(head);
 
@@ -185,9 +185,9 @@
             links[i].addEventListener('click', drop.bind(null, links[i]));
         }
 
-        window.drop = drop;
+        window.page.drop = drop;
     }
 
-    window.loadPage = loadPage;
-    window.whell = whell;
-}
+    window.page.loadPage = loadPage;
+    window.page.whell = whell;
+};
