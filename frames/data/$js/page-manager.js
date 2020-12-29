@@ -62,7 +62,7 @@
             return;
 
         try {
-            let head_d = element.querySelector('#' + to);
+            let head_d = document.querySelector('.wrap').querySelector('#' + to);
 
             if(head_d){
                 const rect = (HEADERS.includes(head_d.tagName) ? head_d : head_d.parentElement).getBoundingClientRect();
@@ -71,11 +71,9 @@
                 document.documentElement.scrollTo({top: y, behavior: 'smooth'});
             } else {
                 window.scrollTo({top: 0, behavior: 'smooth'});
-    
-                window.root.updateHash(last);
             }
         } catch (e) {
-            window.root.updateHash(last);
+            console.error(e);
         }
     }
 
@@ -134,9 +132,10 @@
             // Ожидаем окончания загрузки
             await onAllLoaded(element.getElementsByTagName('img'));
 
-            if(head) 
+            if(head) {
                 whell(head);
-
+            }
+            
             if(updated)
                 window.dispatchEvent(new CustomEvent(CHANGE_DONE_EV, { detail: { page_id, head, header: chunck.header, headers: element.querySelectorAll('h1, h2, h3, h4, h5, h6') } }));
             
