@@ -92,6 +92,8 @@
 
             window.dispatchEvent(new CustomEvent(GO_EV, { detail: { page_id, head, header: chunck.header } }));
 
+            let element;
+
             if(updated) {
                 CONTENT.classList.add('transit');
 

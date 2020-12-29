@@ -67,7 +67,20 @@ function buildFolder(src, dist){
                 series = series.pipe(cleanCSS());
             break;
             case '.js':
-                series = series.pipe(babel());
+                series = series.pipe(babel({
+                    presets: [
+                        [
+                            "@babel/env",
+                            {
+                                targets: {
+                                    chrome: 50,
+                                    ie: 11
+                                }
+                            }
+                        ]
+                    ]
+                }));
+
                 series = series.pipe(uglify());
             break;
         }

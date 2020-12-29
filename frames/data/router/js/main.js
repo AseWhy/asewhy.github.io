@@ -15,7 +15,7 @@
 
             label.classList = 'common-label left-variator';
 
-            label.addEventListener('click', window.drop.bind(null, label));
+            label.addEventListener('click', window.page.drop.bind(null, label));
 
             cur_level = parseInt(e.detail.headers[i].tagName[1]);
 
