@@ -114,7 +114,7 @@
             command: command,
             receiver: w_id,
             data
-        })
+        }, '*')
     }
 
     async function whell(tag){

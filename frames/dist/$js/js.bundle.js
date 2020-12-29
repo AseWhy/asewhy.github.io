@@ -2785,7 +2785,7 @@ var hljs = function () {
       sender: w_id,
       command,
       data
-    });
+    }, '*');
   };
 
   window.root.updateTitle = title => {

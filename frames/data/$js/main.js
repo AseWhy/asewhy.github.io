@@ -17,7 +17,7 @@
         window.parent.postMessage({
             sender: w_id,
             command, data
-        })
+        }, '*')
     }
 
     window.root.updateTitle = title => {
