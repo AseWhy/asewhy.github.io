@@ -22,6 +22,18 @@ body {
     width: 100%;
 }
 
+.content {
+    display: grid;
+    height: fit-content;
+    width: fit-content;
+    grid-template-areas:
+        '.'
+        '.';
+    grid-template-columns: auto;
+    margin: auto 0;
+    min-height: 0;
+}
+
 .codebar {
     font-size: 8em;
     line-height: 1em;
@@ -57,6 +69,7 @@ body {
     margin-top: 1.5em;
     border-top: 1px solid;
     cursor: pointer;
+    height: 1.5em;
 }
 
 .go-home:hover {
@@ -68,7 +81,6 @@ img {
     display: grid;
     margin: auto;
     transition: var(--base-transition);
-    cursor: pointer;
 }
 
 img:hover {

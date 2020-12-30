@@ -11,7 +11,7 @@
         function next(){
             let changes = 0;
 
-            for(let i = 0, c; i < leng; i++) {
+            for(let i = 0; i < leng; i++) {
                 if(buffer[i] != to[i]) {
                     buffer[i] = Math.random() - 0.05 * changes > 0.95 ? to[i] : '';
 

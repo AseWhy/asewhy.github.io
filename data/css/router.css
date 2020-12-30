@@ -35,6 +35,10 @@ body {
     background-color: rgba(255, 255, 255, .9);
 }
 
+.modal-body {
+    word-break: break-all;
+}
+
 .modal.active {
     display: grid;
 }
@@ -167,6 +171,10 @@ span.ripple {
 	animation: ripple 0.5s linear;
 	pointer-events: none;
 	opacity: 1;
+}
+
+code {
+    word-break: break-all;
 }
 
 @media screen and (max-width: 680px){

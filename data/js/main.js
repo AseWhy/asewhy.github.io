@@ -33,7 +33,8 @@
             m_cancel.onclick = close.bind(null, false);
 
             m_title.innerText = title;
-            m_body.innerText = body;
+            m_body.innerHTML = 
+                body.replace(/('|"|`|\*|-)([^\1]+)\1/g, "'<code>$2</code>'");
         })
     }
 };
@@ -70,12 +71,11 @@
             (async () => {
                 if(await window.root.notify('Переход по ссылке', 'Вы уверены, что хотите перейти на \'' + e.target.href + '\'?', 'Да', 'Отмена'))
                     window.location = e.target.href;
-            })()
+            })();
 
+            // Отменяем стандартное поведение
             e.preventDefault()
         } else if(e.target.tagName == 'BUTTON') {
-            e.preventDefault();
-
             // Remove any old one
             $('.ripple').remove();
         
@@ -108,6 +108,9 @@
             s.left = x + 'px';
 
             e.target.appendChild(span);
+
+            // Отменяем стандартное поведение
+            e.preventDefault();
         }
     });
 };

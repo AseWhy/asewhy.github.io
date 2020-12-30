@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="./dist/$img/Bash-logo-vector-01.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="./dist/notfound/img/404.svg" type="image/x-icon">
 
     <title>Страницы не существует</title>
 
@@ -16,7 +14,9 @@
 <body>
     <div class="container">
         <script type='page-config'>
-            this.setTitle('#!Not found!');
+            this.logo = './dist/notfound/img/404.svg';
+
+            this.setTitle('#!Not found!', 'https://ru.wikipedia.org/wiki/%D0%9E%D1%88%D0%B8%D0%B1%D0%BA%D0%B0_404');
         </script>
 
         <div class="info">
@@ -36,6 +36,7 @@
         <a class="go-home contentlink" onclick="window.root.go('router')">Вернутся на главную</a>
     </div>
 
+    <script src="./dist/notfound/js/js.bundle.js"></script>
     <script src="./dist/$js/js.bundle.js"></script>
 </body>
 </html>
