@@ -51,6 +51,13 @@
     } else {
         window.root.setUi('desktop');
     }
+
+    if(window.localStorage.getItem('settings.user.theme') != null) {
+        window.themes.load(window.localStorage.getItem('settings.user.theme'));
+        
+        if(window.localStorage.getItem('settings.user.theme') != 'default')
+            $('.theme-switch').addClass('switched');
+    }
 }
 
 {
@@ -66,6 +73,20 @@
 }
 
 {
+    $('.theme-switch').on('click', e => {
+        if(e.target.classList.contains('switched')) {
+            window.themes.load('default');
+
+            e.target.classList.remove('switched');
+        } else {
+            window.themes.load('darked');
+
+            e.target.classList.add('switched');
+        }
+
+        localStorage.setItem('settings.user.theme', window.themes.current)
+    })
+
     $(window).on('click', e => {
         if(e.target.tagName == 'A') {
             (async () => {

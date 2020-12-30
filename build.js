@@ -16,6 +16,9 @@ const path = require('path')
     ];
 
 function buildFolder(src, dist){
+    src = path.resolve(src);
+    dist = path.resolve(dist);
+
     let paths = new Array();
     
     (function watch (cpath = ''){
@@ -29,23 +32,44 @@ function buildFolder(src, dist){
     
             if(finfo.isDirectory()) {
                 watch(path.join(cpath, dir[i]));
-            } else if(finfo.isFile() && !tabuext.includes(ext)) {
-                if(files[ext]) {
-                    if(dir[i].indexOf('important') == -1)
-                        files[ext].push( path.resolve(fpath) );
-                    else
-                        files[ext].unshift( path.resolve(fpath) );
+            } else if(finfo.isFile()) {
+                let content = fs.readFileSync(fpath, 'utf-8'),
+                    coppyes = new Array();
+
+                // File preprocessing
+                content = content.replace(/^[ \t]*\/\/[ \t]*->[ \t]*(.*)$/gm, (m, p1) => {
+                    coppyes.push(path.normalize(p1.replace(/@/g, __dirname)));
+
+                    return '';
+                });
+
+                // Перезаписываем компии
+                for(let i = 0, leng = coppyes.length; i < leng; i++) {
+                    try {
+                        fs.writeFileSync(coppyes[i], content);
+                    } catch (e) {
+                        console.warn('Cannot coppy file from `' + fpath + '` to `' + coppyes[i] + '`')
+                    }
+                }
+
+                if(!tabuext.includes(ext)) {
+                    if(files[ext]) {
+                        if(dir[i].indexOf('important') == -1)
+                            files[ext].push( path.resolve(fpath) );
+                        else
+                            files[ext].unshift( path.resolve(fpath) );
+                    } else {
+                        files[ext] = [ path.resolve(fpath) ];
+                    }
                 } else {
-                    files[ext] = [ path.resolve(fpath) ];
-                }
-            } else {
-                let out = path.resolve(path.join(dist, cpath, dir[i]));
+                    let out = path.resolve(path.join(dist, cpath, dir[i]));
 
-                if(!fs.existsSync(path.dirname(out))) {
-                    fs.mkdirSync(path.dirname(out), { recursive: true });
-                }
+                    if(!fs.existsSync(path.dirname(out))) {
+                        fs.mkdirSync(path.dirname(out), { recursive: true });
+                    }
 
-                fs.copyFileSync(fpath, path.resolve(out));
+                    fs.copyFileSync(fpath, path.resolve(out));
+                }
             }
         }
     
@@ -95,11 +119,11 @@ function buildFolder(src, dist){
     for(let i = 0, leng = paths.length; i < leng; i++) {
         paths[i] = out.bind(null, paths[i].ext, paths[i].src, paths[i].dest);
     }
-    
+
     return gulp.parallel(...paths)();
 }
 
 (async () => {
-    await buildFolder('frames/data', 'frames/dist');
     await buildFolder('data', 'dist');
+    await buildFolder('frames/data', 'frames/dist');
 })();

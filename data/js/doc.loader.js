@@ -157,12 +157,10 @@
 
             w_id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString(16);
 
-            frame.src = './frames/' + docname + '.htm#' + path.slice(1).join('/') + '%' + w_id;
+            frame.src = './frames/' + docname + '.htm#' + path.slice(1).join('/') + '@' + JSON.stringify({ w_id, theme: window.themes.current, ui: window.root.ui });
         } else {
             go('notfound');
         }
-
-        $(frame).one('load', () => call('update.ui', window.root.ui));
     }
 
     $(window).on('message', message);
@@ -173,6 +171,10 @@
         if(path[0] != c_docname)
             go(path[0]);
     })
+
+    $(window).on('theme:load:end', data => {
+        call('update.theme', data.originalEvent.detail.name);
+    });
     
     go(path[0] != '' ? path[0] : 'router');
 

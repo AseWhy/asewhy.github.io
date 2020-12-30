@@ -1,9 +1,10 @@
 (() => {
-    const hash = window.location.hash.substring(1).split('%')
+    const hash = decodeURIComponent(window.location.hash.substring(1)).split('@')
         , path = hash.length > 1 ? hash[0].split('/').filter(e => e.length != 0) : []
-        , w_id = hash.pop();
+        , data = JSON.parse(hash.pop());
 
-    window.name = 'child#' + w_id;
+    if(data != null)
+        window.name = 'child#' + data.w_id;
 
     window.root = new Object();
 
@@ -13,11 +14,13 @@
         }
     };
 
-    window.root.call = (command, data) => {
-        window.parent.postMessage({
-            sender: w_id,
-            command, data
-        }, '*')
+    window.root.call = (command, r_data) => {
+        if(data != null) {
+            window.parent.postMessage({
+                sender: data.w_id,
+                command, data: r_data
+            }, '*')
+        }
     }
 
     window.root.updateTitle = title => {
@@ -42,6 +45,14 @@
         window.root.call('update.location', page_id);
     };
 
+    window.root.setUi = ui => {
+        const container = document.querySelector('.container');
+
+        if(container) {
+            container.setAttribute('ui', ui);
+        }
+    }
+
     window.addEventListener('load', () => {
         const fav = document.querySelector('link[rel="shortcut icon"]')
             , title = document.querySelector('title');
@@ -52,6 +63,14 @@
         if(title != null)
             window.root.updateTitle(title.innerText);
     }, { once: true });
+
+    // Парсим параметры переданные в хеше
+    {
+        if(data != null && data.theme != null)
+            window.themes.load(data.theme);
+        if(data != null && data.ui != null)
+            window.root.setUi(data.ui);
+    }
 
     {   
         window.root.utils = new Object();
@@ -208,23 +227,20 @@
         });
 
         window.addEventListener('message', message => {
-            const data = message.data;
+            const r_data = message.data;
 
-            if(data.receiver != w_id)
+            if(data != null && r_data.receiver != data.w_id)
                 return;
             
-            switch(data.command) {
+            switch(r_data.command) {
+                case 'update.theme':
+                    window.themes.load(r_data.data);
+                break;
                 case 'update.ui':
-                    {
-                        const container = document.querySelector('.container');
-
-                        if(container) {
-                            container.setAttribute('ui', data.data);
-                        }
-                    }
+                    window.root.setUi(r_data.data);
                 break;
                 case 'content.load':
-                    window.page.loadPage(data.data, null);
+                    window.page.loadPage(r_data.data, null);
                 break;
             }
         });

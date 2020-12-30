@@ -5,20 +5,19 @@
     }
 }
 
-:root {
-	--darked: rgb(55, 55, 55);
-	--base-transition: 300ms cubic-bezier(0.215, 0.610, 0.355, 1);
-}
-
 html {
     width: 100%;
     height: 100%;
+    background-color: var(--default-color);
+    color: var(--sub-color);
 }
 
 body {
     width: 100%;
     height: 100%;
     margin: 0;
+    background-color: var(--default-color);
+    color: var(--sub-color);
 }
 
 .main-frame {
@@ -32,7 +31,7 @@ body {
     height: 100%;
     display: none;
     z-index: 1000;
-    background-color: rgba(255, 255, 255, .9);
+    background-color: var(--default-semi-opacity);
 }
 
 .modal-body {
@@ -51,16 +50,18 @@ body {
     grid-template-rows: 1.5em max-content 1.5em;
     gap: 0.25em;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    background-color: white;
+    background-color: var(--default-color);
     border: 1px dotted;
     padding: 0.5em;
-    box-shadow: 5px 5px 5px var(--darked);
+    box-shadow: 5px 5px 20px black;
 }
 
 .modal-buttons {
     display: grid;
     grid-auto-flow: column;
     text-align: center;
+    background-color: var(--default-color);
+    color: var(--sub-color);
 }
 
 .modal-option {
@@ -68,8 +69,8 @@ body {
 }
 
 .modal-option:hover {
-    background-color: var(--darked);
-    color: white;
+    background-color: var(--sub-color);
+    color: var(--default-color);
 }
 
 .container[ui='desktop'] .mobile-element {
@@ -91,20 +92,63 @@ body {
     height: 3.5em;
 }
 
+span.sign-separator {
+    width: 1.5em;
+    max-width: 1.5em;
+    text-align: center;
+}
+
 .header {
     display: grid;
-    grid-template-areas: '. . .';
+    grid-template-areas: 'theme . logo . buttons';
     line-height: 3.5em;
     height: 3.5em;
-    grid-template-columns: max-content max-content max-content;
+    grid-template-columns: max-content max-content max-content max-content max-content;
     gap: 0.25em;
+}
+
+.header > * {
+    height: 3.5em;
+}
+
+.header .lg-text {
+    grid-area: logo;
+}
+
+.header .theme-switch {
+    height: 2.5em;
+    display: grid;
+    width: 2em;
+    margin: 0.5em 0 0.5em 0.5em;
+    filter: var(--imgs-def-filter);
+    overflow: hidden;
+    grid-area: theme;
+}
+
+.header .theme-switch img {
+    width: 4em;
+    height: 2em;
+    top: 0.25em;
+    left: 0;
+    position: relative;
+    pointer-events: none;
+    transition: var(--base-transition);
+}
+
+.header .theme-switch.switched img {
+    left: -2em;
+}
+
+.header .header-buttons {
+    grid-area: buttons;
 }
 
 .header .header-button {
     border: none;
-    background-color: white;
     position: relative;
     overflow: hidden;
+    background-color: var(--default-color);
+    color: var(--sub-color);
 }
 
 .header .header-button:hover {
@@ -137,11 +181,22 @@ body {
     padding: 0.25em;
 }
 
-.left-menu {
+.header .left-menu {
 	width: 2em;
     text-align: center;
     font-size: 1.5em;
     line-height: 2.25em;
+    grid-area: menu;
+}
+
+.container[ui='mobile'] .header {
+    grid-template-areas: 'menu logo theme';
+    grid-template-columns: max-content max-content auto;
+}
+
+.container[ui='mobile'] .header .theme-switch {
+    margin-left: auto;
+    margin-right: 0.5em;
 }
 
 .container[ui='mobile'] div.header-buttons {
@@ -153,12 +208,12 @@ body {
     grid-auto-flow: row;
     grid-auto-rows: 3.5em;
     top: 3.5em;
-    background: white;
+    background: var(--default-color);
     transition: var(--base-transition);
 }
 
 a.header-item {
-    color: var(--darked);
+    color: var(--sub-color);
 }
 
 span.ripple {
@@ -188,9 +243,9 @@ code {
     }
 }
 
-@supports ((-webkit-backdrop-filter: blur(2em)) or (backdrop-filter: blur(2em))) {
+@supports ((-webkit-backdrop-filter: blur(1em)) or (backdrop-filter: blur(1em))) {
     .modal {
-        background-color: rgba(255, 255, 255, .25);
+        background-color: var(--default-semi-opacity-1);
         -webkit-backdrop-filter: blur(1em);
         backdrop-filter: blur(1em);
     }
