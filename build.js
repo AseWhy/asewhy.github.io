@@ -1,4 +1,5 @@
 const path = require('path')
+    , crypto = require('crypto')
     , fs = require('fs')
     , gulp = require("gulp")
     , babel = require("gulp-babel")
@@ -16,16 +17,24 @@ const path = require('path')
     ];
 
 function buildFolder(src, dist){
+    let raws = src;
+
     src = path.resolve(src);
     dist = path.resolve(dist);
 
-    let paths = new Array();
+    let paths = new Array(), bdata = new Object();
+
+    if(!fs.existsSync('./.build'))
+        fs.mkdirSync('./.build');
+    else
+        bdata = JSON.parse(fs.readFileSync('./.build/buildsumms.json', 'utf-8'));
     
     (function watch (cpath = ''){
         const dir = fs.readdirSync(path.join(src, cpath))
             , files = new Object();
     
-        for(let i = 0, leng = dir.length, finfo, fpath, ext; i < leng; i++) {
+        for(let i = 0, leng = dir.length, finfo, fpath, rpath, ext; i < leng; i++) {
+            rpath = path.join(raws, cpath, dir[i]);
             fpath = path.join(src, cpath, dir[i]);
             finfo = fs.statSync(fpath);
             ext = path.extname(fpath);
@@ -33,12 +42,13 @@ function buildFolder(src, dist){
             if(finfo.isDirectory()) {
                 watch(path.join(cpath, dir[i]));
             } else if(finfo.isFile()) {
-                let content = fs.readFileSync(fpath, 'utf-8'),
-                    coppyes = new Array();
+                let content = fs.readFileSync(fpath),
+                    coppyes = new Array(),
+                    hash = crypto.createHash('sha256').update(content).digest('hex');
 
                 // File preprocessing
-                if(/^\/\/[ \t]*@pre-pros[ \t]+on[ \t]*$/.test(content))
-                    content = content.replace(/^[ \t]*\/\/[ \t]*->[ \t]*(.*)$/gm, (m, p1) => {
+                if(/^\/\/[ \t]*@pre-pros[ \t]+on[ \t]*$/.test(content.toString()))
+                    content = content.toString().replace(/^[ \t]*\/\/[ \t]*->[ \t]*(.*)$/gm, (m, p1) => {
                         coppyes.push(path.normalize(p1.replace(/@/g, __dirname)));
 
                         return '';
@@ -72,11 +82,17 @@ function buildFolder(src, dist){
                     }
 
                     try {
-                        fs.writeFileSync(out, content);
+                        // Если предыдущая чексумма не рава текущей, то перезаписываем файл.
+                        if(bdata[rpath] != hash)
+                            fs.writeFileSync(out, content);
+                        else
+                            console.warn('File be skipped "' + rpath + '"');
                     } catch (e) {
                         console.warn('Cannot write file from `' + fpath + '` to `' + out + '`')
                     }
                 }
+
+                bdata[rpath] = hash;
             }
         }
     
@@ -87,6 +103,8 @@ function buildFolder(src, dist){
                 ext: key
             });
         }
+
+        fs.writeFileSync('./.build/buildsumms.json', JSON.stringify(bdata, null, 4));
     })();
     
     function out(ext, input, dest, cb) {

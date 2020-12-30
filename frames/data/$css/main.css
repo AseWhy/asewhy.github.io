@@ -179,6 +179,11 @@ button.left-variator {
 	text-align: justify;
 }
 
+.container[ui='mobile'] .nav-container {
+	width: 100%;
+    height: max-content;
+}
+
 .container[ui='mobile'] .nav-bar {
 	width: calc(100% - 0.5em);
 	text-align: center;
