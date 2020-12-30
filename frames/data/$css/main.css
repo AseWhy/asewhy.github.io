@@ -54,9 +54,23 @@
 	}
 }
 
+/* webkit scrollbars */
+::-webkit-scrollbar {
+	width: 0.25em;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--default-color);
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--sub-color);
+}
+
 html {
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	color: var(--sub-color);
+	scrollbar-width: thin;
 }
 
 a, .contentlink {
@@ -110,7 +124,7 @@ a:hover, .contentlink:hover {
 button.left-variator {
 	white-space: nowrap;
 	padding: 0.5em 0.5em;
-	width: max-content;
+	width: 100%;
     background-color: var(--default-color);
     color: var(--sub-color);
 	display: block;
@@ -185,10 +199,11 @@ button.left-variator {
 }
 
 .nav-container {
-	width: 100%;
+	width: max-content;
 	height: calc(100vh - 2em);
 	overflow-y: auto;
 	padding: 1em 0;
+	scrollbar-width: thin;
 }
 
 span.ripple {

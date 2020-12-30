@@ -1,4 +1,5 @@
 (() => {
+    // № путь/данные инициализации окна
     const hash = decodeURIComponent(window.location.hash.substring(1)).split('@')
         , path = hash.length > 1 ? hash[0].split('/').filter(e => e.length != 0) : []
         , data = JSON.parse(hash.pop());
@@ -198,18 +199,18 @@
         });
 
         window.addEventListener('page:ch-go', e => {
+            // Показываем заголовок при переходе на другой документ
+            window.root.call('header.show');
+            // Вызываем событие изменения текущей секции
             window.root.call('doc.location.change.started', e.detail);
         });
     
         window.addEventListener('page:go', e => {
-            // Показываем заголовок при переходе на другой документ
-            window.root.call('header.show');
             // Вызываем событие изменения текущей секции
             window.root.call('doc.section.change.started', e.detail);
         })
     
         window.addEventListener('page:ch-done', e => {
-            // 
             window.root.call('doc.location.change.ended', { ...e.detail, headers: undefined });
         });
     

@@ -162,6 +162,7 @@ span.sign-separator {
     padding: 0 0.5em;
     grid-template-rows: 3em 2.5em;
     transition: var(--base-transition);
+    pointer-events: none;
 }
 
 .head .div-name {
