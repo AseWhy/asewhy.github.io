@@ -37,11 +37,14 @@ function buildFolder(src, dist){
                     coppyes = new Array();
 
                 // File preprocessing
-                content = content.replace(/^[ \t]*\/\/[ \t]*->[ \t]*(.*)$/gm, (m, p1) => {
-                    coppyes.push(path.normalize(p1.replace(/@/g, __dirname)));
+                if(/^\/\/[ \t]*@pre-pros[ \t]+on[ \t]*$/.test(content))
+                    content = content.replace(/^[ \t]*\/\/[ \t]*->[ \t]*(.*)$/gm, (m, p1) => {
+                        coppyes.push(path.normalize(p1.replace(/@/g, __dirname)));
 
-                    return '';
-                });
+                        return '';
+                    }).replace(/^[ \t]*\/\/[ \t]*<-[ \t]*(.*)$/gm, (m, p1) => {
+                        return fs.readFileSync(path.normalize(p1.replace(/@/g, __dirname)), 'utf-8');
+                    });
 
                 // Перезаписываем компии
                 for(let i = 0, leng = coppyes.length; i < leng; i++) {
@@ -68,7 +71,11 @@ function buildFolder(src, dist){
                         fs.mkdirSync(path.dirname(out), { recursive: true });
                     }
 
-                    fs.copyFileSync(fpath, path.resolve(out));
+                    try {
+                        fs.writeFileSync(out, content);
+                    } catch (e) {
+                        console.warn('Cannot write file from `' + fpath + '` to `' + out + '`')
+                    }
                 }
             }
         }
