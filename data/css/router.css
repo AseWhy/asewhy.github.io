@@ -104,6 +104,7 @@ span.sign-separator {
     line-height: 3.5em;
     height: 3.5em;
     grid-template-columns: max-content max-content max-content max-content max-content;
+    user-select: none;
     gap: 0.25em;
 }
 
@@ -215,6 +216,14 @@ span.sign-separator {
 
 a.header-item {
     color: var(--sub-color);
+}
+
+img.header-item {
+    filter: var(--imgs-def-filter);
+}
+
+img.header-item.no-depends {
+    filter: none;
 }
 
 span.ripple {

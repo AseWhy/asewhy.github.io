@@ -113,6 +113,12 @@
                 };
             }
 
+            setLogo(path, theme_depends) {
+                window.root.call('header.update.logo', { path, theme_depends });
+
+                this._logo = path;
+            }
+
             setStart(path, tag){
                 start[0] = path;
                 start[1] = tag;
@@ -120,16 +126,6 @@
 
             setTitle(title, url) {
                 window.root.call('header.update.title', { title, url });
-            }
-
-            set logo(logo) {
-                window.root.call('header.update.logo', logo);
-
-                this._logo = logo;
-            }
-
-            get logo() {
-                return this._logo;
             }
         }
 

@@ -12,13 +12,9 @@
 	}
 }
 
-html {
-    height: 50%;
-}
-
 body {
     display: grid;
-    height: 100%;
+    height: 50%;
     width: 100%;
 }
 
@@ -32,6 +28,11 @@ body {
     grid-template-columns: auto;
     margin: auto 0;
     min-height: 0;
+}
+
+.container[ui='mobile'] div.content {
+    text-align: center;
+    width: 100%;
 }
 
 .codebar {
@@ -81,6 +82,7 @@ img {
     display: grid;
     margin: auto;
     transition: var(--base-transition);
+    filter: var(--imgs-def-filter);
 }
 
 img:hover {

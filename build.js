@@ -13,6 +13,7 @@ const path = require('path')
         '.ttf',
         '.otf',
         '.svg',
+        '.gif',
         '.map'
     ];
 
@@ -47,9 +48,11 @@ function buildFolder(src, dist){
                     hash = crypto.createHash('sha256').update(content).digest('hex');
 
                 // File preprocessing
-                if(/^\/\/[ \t]*@pre-pros[ \t]+on[ \t]*$/.test(content.toString()))
+                if(/^\/\/[ \t]*@pre-pros[ \t]+on[ \t]*$/m.test(content.toString('utf-8')))
                     content = content.toString().replace(/^[ \t]*\/\/[ \t]*->[ \t]*(.*)$/gm, (m, p1) => {
                         coppyes.push(path.normalize(p1.replace(/@/g, __dirname)));
+
+                        console.log('Coppy file from ' + fpath + ' to ' + coppyes[coppyes.length - 1]);
 
                         return '';
                     }).replace(/^[ \t]*\/\/[ \t]*<-[ \t]*(.*)$/gm, (m, p1) => {
@@ -149,6 +152,12 @@ function buildFolder(src, dist){
 }
 
 (async () => {
+    if(process.argv.includes('--clear')) {
+        fs.rmdirSync('.build', { recursive: true });
+        fs.rmdirSync('dist', { recursive: true });
+        fs.rmdirSync('frames/dist', { recursive: true });
+    }
+
     await buildFolder('data', 'dist');
     await buildFolder('frames/data', 'frames/dist');
 })();

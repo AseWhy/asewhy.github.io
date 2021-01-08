@@ -4,14 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "node build.js"
+    "build": "node build.js",
+    "clear-and-build": "node build.js --clear"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AseWhy/asewhy.github.io.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/AseWhy/asewhy.github.io/issues"
   },

@@ -9,14 +9,14 @@
                     '--sub-color': 'rgb(55, 55, 55)',
                     '--default-color': 'white',
                     '--imgs-def-filter': 'none',
-                    '--default-dirty-color': 'whitesomke',
+                    '--default-dirty-color': 'whitesmoke',
                     '--default-semi-opacity': 'rgba(255, 255, 255, 0.9)',
                     '--default-semi-opacity-1': 'rgba(255, 255, 255, 0.25)',
                     '--base-transition': '300ms cubic-bezier(0.215, 0.610, 0.355, 1)'
                 },
 
                 darked: {
-                    '--imgs-def-filter': 'invert(1)',
+                    '--imgs-def-filter': 'invert(0.9)',
                     '--sub-color': 'rgb(200, 200, 200)',
                     '--default-color': 'rgb(25, 25, 25)',
                     '--default-dirty-color': 'rgb(15, 15, 15)',

@@ -88,7 +88,8 @@
                 break;
                 case 'header.update.logo':
                     $('#target-header-logo')
-                        .attr('src', './frames/' + data.data);
+                        .attr('src', './frames/' + data.data.path)
+                        .attr('class', data.data.theme_depends ? 'header-item' : 'header-item no-depends');
                 break;
                 case 'open.notify':
                     window.root.notify(...data.data);
