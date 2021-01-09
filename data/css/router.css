@@ -18,6 +18,7 @@ body {
     margin: 0;
     background-color: var(--default-color);
     color: var(--sub-color);
+    overflow: hidden;
 }
 
 .main-frame {

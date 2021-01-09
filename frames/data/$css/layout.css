@@ -1,6 +1,7 @@
 .container {
     min-height: 100%;
     width: 100%;
+    display: grid;
 }
 
 .content {
@@ -12,11 +13,22 @@
     min-height: 95%;
 }
 
-.content-view {
+.content .content-view {
     padding-left: 1em;
     border-left: 1px dotted;
     width: calc(100% - 1em - 2px);
     grid-area: content;
+}
+
+.content[single='true'] {
+    gap: none;
+    grid-template-areas: 'content';
+    grid-template-columns: 100%;
+}
+
+.content[single='true'] .content-view {
+    padding-left: none;
+    border-left: none;
 }
 
 .nav-bar {

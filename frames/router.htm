@@ -16,26 +16,20 @@
     <title>AseWhy/Astecom</title>
 </head>
 <body>
+    <script type='page-config'>
+        this.setLogo('./dist/$img/Bash-logo-vector-01.svg', true);
+
+        this.setStart('main-astecom', null);
+        this.setTitle('#!AseWhy/Astecom', 'https://github.com/AseWhy/');
+
+        this.buttons.add('Главная', 'main-astecom');
+        this.buttons.add('Проекты', 'main-projects');
+        this.buttons.add('Документация', 'main-docs');
+        this.buttons.add('О сайте', 'main-about');
+    </script>
+
     <div class="container">
-        <script type='page-config'>
-            this.setLogo('./dist/$img/Bash-logo-vector-01.svg', true);
-
-            this.setStart('main-astecom', null);
-            this.setTitle('#!AseWhy/Astecom', 'https://github.com/AseWhy/');
-
-            this.buttons.add('Главная', 'main-astecom');
-            this.buttons.add('Проекты', 'main-projects');
-            this.buttons.add('Документация', 'main-docs');
-            this.buttons.add('О сайте', 'main-about');
-        </script>
-
-        <div class="content">
-            <div class="nav-bar">
-                <div class="nav-container" navbartarget='true'>
-
-                </div>
-            </div>
-
+        <div class="content" single='true'>
             <div class="content-view" rendertarget="true">
 
             </div>
@@ -69,6 +63,12 @@
         * Linux: Linux/nginx
 
         Из плюсов многу отметить что я легко учусь, из минусов хочется отметить что их тоже не мало).
+
+        Отношение к курению/алкоголю - `отрицательное`, но иногда можно).
+
+        Отношение к наркотикам - `полностью отрицательное`.
+
+        Жизненная позиция: *если это работает, то неважно как, главное работает*.
 
         В общем то я не многословен, но если есть что то интересное, то можете написать мне вот [**сюда**](mailto:astecom@mailru).
 
@@ -106,7 +106,6 @@
         Если коротко пройтись по разделам, то в разделе `Документация`, я буду складировать ссылки на свои документации и спецификации (если таковые будут). В разделе `О сайте` вы сможете прочитать общую инормацию об этом сайте. В разделе `Проекты` будет список моих проектов.
     </script>
 
-    <script src="./dist/router/js/js.bundle.js"></script>
     <script src="./dist/$js/js.bundle.js"></script>
 </body>
 </html>
