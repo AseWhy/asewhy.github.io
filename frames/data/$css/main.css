@@ -159,7 +159,6 @@ button.left-variator {
 .sub-level > button.left-variator, .sub-level > .sub-level {
 	display: block;
 	padding-right: 0.5em;
-	border-left: 1px dotted;
 }
 
 .container[ui='desktop'] .mobile-element {
@@ -208,7 +207,6 @@ button.left-variator {
 }
 
 .container[ui='mobile'] .content-view {
-	border: none;
 	padding-left: 0;
 }
 
@@ -249,7 +247,6 @@ span.ripple {
 
 .content .content-view {
     padding-left: 1em;
-    border-left: 1px dotted;
     width: calc(100% - 1em - 2px);
     grid-area: content;
 }
@@ -262,7 +259,6 @@ span.ripple {
 
 .content[single='true'] .content-view {
     padding-left: 0.5em;
-    border: none;
 }
 
 .nav-bar {
@@ -285,7 +281,6 @@ span.ripple {
 
 .tiled-image {
     width: calc(50% - 2px);
-    border: 1px solid;
 }
 
 .tiled-image:hover {
