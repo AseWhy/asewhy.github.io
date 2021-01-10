@@ -56,6 +56,7 @@
                         });
                 break;
                 case 'doc.section.change.started':
+                case 'doc.section.change.ended':
                     $('#div-name-target').text(data.data.header);
                     $('#div-path-target').text(c_docname + ' -> ' + data.data.page_id + (data.data.head != null ? ' -> ' + data.data.head : ''));
                 break;

@@ -2,7 +2,7 @@
     window.page = new Object();
 
     const PAGES = new Map()
-        , IGNORE = ['type', 'name']
+        , IGNORE = ['type', 'name', 'src']
         , CONTENT = document.querySelector('*[rendertarget="true"]')
         , HEAD = document.querySelector('.header');
 
@@ -27,6 +27,14 @@
             return hljs.highlight(language, code).value;
         }
     })
+
+    const error = (element, chunck) => {
+        chunck.content = 'Ошибка доступа к запрашиваемому ресурсу, проверьте ваше интернет-соединение.'
+
+        chunck.header = 'Ошибка';
+
+        element.innerHTML = chunck.content;
+    }
 
     const wait = (tm) => {
         return new Promise(res => setTimeout(res, tm));
@@ -73,6 +81,8 @@
                 window.scrollTo({top: 0, behavior: 'smooth'});
             }
         } catch (e) {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+
             console.error(e);
         }
     }
@@ -86,9 +96,9 @@
 
         if(chunck != null) {
             if(updated)
-                window.dispatchEvent(new CustomEvent(CHANGE_GO, { detail: { page_id, head, header: chunck.header } }));
+                window.dispatchEvent(new CustomEvent(CHANGE_GO, { detail: { page_id, head, header: chunck.header || 'Loading...' } }));
 
-            window.dispatchEvent(new CustomEvent(GO_EV, { detail: { page_id, head, header: chunck.header } }));
+            window.dispatchEvent(new CustomEvent(GO_EV, { detail: { page_id, head, header: chunck.header || 'Loading...' } }));
 
             let element;
 
@@ -100,7 +110,7 @@
                 load = true;
 
                 // Искуственная задержка, чтобы все выглядело плавно
-                await wait(1000);
+                await wait(300);
 
                 element = document.createElement('div');
 
@@ -114,7 +124,27 @@
 
                 element.classList.add('wrap');
 
-                element.innerHTML = marked(chunck.content);
+                if(chunck.source == null) {
+                    element.innerHTML = marked(chunck.content);
+                } else {
+                    try {
+                        const f = await fetch(chunck.source);
+
+                        if(f.status == 200) {
+                            chunck.content = (await f.text()).replace(/^(#+)(.*)~\[([aA-zZаА-яЯёЁ_0-9]+)\]$/gm, "$1 <span id='$3' class='marker'></span>$2\n");
+
+                            chunck.header = (chunck.content.match(/^(?:\t| )*#+(?:\t| )*(.+)$/m) || [])[1];
+
+                            element.innerHTML = marked(chunck.content);
+
+                            chunck.source = null;
+                        } else {
+                            error(element, chunck);
+                        }
+                    } catch (e) {
+                        error(element, chunck);
+                    }
+                }
 
                 last = page_id;
 
@@ -134,6 +164,8 @@
 
             if(head) {
                 whell(head);
+            } else {
+                window.scrollTo({top: 0, behavior: 'smooth'});
             }
             
             if(updated)
@@ -147,7 +179,7 @@
         const pages = document.querySelectorAll('script[type="page-pattern"]');
 
         for(let i = 0, leng = pages.length, tabw = 0, tabr; i < leng;i++) {
-            tabw = pages[i].innerHTML.match(/^([\t ]+)/m)[0];
+            tabw = (pages[i].innerHTML.match(/^([\t ]+)/m) || [])[0];
             tabr = new RegExp('^' + (tabw != null ? tabw : ''), 'gm');
 
             PAGES.set(pages[i].getAttribute('name'), {
@@ -163,7 +195,8 @@
                 content: pages[i].innerHTML
                     .replace(tabr, '')
                     .replace(/^(#+)(.*)~\[([aA-zZаА-яЯёЁ_0-9]+)\]$/gm, "$1 <span id='$3' class='marker'></span>$2\n"),
-                header: (pages[i].innerHTML.match(/^(?:\t| )*#+(?:\t| )*(.+)$/m) || [])[1]
+                header: (pages[i].innerHTML.match(/^(?:\t| )*#+(?:\t| )*(.+)$/m) || [])[1],
+                source: pages[i].getAttribute('src')
             });
     
             pages[i].remove();

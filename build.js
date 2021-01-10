@@ -14,7 +14,8 @@ const path = require('path')
         '.otf',
         '.svg',
         '.gif',
-        '.map'
+        '.map',
+        '.md'
     ];
 
 function buildFolder(src, dist){
