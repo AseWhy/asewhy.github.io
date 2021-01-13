@@ -23,7 +23,7 @@
             </span>
 
             <div class="header-buttons" :class="{ active }">
-                <span v-for="(value, index) in buttons" :key='index'>
+                <span v-for="(value, index) in buttons" :key='index' :class="{ hilight: value.hilight }" v-on:click="active = false">
                     <button class='header-button' v-on:click='loadPage(value.target)'>{{value.label}}</button>
                     <span class='header-sepo' v-if="index + 1 < buttons.length">/</span>
                 </span>
@@ -75,8 +75,9 @@
         mounted(){
             window.addEventListener(EVD_PAGE_LOAD_OK, e => {
                 this.$set(this.$data, 'buttons', Array.concat( e.detail.name != 'router' ? [{
+                    hilight: true,
                     target: this.$data.homepage,
-                    label: '🏠 Домой'
+                    label: '❮ Домой'
                 }] : [], Array.from(e.detail.buttons)));
 
                 this.$set(this.$data.page, 'icon', e.detail.logo.src)
@@ -232,6 +233,10 @@
         filter: none;
     }
 
+    .container[ui='mobile'] .hilight .header-button {
+        background-color: var(--default-dirty-color);
+    }
+
     .container[ui='mobile'] .head-mask {
         grid-template-areas: 'menu lg . buttons theme';
         grid-template-columns: max-content max-content max-content max-content auto;
@@ -246,7 +251,7 @@
         position: absolute;
         display: grid;
         left: -100%;
-        width: min(80%, 800pt);
+        width: min(80%, 400pt);
         height: calc(100vh - 3.5em);
         grid-auto-flow: row;
         grid-auto-rows: 3.5em;
