@@ -23,9 +23,8 @@
 
 <style>
     .footer {
-        padding: 0.5em;
+        padding: 1em;
         background-color: var(--default-dirty-color);
-        margin-bottom: 0.5em;
     }
 
     .footer-content {
