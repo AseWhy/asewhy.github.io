@@ -4,7 +4,7 @@
             <div class="tip">
                 <h4> Лицензия </h4>
                 <p class='copyright-text'>
-                    Текст доступен по лицензии <a href="https://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike</a>
+                    Текст доступен по лицензии <a href="https://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike</a>, на дизайн и исходный код распостраняется лицензия <a href="https://www.isc.org/licenses/">ISC</a>
                 </p>
             </div>
 
