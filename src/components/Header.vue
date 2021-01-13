@@ -1,7 +1,7 @@
 <template>
     <div class="header">
         <div class="head-mask container">
-            <span class="mobile-element left-menu">
+            <span class="mobile-element left-menu" v-on:click="active = !active">
                 ☰
             </span>
 
@@ -22,7 +22,7 @@
                 |
             </span>
 
-            <div class="header-buttons">
+            <div class="header-buttons" :class="{ active }">
                 <span v-for="(value, index) in buttons" :key='index'>
                     <button class='header-button' v-on:click='loadPage(value.target)'>{{value.label}}</button>
                     <span class='header-sepo' v-if="index + 1 < buttons.length">/</span>
@@ -50,6 +50,8 @@
                 buttons: [
 
                 ],
+
+                active: false,
 
                 homepage: 'route:router'
             }
@@ -244,12 +246,20 @@
         position: absolute;
         display: grid;
         left: -100%;
-        width: 60%;
-        height: calc(100% - 3.5em);
+        width: min(80%, 800pt);
+        height: calc(100vh - 3.5em);
         grid-auto-flow: row;
         grid-auto-rows: 3.5em;
         top: 3.5em;
         background: var(--default-color);
         transition: var(--base-transition);
+    }
+
+    .container[ui='mobile'] .header-button {
+        width: 100%;
+    }
+
+    .container[ui='mobile'] .header-buttons.active {
+        left: 0%;
     }
 </style>
