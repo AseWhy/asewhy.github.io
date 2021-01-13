@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import App from './App';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import { Theming, PageManager } from './data/scripts/main'
 
 window.PageManager = PageManager;
@@ -20,5 +22,3 @@ new Vue({
 
   template: '<App/>'
 });
-
-import 'bootstrap/dist/css/bootstrap.min.css';

@@ -45,7 +45,7 @@
 
   html, body {
     overflow-x: hidden;
-    background-color: var(--default-color);
+    background-color: var(--default-color) !important;
     transition: var(--base-transition);
     color: var(--sub-color);
     scrollbar-width: thin;
