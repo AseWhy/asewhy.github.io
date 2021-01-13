@@ -1,0 +1,50 @@
+{
+    "favicon": "router/images/Bash-logo-vector-01.svg",
+    "logo": {
+        "src": "router/images/Bash-logo-vector-01.svg",
+        "themed": true
+    },
+    "title": {
+        "label": "#!AseWhy/Astecom",
+        "link": "https://github.com/AseWhy/"
+    },
+    "header_buttons": [
+        {
+            "label": "Главная",
+            "target": "main-astecom"
+        },
+        {
+            "label": "Проекты",
+            "target": "main-projects"
+        },
+        {
+            "label": "Документация",
+            "target": "main-docs"
+        },
+        {
+            "label": "О сайте",
+            "target": "main-about"
+        }
+    ],
+
+    "start": "main-astecom",
+
+    "content": [
+        {
+            "name": "main-astecom",
+            "src": "router/sections/main.md"
+        },
+        {
+            "name": "main-docs",
+            "src": "router/sections/documentation.md"
+        },
+        {
+            "name": "main-projects",
+            "src": "router/sections/projects.md"
+        },
+        {
+            "name": "main-about",
+            "src": "router/sections/about.md"
+        }
+    ]
+}

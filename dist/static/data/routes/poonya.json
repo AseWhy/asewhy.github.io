@@ -1,0 +1,129 @@
+{
+    "favicon": "poonya/images/poo_logo.png",
+    "logo": {
+        "src": "poonya/images/poo_logo.png",
+        "themed": false
+    },
+    "title": {
+        "label": "#!Poonya",
+        "link": "https://github.com/AseWhy/Poonya"
+    },
+    "header_buttons": [
+        {
+            "label": "Пунья",
+            "target": "main-poonya"
+        },
+        {
+            "label": "Начиная",
+            "target": "get-started"
+        },
+        {
+            "label": "Интеграция",
+            "target": "poonya-integration"
+        },
+        {
+            "label": "Синтаксис",
+            "target": "poonya-syntax"
+        }
+    ],
+    "start": "main-poonya",
+    "sections": [
+        {
+            "label": "Пунья",
+            "target": "main-poonya",
+            "children": [
+                {
+                    "label": "О названии",
+                    "target": "main-poonya#about_name"
+                },
+                {
+                    "label": "Ссылки",
+                    "target": "main-poonya#links"
+                }
+            ]
+        },
+        {
+            "label": "Начиная",
+            "target": "get-started"
+        },
+        {
+            "label": "Интеграция",
+            "target": "poonya-integration",
+            "children": [
+                {
+                    "label": "MessagePattern",
+                    "target": "poonya-integration#message"
+                },
+                {
+                    "label": "ExecutionPattern",
+                    "target": "poonya-integration#execution"
+                },
+                {
+                    "label": "ExpressionPattern",
+                    "target": "poonya-integration#expression"
+                }
+            ]
+        },
+        {
+            "label": "Синтаксис",
+            "target": "poonya-syntax",
+            "children": [
+                {
+                    "label": "Блочный синтаксис",
+                    "target": "poonya-syntax#block",
+                    "children": [
+                        {
+                            "label": "Инструкция: if",
+                            "target": "poonya-syntax#if"
+                        },
+                        {
+                            "label": "Инструкция: while",
+                            "target": "poonya-syntax#while"
+                        },
+                        {
+                            "label": "Инструкция: repeat",
+                            "target": "poonya-syntax#repeat"
+                        },
+                        {
+                            "label": "Инструкция: set",
+                            "target": "poonya-syntax#set"
+                        },
+                        {
+                            "label": "Оператор вывода",
+                            "target": "poonya-syntax#out"
+                        },
+                        {
+                            "label": "Оператор добавления",
+                            "target": "poonya-syntax#add"
+                        }
+                    ]
+                },
+                {
+                    "label": "Cинтаксис выражений",
+                    "target": "poonya-syntax#expression",
+                    "children": [
+                        
+                    ]
+                }
+            ]
+        }
+    ],
+    "content": [
+        {
+            "name": "main-poonya",
+            "src": "poonya/sections/main.md"
+        },
+        {
+            "name": "poonya-integration",
+            "src": "poonya/sections/integration.md"
+        },
+        {
+            "name": "get-started",
+            "src": "poonya/sections/get-started.md"
+        },
+        {
+            "name": "poonya-syntax",
+            "src": "poonya/sections/syntax.md"
+        }
+    ]
+}
