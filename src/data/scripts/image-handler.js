@@ -75,8 +75,8 @@ export const ImageHandler = new class {
 
                 _._gl.texImage2D(_._gl.TEXTURE_2D, 0, _._gl.RGBA, _._gl.RGBA, _._gl.UNSIGNED_BYTE, image);
 
-                _._gl.texParameteri(_._gl.TEXTURE_2D, _._gl.TEXTURE_WRAP_S, _._gl.CLAMP_TO_EDGE);
-                _._gl.texParameteri(_._gl.TEXTURE_2D, _._gl.TEXTURE_WRAP_T, _._gl.CLAMP_TO_EDGE);
+                _._gl.texParameteri(_._gl.TEXTURE_2D, _._gl.TEXTURE_WRAP_S, _._gl.REPEAT);
+                _._gl.texParameteri(_._gl.TEXTURE_2D, _._gl.TEXTURE_WRAP_T, _._gl.REPEAT);
                 _._gl.texParameteri(_._gl.TEXTURE_2D, _._gl.TEXTURE_MIN_FILTER, _._gl.LINEAR);
 
 

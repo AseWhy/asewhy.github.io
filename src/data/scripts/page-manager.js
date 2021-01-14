@@ -22,6 +22,7 @@ class LocationData {
         this.content = initial.content != null ? initial.content : new Array();
         this.sections = initial.sections != null ? initial.sections : new Array();
         this.singlepage = initial.singlepage != null ? initial.singlepage : true;
+        this.header = initial.header != null ? initial.header : '/static/data/textures/1.jpg';
 
         // logo handle
         this.logo.src = this.logo.src != null ? '../static/data/routes/' + initial.logo.src : '';
@@ -115,6 +116,7 @@ export const PageManager = new class {
             detail: {
                 name: this._current,
                 buttons: clone(this._page_data.header_buttons),
+                header: this._page_data.header,
                 singlepage: this._page_data.singlepage,
                 sections: clone(this._page_data.sections),
                 title: clone(this._page_data.title),
