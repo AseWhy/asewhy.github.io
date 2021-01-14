@@ -10,8 +10,8 @@ export class GlitchProgram {
         this._handler = handler;
 
         this._settings = ((uniforms) => ({ uniforms }))({
-            gliches             : this._handler._gl.getUniformLocation(this._program, "u_gliches"),
-            random              : this._handler._gl.getUniformLocation(this._program, "u_random")
+            gliches : this._handler._gl.getUniformLocation(this._program, "u_gliches"),
+            random  : this._handler._gl.getUniformLocation(this._program, "u_random")
         });
     }
 

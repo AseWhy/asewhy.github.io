@@ -12,7 +12,7 @@ export const ImageHandler = new class {
         this._draw = this.__draw.bind(this);
 
         this._settings = ((defaults, uniforms, attrs) => ({ defaults, uniforms, attrs }))({
-            img_size_policy: 2
+            // To pass something...
         }, {
             step: null,
             resolution: null,
@@ -50,23 +50,15 @@ export const ImageHandler = new class {
 
         return new Promise(res => {
             image.onload = function() {
-                // Растянуть
-                if(_._settings.defaults.img_size_policy == 1){
-                    image.width = _._canvas.offsetWidth;
-                    image.height = _._canvas.offsetHeight;
+                let coifx = (_._canvas.offsetWidth / image.width),
+                    coify = (_._canvas.offsetHeight / image.height);
 
-                // Подогнать
-                } else if(_._settings.defaults.img_size_policy == 2){
-                    let coifx = (_._canvas.offsetWidth / image.width),
-                        coify = (_._canvas.offsetHeight / image.height);
-
-                    if(coifx > coify){
-                        image.width *= coifx;
-                        image.height *= coifx;
-                    } else {
-                        image.width *= coify;
-                        image.height *= coify;
-                    }
+                if(coifx > coify){
+                    image.width *= coifx;
+                    image.height *= coifx;
+                } else {
+                    image.width *= coify;
+                    image.height *= coify;
                 }
 
                 const bitmap = _._gl.createTexture();

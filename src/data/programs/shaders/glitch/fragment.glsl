@@ -18,31 +18,14 @@ float f_mod(float x, float y) {
 
 vec4 getPoint(float x, float y){
     // Scroll texture
-    y += float(u_step) * 0.15 + f_mod(float(u_step), 255.0) * 255.0 / u_random;
+    y += f_mod(float(u_step), 255.0) * 255.0 / u_random;
 
-    vec2 delta = u_texture_resolution.xy / u_resolution.xy;
-
-    if(delta.x >= 1.0) {
-        if(delta.y > 1.0) {
-            return texture2D(
-                u_texture, vec2(x / u_texture_resolution.x, 1.0 - y / u_texture_resolution.y )
-            );
-        } else {
-            return texture2D(
-                u_texture, vec2(x / u_texture_resolution.x, delta.y * 1.25 - y / u_texture_resolution.y )
-            );
-        }
-    } else {
-        if(delta.y > 1.0) {
-            return texture2D(
-                u_texture, vec2(delta.x * 0.25 + x / u_texture_resolution.x , 1.0 - y / u_texture_resolution.y )
-            );
-        } else {
-            return texture2D(
-                u_texture, vec2(delta.x * 0.25 + x / u_texture_resolution.x, delta.y * 1.25 - y / u_texture_resolution.y )
-            );
-        }
-    }
+    return texture2D(
+        u_texture, vec2(
+            x / u_texture_resolution.x + (u_texture_resolution.x - u_resolution.x) / u_texture_resolution.x / 2.0,
+            1.0 - (y / u_texture_resolution.y + (u_texture_resolution.y - u_resolution.y) / u_texture_resolution.y / 2.0)
+        )
+    );
 }
 
 bool isGliched(float x, float y){
