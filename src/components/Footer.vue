@@ -3,8 +3,9 @@
         <div class="footer-content">
             <div class="tip">
                 <h4> Лицензия </h4>
+                
                 <p class='copyright-text'>
-                    Текст доступен по лицензии <a href="https://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike</a>, на дизайн и исходный код распостраняется лицензия <a href="https://www.isc.org/licenses/">ISC</a>
+                    Текст доступен по лицензии <a href="https://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike</a>, на дизайн и исходный код распостраняется лицензия <a href="https://www.isc.org/licenses/">BDS</a>.
                 </p>
             </div>
 
@@ -16,21 +17,21 @@
         </div>
 
         <div class="copyright">
-            <strong> © Astecom (2020) </strong>
+            <strong> © Astecom (2021) </strong>
         </div>
     </div>
 </template>
 
 <style>
     .footer {
-        padding: 1em;
+        padding: 1rem;
         background-color: var(--default-dirty-color);
     }
 
     .footer-content {
         display: grid;
         grid-template-areas: '. .';
-        gap: 0.5em;
+        gap: 0.5rem;
     }
 
     .footer-content > * {
@@ -38,6 +39,12 @@
     }
 
     .copyright-text {
-        padding: 0.5em 0;
+        padding: 0.5rem 0;
     }
 </style>
+
+<script>
+    export default {
+        name: 'v-footer'
+    }
+</script>

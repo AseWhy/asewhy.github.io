@@ -1,9 +1,14 @@
 <template>
   <div class="container" :ui='ui'>
-    <Header/>
-    <Head/>
-    <Content/>
-    <Footer/>
+    <v-header/>
+
+    <div 
+      class="header-mask"
+    />
+
+    <v-head/>
+    <v-content/>
+    <v-footer/>
   </div>
 </template>
 
@@ -12,6 +17,49 @@
   import Head from './components/Head';
   import Content from './components/Content';
   import Footer from './components/Footer';
+
+  window.addEventListener('click', (e) => {
+    if(e.target.tagName != 'BUTTON')
+        return;
+
+    e.preventDefault();
+
+    // Remove any old one
+    const ripple = document.querySelectorAll('.ripple');
+
+    if (ripple) {
+        for(let i = 0, leng = ripple.length; i < leng; i++)
+            ripple[i].remove();
+    }
+
+    // Setup
+    let buttonWidth = e.target.offsetWidth
+      , buttonHeight = e.target.offsetHeight;
+
+    // Make it round!
+    if(buttonWidth >= buttonHeight) {
+        buttonHeight = buttonWidth;
+    } else {
+        buttonWidth = buttonHeight;
+    }
+
+    // Get the center of the element
+    const x = e.offsetX == undefined ? e.layerX : e.offsetX - buttonWidth / 2
+        , y = e.offsetY == undefined ? e.layerY : e.offsetY - buttonHeight / 2;
+
+    // Add the element
+    const span = document.createElement('span');
+
+    span.className = 'ripple';
+
+    span.style.width = buttonWidth + 'px';
+    span.style.height = buttonHeight + 'px';
+
+    span.style.top = y + 'px';
+    span.style.left = x + 'px';
+
+    e.target.appendChild(span);
+})
 
   export default {
     name: 'App',
@@ -23,10 +71,10 @@
     },
 
     components: {
-      Header,
-      Head,
-      Content,
-      Footer
+      'v-header': Header,
+      'v-head': Head,
+      'v-content': Content,
+      'v-footer': Footer
     }
   }
 </script>
@@ -58,6 +106,10 @@
     margin: 0;
   }
 
+  .header-mask {
+    height: 4.5rem;
+  }
+
   .container {
     height: auto;
   }
@@ -72,8 +124,8 @@
 
   /* webkit scrollbars */
   ::-webkit-scrollbar {
-      width: 0.25em;
-      height: 0.25em;
+      width: 0.25rem;
+      height: 0.25rem;
   }
 
   ::-webkit-scrollbar-track {
@@ -95,11 +147,16 @@
     width: 0;
     height: 0;
     border-radius: 50%;
-    background: rgba(0, 0, 0, 0.4);
+    background: var(--defult-ripple-color);
     transform: scale(0);
     position: absolute;
     animation: ripple 0.5s linear;
     pointer-events: none;
     opacity: 1;
+  }
+
+  button {
+    position: relative;
+    overflow: hidden;
   }
 </style>

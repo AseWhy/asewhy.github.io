@@ -1,64 +1,96 @@
 <template>
-    <div class="content">
-        <NavBar v-if='!single'/>
+    <div class="content" :class="{ single }">
+        <NavBar/>
 
-        <div class="loader" :class='{ active: loading }'>
-            <div class="mask">
-                <img :src="loadsrc">
+        <div class="content-view">
+            <div class="loader" :class='{ active: loading }'>
+                <div class="mask">
+                    <img :src="loadsrc">
+                </div>
             </div>
-        </div>
 
-        <div class="content-view" v-html='content'>
+            <div class="content-data" v-html='content'>
 
+            </div>
         </div>
     </div>
 </template>
 
 <script>
     import { EVD_SECTION_LOAD_OK, EVD_SECTION_LOAD_START, EVD_PAGE_LOAD_OK } from '@/data/scripts/events-types.js'
+    import { LOGO } from '@/data/scripts/static.js'
+
     import NavBar from './NavBar';
 
-    // Default logo
-    import logo from '@/data/images/Bash-logo-vector-01.svg';
-
     export default {
-        data: () => {
+        name: 'v-content',
+
+        data() {
             return {
                 content: 'Pending...',
-                single: true,
+                single: false,
                 loading: false,
-                loadsrc: logo
+                loadsrc: LOGO
             }
         },
 
         components: {
             NavBar
         },
-        
-        methods: {
-            loadPage(section, par) {
-                
-            }
-        },
 
         mounted(){
             let left = null;
 
+            function goTo(target_d){
+                console.log(target_d)
+
+                if(target_d) {
+                    const target = document.getElementById(target_d);
+                    const header = document.querySelector('nav.header');
+
+                    if(target) {
+                        const rect = target.getBoundingClientRect();
+
+                        document.body.scrollBy({ 
+                            top: rect.top - header.offsetHeight,
+                            behavior: 'smooth'
+                        });
+                    } else {
+                        document.body.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                } else {
+                    document.body.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+
             window.addEventListener(EVD_PAGE_LOAD_OK, e => {
                 this.$set(this.$data, 'loadsrc', e.detail.logo.src);
+
+                this.$set(this.$data, 'single', e.detail.singlepage);
             })
 
             window.addEventListener(EVD_SECTION_LOAD_START, e => {
-                this.$set(this.$data, 'loading', true);
+                if(!e.detail.currently)
+                    this.$set(this.$data, 'loading', true);
             })
 
             window.addEventListener(EVD_SECTION_LOAD_OK, e => {
-                if(left)
+                if(!e.detail.currently && left)
                     clearInterval(left);
 
                 this.$set(this.$data, 'content', e.detail.content);
 
-                left = setTimeout(() => this.$set(this.$data, 'loading', false), 500);
+                if(!e.detail.currently) {
+                    left = setTimeout(() => {
+                        left = null;
+
+                        this.$set(this.$data, 'loading', false);
+
+                        goTo(e.detail.target);
+                    }, 500);
+                } else {
+                    goTo(e.detail.target);
+                }
             })
         }
     }
@@ -78,11 +110,28 @@
             transform: rotate(360deg) scale(1);
         }
     }
-
+    
     .content {
+        padding: 0.25rem;
+        display: grid;
+        grid-template-areas: 'nav content';
+        grid-template-columns: max-content auto;
         position: relative;
-        margin-top: 3.5em;
-        padding: 0.25em;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .content.single {
+        grid-template-areas: 'content';
+        grid-template-columns: 100%;
+    }
+
+    .content-view {
+        grid-area: content;
+        position: relative;
+        padding: 0.5rem;
+        overflow: hidden;
+        text-align: justify;
     }
 
     .loader {
@@ -91,6 +140,12 @@
         height: 0;
         display: none;
         opacity: 0;
+        z-index: 2;
+    }
+
+    .contentlink {
+        color: skyblue;
+        cursor: pointer;
     }
 
     .loader.active {
@@ -102,7 +157,7 @@
     }
 
     .loader .mask {
-        height: min(100%, calc(100vh - 4em));
+        height: min(100%, calc(100vh - 4rem));
         display: grid;
         width: 100%;
     }
@@ -121,21 +176,21 @@
     pre {
         overflow-x: scroll;
         text-align: left;
-        padding: 0.5em;
+        padding: 0.5rem;
         color: var(--sub-color);
         background-color: var(--default-dirty-color);
     }
 
     blockquote {
-        margin: 0.5em 0;
-        padding-left: 1em;
-        border-left: 0.25em var(--default-dirty-color) solid;
+        margin: 0.5rem 0;
+        padding-left: 1rem;
+        border-left: 0.25rem var(--default-dirty-color) solid;
     }
 
     pre {
         overflow-x: scroll;
         text-align: left;
-        padding: 0.5em;
+        padding: 0.5rem;
         background-color: var(--default-dirty-color);
     }
 
@@ -148,7 +203,7 @@
     }
 
     h1, h2 {
-        margin: 0 0 0.5em 0
+        margin: 0 0 0.5rem 0
     }
 
     h3, h4, h5, h6 {
@@ -166,7 +221,7 @@
     }
 
     td, th {
-        padding: 0.5em;
+        padding: 0.5rem;
         margin: 1px;
     }
 
@@ -176,6 +231,14 @@
 
     a > strong {
         text-decoration: underline;
+    }
+
+    .container[ui='mobile'] .content {
+        grid-template-areas: 
+                            'nav'
+                            'content';
+        grid-template-columns: max-content max-content;
+        grid-template-columns: 100%;
     }
 
     /*!
@@ -188,7 +251,7 @@
     .hljs {
         display: block;
         overflow-x: auto;
-        padding: 0.5em;
+        padding: 0.5rem;
         color: #2f3337;
         background: #f6f6f6;
     }

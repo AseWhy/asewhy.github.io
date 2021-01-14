@@ -12,6 +12,27 @@ marked.setOptions({
     }
 })
 
+class LocationData {
+    constructor(initial){
+        this.favicon = initial.favicon != null ? initial.favicon : '';
+        this.logo = initial.logo != null ? initial.logo : new Object();
+        this.title = initial.title != null ? initial.title : new Object();
+        this.header_buttons = initial.header_buttons != null ? initial.header_buttons : new Array();
+        this.start = initial.start != null ? initial.start : '';
+        this.content = initial.content != null ? initial.content : new Array();
+        this.sections = initial.sections != null ? initial.sections : new Array();
+        this.singlepage = initial.singlepage != null ? initial.singlepage : true;
+
+        // logo handle
+        this.logo.src = this.logo.src != null ? '../static/data/routes/' + initial.logo.src : '';
+        this.logo.themed = this.logo.themed != null ? this.logo.themed : true;
+
+        // title handle
+        this.title.label = this.title.label != null ? this.title.label : '';
+        this.title.link = this.title.link != null ? this.title.link : '';
+    }
+}
+
 export const PageManager = new class {
     constructor(default_entry){
         this._default_entry = default_entry;
@@ -46,8 +67,33 @@ export const PageManager = new class {
             await this.goTo(this._path[1], this._path[2]);
     }
 
+    async goLink(link) {
+        let page;
+
+        // Load path like route:page/section#header
+        if(link.substring(0, 6) === 'route:') {
+            const endmarker = link.indexOf('/');
+
+            page = link.substring(6, endmarker != -1 ? endmarker : Infinity);
+
+            if(endmarker != -1)
+                link = link.substring(endmarker + 1);
+            else
+                link = null;
+        }
+
+        if(page)
+            await this.load(page, link == null);
+
+        if(link != null) {
+            const division = link.split('#');
+
+            await this.goTo(division[0], division[1]);
+        }
+    }
+
     async load(pageId, auto_go_home = true){
-        if(pageId == this._current)
+        if(pageId == this._path[1])
             return;
 
         console.log('Req -> ' + pageId)
@@ -60,17 +106,17 @@ export const PageManager = new class {
             return;
         }
 
-        this._page_data = await request.json();
+        this._page_data = new LocationData(await request.json());
         this._cache = new Map();
         this._current = pageId;
         this._path[0] = this._current;
-
-        this._page_data.logo.src = '../static/data/routes/' + this._page_data.logo.src;
 
         window.dispatchEvent(new CustomEvent(EVD_PAGE_LOAD_OK, {
             detail: {
                 name: this._current,
                 buttons: clone(this._page_data.header_buttons),
+                singlepage: this._page_data.singlepage,
+                sections: clone(this._page_data.sections),
                 title: clone(this._page_data.title),
                 logo: clone(this._page_data.logo),
                 favicon: this._page_data.favicon
@@ -87,15 +133,22 @@ export const PageManager = new class {
     }
 
     async goTo(section, target = null) {
+        // Указывает на то, что пошла загрузка страницы, которая в данный момент загружена
+        const currently = section == this._path[1];
+
         if(section)
             this._path[1] = section;
+        else
+            delete this._path[1];
 
         if(target)
             this._path[2] = target;
+        else
+            delete this._path[2];
 
         this.updateLocation();
 
-        window.dispatchEvent(new CustomEvent(EVD_SECTION_LOAD_START, { detail: { section, target } }));
+        window.dispatchEvent(new CustomEvent(EVD_SECTION_LOAD_START, { detail: { section, target, currently } }));
 
         for(let i = 0, leng = this._page_data.content.length;i < leng; i++) {
             if(this._page_data.content[i].name === section) {
@@ -112,15 +165,27 @@ export const PageManager = new class {
 
                     this._cache.set(section, data);
 
-                    window.dispatchEvent(new CustomEvent(EVD_SECTION_LOAD_OK, { detail: { content: marked(
-                            data
-                    ), target} }));
+                    window.dispatchEvent(new CustomEvent(EVD_SECTION_LOAD_OK, { 
+                        detail: { 
+                            content: marked(
+                                data
+                            ), 
+                            target, 
+                            currently 
+                        }
+                    }));
 
                     return;
                 } else {
-                    window.dispatchEvent(new CustomEvent(EVD_SECTION_LOAD_OK, { detail: { content: marked(
-                        this._cache.get(section)
-                    ), target } }));
+                    window.dispatchEvent(new CustomEvent(EVD_SECTION_LOAD_OK, { 
+                        detail: { 
+                            content: marked(
+                                this._cache.get(section)
+                            ),
+                            target,
+                            currently
+                        }
+                    }));
                 }
             }
         }

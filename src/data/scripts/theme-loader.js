@@ -8,6 +8,7 @@ export const WindowThemesManager = new class {
                 '--default-color': 'white',
                 '--imgs-def-filter': 'none',
                 '--default-dirty-color': 'whitesmoke',
+                '--defult-ripple-color': 'rgba(0, 0, 0, 0.4)',
                 '--default-semi-opacity': 'rgba(255, 255, 255, 0.9)',
                 '--default-semi-opacity-1': 'rgba(255, 255, 255, 0.25)',
                 '--base-transition': '300ms cubic-bezier(0.215, 0.610, 0.355, 1)'
@@ -18,6 +19,7 @@ export const WindowThemesManager = new class {
                 '--sub-color': 'rgb(200, 200, 200)',
                 '--default-color': 'rgb(25, 25, 25)',
                 '--default-dirty-color': 'rgb(15, 15, 15)',
+                '--defult-ripple-color': 'rgba(200, 200, 200, 0.4)',
                 '--default-semi-opacity': 'rgba(25, 25, 25, 0.9)',
                 '--default-semi-opacity-1': 'rgba(25, 25, 25, 0.25)',
                 '--base-transition': '300ms cubic-bezier(0.215, 0.610, 0.355, 1)'
