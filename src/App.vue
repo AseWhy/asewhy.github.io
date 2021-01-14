@@ -157,6 +157,6 @@
 
   button {
     position: relative;
-    overflow: hidden;
+    overflow: hidden !important;
   }
 </style>

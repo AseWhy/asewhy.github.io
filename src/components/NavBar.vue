@@ -32,8 +32,6 @@
 
         mounted() {
             window.addEventListener(EVD_PAGE_LOAD_OK, e => {
-                console.log(e.detail.sections)
-
                 this.$set(this.$data, 'data', Array.from(e.detail.sections));
             });
         }
