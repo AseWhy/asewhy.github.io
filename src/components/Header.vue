@@ -276,7 +276,7 @@
         height: calc(100vh - 3.5rem);
         grid-auto-flow: row;
         grid-auto-rows: 3.5rem;
-        top: 3.5rem;
+        top: 4.5rem;
         background: var(--default-color);
         transition: var(--base-transition);
     }

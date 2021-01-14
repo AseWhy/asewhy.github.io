@@ -148,7 +148,7 @@ export const PageManager = new class {
 
         this.updateLocation();
 
-        window.dispatchEvent(new CustomEvent(EVD_SECTION_LOAD_START, { detail: { section, target, currently } }));
+        window.dispatchEvent(new CustomEvent(EVD_SECTION_LOAD_START, { detail: { section, target, path: this._path, currently } }));
 
         for(let i = 0, leng = this._page_data.content.length;i < leng; i++) {
             if(this._page_data.content[i].name === section) {
@@ -170,7 +170,8 @@ export const PageManager = new class {
                             content: marked(
                                 data
                             ), 
-                            target, 
+                            target,
+                            path: this._path,
                             currently 
                         }
                     }));
@@ -183,6 +184,7 @@ export const PageManager = new class {
                                 this._cache.get(section)
                             ),
                             target,
+                            path: this._path,
                             currently
                         }
                     }));

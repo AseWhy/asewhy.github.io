@@ -17,8 +17,8 @@
 </template>
 
 <script>
-    import { EVD_SECTION_LOAD_OK, EVD_SECTION_LOAD_START, EVD_PAGE_LOAD_OK } from '@/data/scripts/events-types.js'
-    import { LOGO } from '@/data/scripts/static.js'
+    import { EVD_SECTION_LOAD_OK, EVD_SECTION_LOAD_START, EVD_PAGE_LOAD_OK } from '@/data/scripts/events-types.js';
+    import { LOGO } from '@/data/scripts/static.js';
 
     import NavBar from './NavBar';
 
@@ -42,8 +42,6 @@
             let left = null;
 
             function goTo(target_d){
-                console.log(target_d)
-
                 if(target_d) {
                     const target = document.getElementById(target_d);
                     const header = document.querySelector('nav.header');
@@ -67,12 +65,12 @@
                 this.$set(this.$data, 'loadsrc', e.detail.logo.src);
 
                 this.$set(this.$data, 'single', e.detail.singlepage);
-            })
+            });
 
             window.addEventListener(EVD_SECTION_LOAD_START, e => {
                 if(!e.detail.currently)
                     this.$set(this.$data, 'loading', true);
-            })
+            });
 
             window.addEventListener(EVD_SECTION_LOAD_OK, e => {
                 if(!e.detail.currently && left)
@@ -91,7 +89,7 @@
                 } else {
                     goTo(e.detail.target);
                 }
-            })
+            });
         }
     }
 </script>
