@@ -76,7 +76,7 @@
 
         methods: {
             switchTheme(){
-                window.dispatchEvent(new Event(QUE_THEME_SWITCH));
+                this.$app.Theming.next();
 
                 this.$forceUpdate();
             },
@@ -87,17 +87,17 @@
         },
 
         mounted(){
-            window.addEventListener(EVD_PAGE_LOAD_OK, e => {
-                this.$set(this.$data, 'buttons', Array.concat( e.detail.name != 'router' ? [{
+            this.$app.PageManager.on(EVD_PAGE_LOAD_OK, e => {
+                this.$set(this.$data, 'buttons', Array.concat( this.$app.PageManager.current != 'router' ? [{
                     hilight: true,
                     target: this.$data.homepage,
                     label: '❮ Домой'
-                }] : [], Array.from(e.detail.buttons)));
+                }] : [], Array.from(e.buttons)));
 
-                this.$set(this.$data.page, 'icon', e.detail.logo.src)
-                this.$set(this.$data.page, 'link', e.detail.title.link)
-                this.$set(this.$data.page, 'name', e.detail.title.label)
-                this.$set(this.$data.page, 'depends', e.detail.logo.themed)
+                this.$set(this.$data.page, 'icon', e.logo.src)
+                this.$set(this.$data.page, 'link', e.title.link)
+                this.$set(this.$data.page, 'name', e.title.label)
+                this.$set(this.$data.page, 'depends', e.logo.themed)
             })
         }
     }

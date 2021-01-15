@@ -1,5 +1,9 @@
-export const ImageHandler = new class {
+import { AstecomSModule } from "../AstecomSModule";
+
+export const ImageHandler = new class extends AstecomSModule {
     constructor(){
+        super('ImageHandler');
+
         this._gl = null;
         this._canvas = null;
         this._observer = new ResizeObserver(this.__resize.bind(this));
@@ -9,6 +13,7 @@ export const ImageHandler = new class {
         this._last = Date.now();
         this._texture = null;
         this._texutre_url = null;
+        this._disabled = this.get('disabled');
         this._draw = this.__draw.bind(this);
 
         this._settings = ((defaults, uniforms, attrs) => ({ defaults, uniforms, attrs }))({
@@ -23,6 +28,24 @@ export const ImageHandler = new class {
         })
 
         requestAnimationFrame(this._draw);
+    }
+
+    disableAll(){
+        this._disabled = true;
+
+        this.set('disabled', true);
+    }
+
+    enableAll(){
+        this._disabled = false;
+
+        this.set('disabled', false);
+    }
+
+    chStatusAll(){
+        this._disabled = !this._disabled;
+
+        this.set('disabled', this._disabled);
     }
 
     enable(program) {
@@ -128,7 +151,7 @@ export const ImageHandler = new class {
         if(this._step > 2139095039)
             this._step = 0;
 
-        if(this._gl == null)
+        if(this._gl == null || this._disabled)
             return;
 
         this._gl.clear(this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT);

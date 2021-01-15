@@ -1,7 +1,16 @@
-import { EVD_THEME_LOAD_END, EVD_THEME_LOAD_START } from './events-types';
+import { AstecomSModule } from '../AstecomSModule';
+import { EVD_THEME_LOAD_END, EVD_THEME_LOAD_START } from '../events-types';
 
-export const WindowThemesManager = new class {
-    constructor(def, config = null){
+class ThemeEvent {
+    constructor(detail) {
+        Object.assign(this, detail);
+    }
+}
+
+export const WindowThemesManager = new class extends AstecomSModule {
+    constructor(config = null){
+        super('WindowThemesManager');
+
         this.config = config || {
             default: {
                 '--sub-color': 'rgb(55, 55, 55)',
@@ -26,9 +35,10 @@ export const WindowThemesManager = new class {
             }
         }
 
-        this._current = def;
+        this._current = this.get('current') || 'default';
+        this._current_index = this.get('current_index') || 0;
 
-        this.load(def);
+        this.load(this._current);
     }
 
     get current(){
@@ -36,19 +46,32 @@ export const WindowThemesManager = new class {
     }
 
     __load__(name){
+        const themes = Object.keys(this.config);
         const theme = this.config[name];
 
-        window.dispatchEvent(new CustomEvent(EVD_THEME_LOAD_START, { detail: { name, theme } }));
+        this.emit(EVD_THEME_LOAD_START, new ThemeEvent({ name, theme }));
 
         for(let key in theme) {
             document.documentElement.style.setProperty(key, theme[key]);
         }
 
-        window.dispatchEvent(new CustomEvent(EVD_THEME_LOAD_END, { detail: { name, theme } }));
+        this.emit(EVD_THEME_LOAD_END, new ThemeEvent({ name, theme }));
 
-        localStorage.setItem('user:settings:theme', name);
-
+        this._current_index = themes.indexOf(name);
         this._current = name;
+
+        this.set('current', this._current);
+        this.set('current_index', this._current_index);
+    }
+
+    next(){
+        const arrays = Object.keys(this.config);
+
+        if(++this._current_index >= arrays.length) {
+            this.load(arrays[this._current_index = 0]);
+        } else {
+            this.load(arrays[this._current_index]);
+        }
     }
 
     load(name) {
@@ -58,4 +81,4 @@ export const WindowThemesManager = new class {
             throw new Error('No theme like "' + name + '"');
         }
     }
-}(localStorage.getItem('user:settings:theme') || 'default');
+}();

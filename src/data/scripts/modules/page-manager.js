@@ -1,4 +1,5 @@
-import { EVD_PAGE_LOAD_OK, EVD_PAGE_LOAD_ERROR, EVD_SECTION_LOAD_OK, EVD_SECTION_LOAD_START } from './events-types';
+import { EVD_PAGE_LOAD_OK, EVD_PAGE_LOAD_ERROR, EVD_SECTION_LOAD_OK, EVD_SECTION_LOAD_START } from '../events-types';
+import { AstecomSModule } from '../AstecomSModule';
 import marked from 'marked';
 import hljs from 'highlight.js';
 
@@ -17,7 +18,7 @@ class LocationData {
         this.favicon = initial.favicon != null ? initial.favicon : '';
         this.logo = initial.logo != null ? initial.logo : new Object();
         this.title = initial.title != null ? initial.title : new Object();
-        this.header_buttons = initial.header_buttons != null ? initial.header_buttons : new Array();
+        this.buttons = initial.buttons != null ? initial.buttons : new Array();
         this.start = initial.start != null ? initial.start : '';
         this.content = initial.content != null ? initial.content : new Array();
         this.sections = initial.sections != null ? initial.sections : new Array();
@@ -34,8 +35,16 @@ class LocationData {
     }
 }
 
-export const PageManager = new class {
+class PageManagerEvent {
+    constructor(detail) {
+        Object.assign(this, detail);
+    }
+}
+
+export const PageManager = new class extends AstecomSModule {
     constructor(default_entry){
+        super('PageManager');
+
         this._default_entry = default_entry;
         this._current = null;
         this._page_data = null;
@@ -45,6 +54,8 @@ export const PageManager = new class {
             this.goHome();
         else
             this.goToLocation();
+
+        window.addEventListener('hashchange', this.goToLocation.bind(this));
     }
 
     parseLocation(){
@@ -53,6 +64,10 @@ export const PageManager = new class {
 
     updateLocation(){
         window.location.hash = this._path.join('/');
+    }
+
+    get current(){
+        return this._current;
     }
 
     async goHome(){
@@ -102,36 +117,29 @@ export const PageManager = new class {
         const request = await fetch('../static/data/routes/' + pageId + '.json');
 
         if(request.status != 200) {
-            window.dispatchEvent(new CustomEvent(EVD_PAGE_LOAD_ERROR, { detail: { code: request.status, message: 'Error retrieving block information' } }));
+            this.emit(EVD_PAGE_LOAD_ERROR, new PageManagerEvent({code: request.status, message: 'Error retrieving block information'}));
 
             return;
         }
+        
+        try {
+            this._page_data = new LocationData(await request.json());
+            this._cache = new Map();
+            this._current = pageId;
+            this._path[0] = this._current;
 
-        this._page_data = new LocationData(await request.json());
-        this._cache = new Map();
-        this._current = pageId;
-        this._path[0] = this._current;
+            this.emit(EVD_PAGE_LOAD_OK, new PageManagerEvent(clone(this._page_data)));
 
-        window.dispatchEvent(new CustomEvent(EVD_PAGE_LOAD_OK, {
-            detail: {
-                name: this._current,
-                buttons: clone(this._page_data.header_buttons),
-                header: this._page_data.header,
-                singlepage: this._page_data.singlepage,
-                sections: clone(this._page_data.sections),
-                title: clone(this._page_data.title),
-                logo: clone(this._page_data.logo),
-                favicon: this._page_data.favicon
-            }
-        }));
-
-        if(auto_go_home)
-            if(this._page_data.start)
-                this.goTo(this._page_data.start);
-            else if(this._page_data.content[0])
-                this.goTo(this._page_data.content[0].name);
-            else
-                console.warn('Cannot find default content link for this section.');
+            if(auto_go_home)
+                if(this._page_data.start)
+                    this.goTo(this._page_data.start);
+                else if(this._page_data.content[0])
+                    this.goTo(this._page_data.content[0].name);
+                else
+                    console.warn('Cannot find default content link for this section.');
+        } catch (e) {
+            this.emit(EVD_PAGE_LOAD_ERROR, new PageManagerEvent({ code: 418, message: 'Error while processing responce data.' }));
+        }
     }
 
     async goTo(section, target = null) {
@@ -150,7 +158,7 @@ export const PageManager = new class {
 
         this.updateLocation();
 
-        window.dispatchEvent(new CustomEvent(EVD_SECTION_LOAD_START, { detail: { section, target, path: this._path, currently } }));
+        this.emit(EVD_SECTION_LOAD_START, new PageManagerEvent({ section, target, path: this._path, currently }));
 
         for(let i = 0, leng = this._page_data.content.length;i < leng; i++) {
             if(this._page_data.content[i].name === section) {
@@ -158,7 +166,7 @@ export const PageManager = new class {
                     const request = await fetch('../static/data/routes/' + this._page_data.content[i].src);
 
                     if(request.status != 200) {
-                        window.dispatchEvent(new CustomEvent(EVD_PAGE_LOAD_ERROR, { detail: { code: request.status, message: 'Error loading page' } }));
+                        this.emit(EVD_PAGE_LOAD_ERROR, new PageManagerEvent({ code: request.status, message: 'Error loading page' }));
             
                         return;
                     }
@@ -167,34 +175,32 @@ export const PageManager = new class {
 
                     this._cache.set(section, data);
 
-                    window.dispatchEvent(new CustomEvent(EVD_SECTION_LOAD_OK, { 
-                        detail: { 
-                            content: marked(
-                                data
-                            ), 
-                            target,
-                            path: this._path,
-                            currently 
-                        }
+                    this.emit(EVD_SECTION_LOAD_OK, new PageManagerEvent({ 
+                        content: marked(
+                            data
+                        ), 
+                        target,
+                        path: this._path,
+                        currently 
                     }));
 
                     return;
                 } else {
-                    window.dispatchEvent(new CustomEvent(EVD_SECTION_LOAD_OK, { 
-                        detail: { 
-                            content: marked(
-                                this._cache.get(section)
-                            ),
-                            target,
-                            path: this._path,
-                            currently
-                        }
+                    this.emit(EVD_SECTION_LOAD_OK, new PageManagerEvent({ 
+                        content: marked(
+                            this._cache.get(section)
+                        ), 
+                        target,
+                        path: this._path,
+                        currently 
                     }));
+
+                    return;
                 }
             }
         }
 
-        window.dispatchEvent(new CustomEvent(EVD_PAGE_LOAD_ERROR, { detail: { code: 404, message: 'Error loading page' } }));
+        this.emit(EVD_PAGE_LOAD_ERROR, new PageManagerEvent({ code: 404, message: 'Error loading page' }));
 
         return;
     }

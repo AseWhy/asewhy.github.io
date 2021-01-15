@@ -1,8 +1,19 @@
 <template>
-    <div class="content" :class="{ single }">
+    <div class="content" :class="{ single: single || error.status }">
         <NavBar/>
 
-        <div class="content-view">
+        <div class="error-content" v-if="error.status">
+            <h2> Ошибка загрузки страницы {{ error.code }}! </h2>
+
+            <p class='p-error-message'>
+                Сообщение обработчика: <br>
+                <span class='p-error-label'> {{ error.message }} </span>
+            </p>
+
+            <button class='button-go-home' v-on:click='$app.PageManager.load("router")'>На главную</button>
+        </div>
+        
+        <div class="content-view" v-else>
             <div class="loader" :class='{ active: loading }'>
                 <div class="mask">
                     <img :src="loadsrc">
@@ -17,10 +28,17 @@
 </template>
 
 <script>
-    import { EVD_SECTION_LOAD_OK, EVD_SECTION_LOAD_START, EVD_PAGE_LOAD_OK } from '@/data/scripts/events-types.js';
+    import { 
+        EVD_SECTION_LOAD_OK,
+        EVD_SECTION_LOAD_START,
+        EVD_PAGE_LOAD_OK,
+        EVD_PAGE_LOAD_ERROR
+    } from '@/data/scripts/events-types.js';
+
     import { LOGO } from '@/data/scripts/static.js';
 
     import NavBar from './NavBar';
+    import Vue from 'vue';
 
     export default {
         name: 'v-content',
@@ -30,6 +48,11 @@
                 content: 'Pending...',
                 single: false,
                 loading: false,
+                error: {
+                    status: false,
+                    code: -1,
+                    message: ''
+                },
                 loadsrc: LOGO
             }
         },
@@ -61,33 +84,47 @@
                 }
             }
 
-            window.addEventListener(EVD_PAGE_LOAD_OK, e => {
-                this.$set(this.$data, 'loadsrc', e.detail.logo.src);
-
-                this.$set(this.$data, 'single', e.detail.singlepage);
+            // Загрузка не прошла без ошибок
+            this.$app.PageManager.on(EVD_PAGE_LOAD_ERROR, e => {
+                this.$set(this.$data.error, 'status', true);
+                this.$set(this.$data.error, 'code', e.code);
+                this.$set(this.$data.error, 'message', e.message);
             });
 
-            window.addEventListener(EVD_SECTION_LOAD_START, e => {
-                if(!e.detail.currently)
+            // Загружена новая страница
+            this.$app.PageManager.on(EVD_PAGE_LOAD_OK, e => {
+                this.$set(this.$data.error, 'status', false);
+                this.$set(this.$data, 'loadsrc', e.logo.src);
+                this.$set(this.$data, 'single', e.singlepage);
+            });
+
+            // Секция начала загрузку
+            this.$app.PageManager.on(EVD_SECTION_LOAD_START, e => {
+                this.$set(this.$data.error, 'status', false);
+
+                if(!e.currently)
                     this.$set(this.$data, 'loading', true);
             });
 
-            window.addEventListener(EVD_SECTION_LOAD_OK, e => {
-                if(!e.detail.currently && left)
+            // Страница успешно згружена
+            this.$app.PageManager.on(EVD_SECTION_LOAD_OK, e => {
+                if(!e.currently && left)
                     clearInterval(left);
 
-                this.$set(this.$data, 'content', e.detail.content);
+                this.$set(this.$data.error, 'status', false);
 
-                if(!e.detail.currently) {
+                this.$set(this.$data, 'content', e.content);
+
+                if(!e.currently) {
                     left = setTimeout(() => {
                         left = null;
 
                         this.$set(this.$data, 'loading', false);
 
-                        goTo(e.detail.target);
+                        goTo(e.target);
                     }, 500);
                 } else {
-                    goTo(e.detail.target);
+                    goTo(e.target);
                 }
             });
         }
@@ -165,6 +202,33 @@
         height: 150pt;
         margin: auto;
         animation: load 0.85s infinite;
+    }
+
+    .p-error-label {
+        display: block;
+        margin: 0.25rem 0;
+        padding: 0.5rem;
+        border-left: 0.25rem solid var(--default-dirty-color);
+    }
+
+    .p-error-message {
+        margin: 0;
+    }
+
+    .error-content {
+        padding: 0.5rem;
+    }
+
+    .button-go-home {
+        width: min(300pt, 100%);
+        padding: 0.25rem;
+        background-color: var(--default-color);
+        border: none;
+        text-align: left;
+    }
+
+    .button-go-home:hover {
+        background-color: var(--default-dirty-color);
     }
 
     img {

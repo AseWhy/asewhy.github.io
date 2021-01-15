@@ -20,7 +20,7 @@
 </template>
 
 <script>
-    import { EVD_SECTION_LOAD_START, EVD_PAGE_LOAD_OK } from '@/data/scripts/events-types.js';
+    import { EVD_SECTION_LOAD_START, EVD_PAGE_LOAD_OK, EVD_PAGE_LOAD_ERROR } from '@/data/scripts/events-types.js';
     import { GlitchProgram } from '@/data/programs/glitch.js';
 
     export default {
@@ -36,17 +36,24 @@
         mounted(){
             this.$app.ImageHandler.draw(this.$refs.rendertarget);
 
-            window.addEventListener(EVD_PAGE_LOAD_OK, e => {
-                if(Array.isArray(e.detail.header)) {
-                    this.$app.ImageHandler.setTexture(e.detail.header[Math.floor(Math.random() * e.detail.header.length)]);
+            this.$app.PageManager.on(EVD_PAGE_LOAD_OK, e => {
+                if(Array.isArray(e.header)) {
+                    this.$app.ImageHandler.setTexture(e.header[ Math.floor(Math.random() * e.header.length) ]);
                 } else {
-                    this.$app.ImageHandler.setTexture(e.detail.header);
+                    this.$app.ImageHandler.setTexture(e.header);
                 }
             });
 
-            window.addEventListener(EVD_SECTION_LOAD_START, e => {
-                this.$set(this.$data, 'name', e.detail.path[0]);
-                this.$set(this.$data, 'path', e.detail.path.join('/'));
+            // Загрузка не прошла без ошибок
+            this.$app.PageManager.on(EVD_PAGE_LOAD_ERROR, e => {
+                this.$set(this.$data, 'name', 'Error');
+                this.$set(this.$data, 'path', 'Error/' + e.code + '/' + e.message);
+            });
+
+            // Загрузка страницы была успешной
+            this.$app.PageManager.on(EVD_SECTION_LOAD_START, e => {
+                this.$set(this.$data, 'name', e.path[0]);
+                this.$set(this.$data, 'path', e.path.join('/'));
             });
 
             this.$app.ImageHandler.enable(GlitchProgram);

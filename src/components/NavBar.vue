@@ -31,8 +31,8 @@
         },
 
         mounted() {
-            window.addEventListener(EVD_PAGE_LOAD_OK, e => {
-                this.$set(this.$data, 'data', Array.from(e.detail.sections));
+            this.$app.PageManager.on(EVD_PAGE_LOAD_OK, e => {
+                this.$set(this.$data, 'data', Array.from(e.sections));
             });
         }
     }
