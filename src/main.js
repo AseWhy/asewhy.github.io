@@ -18,6 +18,8 @@ Object.assign(Vue.prototype, (($app, $methods) => ({ $app, $methods }))({
 }));
 
 (App => {
+  console.log(App);
+
   window.addEventListener('click', async e => {
     switch(e.target.tagName) {
       case 'A':
