@@ -1,5 +1,5 @@
 import { EVD_PAGE_LOAD_OK, EVD_PAGE_LOAD_ERROR, EVD_SECTION_LOAD_OK, EVD_SECTION_LOAD_START } from '../events-types';
-import { AstecomSModule } from '../AstecomSModule';
+import { Module } from '../astecoms-module';
 import marked from 'marked';
 import hljs from 'highlight.js';
 
@@ -41,13 +41,14 @@ class PageManagerEvent {
     }
 }
 
-export const PageManager = new class extends AstecomSModule {
+export const PageManager = new class extends Module {
     constructor(default_entry){
         super('PageManager');
 
         this._default_entry = default_entry;
         this._current = null;
         this._page_data = null;
+        this._cache = new Map();
         this._path = new Array();
 
         if(window.location.hash == '')
@@ -109,10 +110,10 @@ export const PageManager = new class extends AstecomSModule {
     }
 
     async load(pageId, auto_go_home = true){
-        if(pageId == this._path[1])
+        if(pageId == this._current)
             return;
 
-        console.log('Req -> ' + pageId)
+        console.log('Request page -> ' + pageId);
 
         const request = await fetch('../static/data/routes/' + pageId + '.json');
 
@@ -125,8 +126,7 @@ export const PageManager = new class extends AstecomSModule {
         try {
             this._page_data = new LocationData(await request.json());
             this._cache = new Map();
-            this._current = pageId;
-            this._path[0] = this._current;
+            this._path[0] = this._current = pageId;
 
             this.emit(EVD_PAGE_LOAD_OK, new PageManagerEvent(clone(this._page_data)));
 

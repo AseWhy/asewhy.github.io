@@ -1,6 +1,6 @@
 <template>
     <div class="content" :class="{ single: single || error.status }">
-        <NavBar/>
+        <nav-bar/>
 
         <div class="error-content" v-if="error.status">
             <h2> Ошибка загрузки страницы {{ error.code }}! </h2>
@@ -36,12 +36,15 @@
     } from '@/data/scripts/events-types.js';
 
     import { LOGO } from '@/data/scripts/static.js';
-
+    
     import NavBar from './NavBar';
-    import Vue from 'vue';
 
     export default {
         name: 'v-content',
+
+        components: {
+            NavBar
+        },
 
         data() {
             return {
@@ -55,10 +58,6 @@
                 },
                 loadsrc: LOGO
             }
-        },
-
-        components: {
-            NavBar
         },
 
         mounted(){
@@ -86,24 +85,24 @@
 
             // Загрузка не прошла без ошибок
             this.$app.PageManager.on(EVD_PAGE_LOAD_ERROR, e => {
-                this.$set(this.$data.error, 'status', true);
-                this.$set(this.$data.error, 'code', e.code);
-                this.$set(this.$data.error, 'message', e.message);
+                this.$set(this.error, 'status', true);
+                this.$set(this.error, 'code', e.code);
+                this.$set(this.error, 'message', e.message);
             });
 
             // Загружена новая страница
             this.$app.PageManager.on(EVD_PAGE_LOAD_OK, e => {
-                this.$set(this.$data.error, 'status', false);
-                this.$set(this.$data, 'loadsrc', e.logo.src);
-                this.$set(this.$data, 'single', e.singlepage);
+                this.$set(this.error, 'status', false);
+                this.$set(this, 'loadsrc', e.logo.src);
+                this.$set(this, 'single', e.singlepage);
             });
 
             // Секция начала загрузку
             this.$app.PageManager.on(EVD_SECTION_LOAD_START, e => {
-                this.$set(this.$data.error, 'status', false);
+                this.$set(this.error, 'status', false);
 
                 if(!e.currently)
-                    this.$set(this.$data, 'loading', true);
+                    this.$set(this, 'loading', true);
             });
 
             // Страница успешно згружена
@@ -111,15 +110,15 @@
                 if(!e.currently && left)
                     clearInterval(left);
 
-                this.$set(this.$data.error, 'status', false);
+                this.$set(this.error, 'status', false);
 
-                this.$set(this.$data, 'content', e.content);
+                this.$set(this, 'content', e.content);
 
                 if(!e.currently) {
                     left = setTimeout(() => {
                         left = null;
 
-                        this.$set(this.$data, 'loading', false);
+                        this.$set(this, 'loading', false);
 
                         goTo(e.target);
                     }, 500);

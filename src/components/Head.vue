@@ -36,26 +36,29 @@
         mounted(){
             this.$app.ImageHandler.draw(this.$refs.rendertarget);
 
+            // Загрузка страницы прошла успешно
             this.$app.PageManager.on(EVD_PAGE_LOAD_OK, e => {
-                if(Array.isArray(e.header)) {
-                    this.$app.ImageHandler.setTexture(e.header[ Math.floor(Math.random() * e.header.length) ]);
-                } else {
-                    this.$app.ImageHandler.setTexture(e.header);
-                }
+                if(!e.currently)
+                    if(Array.isArray(e.header)) {
+                        this.$app.ImageHandler.setTexture(e.header[ Math.floor(Math.random() * e.header.length) ]);
+                    } else {
+                        this.$app.ImageHandler.setTexture(e.header);
+                    }
             });
 
             // Загрузка не прошла без ошибок
             this.$app.PageManager.on(EVD_PAGE_LOAD_ERROR, e => {
-                this.$set(this.$data, 'name', 'Error');
-                this.$set(this.$data, 'path', 'Error/' + e.code + '/' + e.message);
+                this.$set(this, 'name', 'Error');
+                this.$set(this, 'path', 'Error/' + e.code + '/' + e.message);
             });
 
             // Загрузка страницы была успешной
             this.$app.PageManager.on(EVD_SECTION_LOAD_START, e => {
-                this.$set(this.$data, 'name', e.path[0]);
-                this.$set(this.$data, 'path', e.path.join('/'));
+                this.$set(this, 'name', e.path[0]);
+                this.$set(this, 'path', e.path.join('/'));
             });
 
+            // Начинаем обработку этого холста
             this.$app.ImageHandler.enable(GlitchProgram);
         }
     }

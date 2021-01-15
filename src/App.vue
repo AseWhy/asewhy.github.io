@@ -6,6 +6,7 @@
       class="header-mask"
     />
 
+    <v-modal/>
     <v-head/>
     <v-content/>
     <v-footer/>
@@ -17,49 +18,7 @@
   import Head from './components/Head';
   import Content from './components/Content';
   import Footer from './components/Footer';
-
-  window.addEventListener('click', (e) => {
-    if(e.target.tagName != 'BUTTON')
-        return;
-
-    e.preventDefault();
-
-    // Remove any old one
-    const ripple = document.querySelectorAll('.ripple');
-
-    if (ripple) {
-        for(let i = 0, leng = ripple.length; i < leng; i++)
-            ripple[i].remove();
-    }
-
-    // Setup
-    let buttonWidth = e.target.offsetWidth
-      , buttonHeight = e.target.offsetHeight;
-
-    // Make it round!
-    if(buttonWidth >= buttonHeight) {
-        buttonHeight = buttonWidth;
-    } else {
-        buttonWidth = buttonHeight;
-    }
-
-    // Get the center of the element
-    const x = e.offsetX == undefined ? e.layerX : e.offsetX - buttonWidth / 2
-        , y = e.offsetY == undefined ? e.layerY : e.offsetY - buttonHeight / 2;
-
-    // Add the element
-    const span = document.createElement('span');
-
-    span.className = 'ripple';
-
-    span.style.width = buttonWidth + 'px';
-    span.style.height = buttonHeight + 'px';
-
-    span.style.top = y + 'px';
-    span.style.left = x + 'px';
-
-    e.target.appendChild(span);
-})
+  import Modal from './components/Modal';
 
   export default {
     name: 'App',
@@ -74,7 +33,8 @@
       'v-header': Header,
       'v-head': Head,
       'v-content': Content,
-      'v-footer': Footer
+      'v-footer': Footer,
+      'v-modal': Modal
     }
   }
 </script>

@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 
 const NAME = Symbol();
 
-export class AstecomSModule extends EventEmitter {
+export class Module extends EventEmitter {
     constructor(name){
         super();
 

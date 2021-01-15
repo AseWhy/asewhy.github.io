@@ -1,6 +1,6 @@
-import { AstecomSModule } from "../AstecomSModule";
+import { Module } from "../astecoms-module";
 
-export const ImageHandler = new class extends AstecomSModule {
+export const ImageHandler = new class extends Module {
     constructor(){
         super('ImageHandler');
 

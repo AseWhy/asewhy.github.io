@@ -1,4 +1,4 @@
-import { AstecomSModule } from '../AstecomSModule';
+import { Module } from '../astecoms-module';
 import { EVD_THEME_LOAD_END, EVD_THEME_LOAD_START } from '../events-types';
 
 class ThemeEvent {
@@ -7,7 +7,7 @@ class ThemeEvent {
     }
 }
 
-export const WindowThemesManager = new class extends AstecomSModule {
+export const WindowThemesManager = new class extends Module {
     constructor(config = null){
         super('WindowThemesManager');
 
