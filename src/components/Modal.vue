@@ -104,11 +104,12 @@
     }
 
     .modal-container {
-        width: min(300pt, 100%);
+        width: min(300pt, 85%);
         height: auto;
         margin: auto;
         background-color: var(--default-dirty-color);
         word-break: break-all;
+        text-align: justify;
         padding: 0.5rem;
     }
 
