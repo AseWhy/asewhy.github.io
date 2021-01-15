@@ -55,7 +55,7 @@
 
   html, body {
     overflow-x: hidden;
-    background-color: var(--default-color) !important;
+    background-color: var(--default-color);
     transition: var(--base-transition);
     color: var(--sub-color);
     scrollbar-width: thin;
@@ -119,6 +119,6 @@
 
   button {
     position: relative;
-    overflow: hidden !important;
+    overflow: hidden;
   }
 </style>
