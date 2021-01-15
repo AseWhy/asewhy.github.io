@@ -11,6 +11,7 @@
 
             <div class="links">
                 <h4> Ссылки </h4>
+                <a href="https://github.com/AseWhy/asewhy.github.io">Репозиторий этого сайта</a>
                 <a href="https://github.com/AseWhy">Я на GitHub</a>
                 <a href="https://vk.com/astecom">Я в Vk</a>
             </div>

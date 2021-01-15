@@ -8,6 +8,7 @@
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "publish": "git subtree push --prefix dist origin gh-pages",
+    "build-and-publish": "node ./build/build-and-publish.js",
     "build": "node build/build.js"
   },
   "dependencies": {
