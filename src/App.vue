@@ -40,6 +40,8 @@
 </script>
 
 <style>
+  @import url(bootstrap/dist/css/bootstrap.min.css);
+
   @keyframes ripple {
     100% {
         transform: scale(2);
