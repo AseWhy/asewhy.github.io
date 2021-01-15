@@ -19,10 +19,12 @@ Object.assign(Vue.prototype, (($app, $methods) => ({ $app, $methods }))({
   window.addEventListener('click', async e => {
     switch(e.target.tagName) {
       case 'A':
-        e.preventDefault();
-  
-        if(await App.$methods.confirm('Вы уверены что хотите перейти по адресу "<span class="text-danger">' + e.target.href + '</span>"?')){
-          window.location = e.target.href;
+        if(e.target.href != null && e.target.href != '') {
+          e.preventDefault();
+    
+          if(await App.$methods.confirm('Вы уверены что хотите перейти по адресу "<span class="text-danger">' + e.target.href + '</span>"?')){
+            window.location = e.target.href;
+          }
         }
       break;
       case 'BUTTON':
