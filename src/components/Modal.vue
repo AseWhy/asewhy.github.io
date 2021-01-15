@@ -88,7 +88,7 @@
         pointer-events: none;
         animation: hide 1s;
         position: absolute;
-        display: grid;
+        display: grid !important;
         width: 100vw;
         opacity: 0;
         height: 0;
