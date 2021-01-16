@@ -255,6 +255,10 @@
         width: 100%;
     }
 
+    li {
+        text-align: left;
+    }
+
     pre {
         overflow-x: scroll;
         text-align: left;
@@ -277,7 +281,8 @@
     }
 
     code {
-        font-family: 'FiraCode', 'Courier New', Courier, monospace;
+        font-family: 'Fira Code', 'Courier New', Courier, monospace;
+        font-weight: 600;
     }
 
     code:not([class]) {
