@@ -176,7 +176,9 @@
     }
 
     .content.single {
-        grid-template-areas: 'content';
+        grid-template-areas: 
+                    'content'
+                    'date';
         grid-template-columns: 100%;
     }
 
@@ -314,7 +316,9 @@
     }
 
     .container[ui='mobile'] .content {
-        grid-template-areas: 'content';
+        grid-template-areas: 
+                        'content'
+                        'date';
         grid-template-columns: max-content max-content;
         grid-template-columns: 100%;
     }
