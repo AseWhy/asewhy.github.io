@@ -155,12 +155,15 @@
     .last-updated {
         padding: 0.5rem;
         background: var(--default-dirty-color);
+        grid-area: date;
     }
     
     .content {
         padding: 0.25rem;
         display: grid;
-        grid-template-areas: 'nav content';
+        grid-template-areas: 
+                'nav content'
+                'date date';
         grid-template-columns: max-content auto;
         position: relative;
         gap: 0.5rem;
@@ -311,9 +314,7 @@
     }
 
     .container[ui='mobile'] .content {
-        grid-template-areas: 
-                            'nav'
-                            'content';
+        grid-template-areas: 'content';
         grid-template-columns: max-content max-content;
         grid-template-columns: 100%;
     }

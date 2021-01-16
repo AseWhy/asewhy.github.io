@@ -23,7 +23,7 @@
 </template>
 
 <script>
-    import { EVD_SECTION_LOAD_START, EVD_PAGE_LOAD_OK, EVD_PAGE_LOAD_ERROR } from '@/data/scripts/events-types.js';
+    import { EVD_SECTION_LOAD_OK, EVD_PAGE_LOAD_OK, EVD_PAGE_LOAD_ERROR } from '@/data/scripts/events-types.js';
     import { GlitchProgram } from '@/data/programs/glitch.js';
 
     export default {
@@ -57,7 +57,7 @@
             });
 
             // Загрузка страницы была успешной
-            this.$app.PageManager.on(EVD_SECTION_LOAD_START, e => {
+            this.$app.PageManager.on(EVD_SECTION_LOAD_OK, e => {
                 this.$set(this, 'name', e.path[0]);
                 this.$set(this, 'path', e.path.join('/'));
                 this.$set(this, 'date', e.modified ? e.modified.toLocaleDateString() : null);
