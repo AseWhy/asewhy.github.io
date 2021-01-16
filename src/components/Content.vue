@@ -39,6 +39,26 @@
     
     import NavBar from './NavBar';
 
+    function goTo(target_d){
+        if(target_d) {
+            const target = document.getElementById(target_d);
+            const header = document.querySelector('nav.header');
+
+            if(target) {
+                const rect = target.getBoundingClientRect();
+
+                document.body.scrollBy({ 
+                    top: rect.top - header.offsetHeight,
+                    behavior: 'smooth'
+                });
+            } else {
+                document.body.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        } else {
+            document.body.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
     export default {
         name: 'v-content',
 
@@ -62,26 +82,6 @@
 
         mounted(){
             let left = null;
-
-            function goTo(target_d){
-                if(target_d) {
-                    const target = document.getElementById(target_d);
-                    const header = document.querySelector('nav.header');
-
-                    if(target) {
-                        const rect = target.getBoundingClientRect();
-
-                        document.body.scrollBy({ 
-                            top: rect.top - header.offsetHeight,
-                            behavior: 'smooth'
-                        });
-                    } else {
-                        document.body.scrollTo({ top: 0, behavior: 'smooth' });
-                    }
-                } else {
-                    document.body.scrollTo({ top: 0, behavior: 'smooth' });
-                }
-            }
 
             // Загрузка не прошла без ошибок
             this.$app.PageManager.on(EVD_PAGE_LOAD_ERROR, e => {

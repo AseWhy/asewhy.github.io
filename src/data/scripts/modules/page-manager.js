@@ -3,10 +3,6 @@ import { Module } from '../astecoms-module';
 import marked from 'marked';
 import hljs from 'highlight.js';
 
-function clone(obj) {
-    return JSON.parse(JSON.stringify(obj));
-}
-
 marked.setOptions({
     highlight: (code, language) => {
         return hljs.highlight(language, code).value;
@@ -128,7 +124,7 @@ export const PageManager = new class extends Module {
             this._cache = new Map();
             this._path[0] = this._current = pageId;
 
-            this.emit(EVD_PAGE_LOAD_OK, new PageManagerEvent(clone(this._page_data)));
+            this.emit(EVD_PAGE_LOAD_OK, new PageManagerEvent(this._page_data));
 
             if(auto_go_home)
                 if(this._page_data.start)
@@ -171,26 +167,29 @@ export const PageManager = new class extends Module {
                         return;
                     }
 
-                    const data = (await request.text()).replace(/^(#+)(.*)~\[([aA-zZаА-яЯёЁ_0-9]+)\]$/gm, "$1 <span id='$3' class='marker'></span>$2\n");
+                    const data = (await request.text()).replace(/^(#+)(.*)~\[([aA-zZаА-яЯёЁ_0-9]+)\]$/gm, "$1 <span id='$3' class='marker'></span>$2\n")
+                        , modified = request.headers.get('last-modified') ? new Date(request.headers.get('last-modified')) : null;
 
-                    this._cache.set(section, data);
+                    this._cache.set(section, { data, modified });
 
                     this.emit(EVD_SECTION_LOAD_OK, new PageManagerEvent({ 
                         content: marked(
                             data
-                        ), 
+                        ),
                         target,
+                        modified,
                         path: this._path,
-                        currently 
+                        currently
                     }));
 
                     return;
                 } else {
                     this.emit(EVD_SECTION_LOAD_OK, new PageManagerEvent({ 
                         content: marked(
-                            this._cache.get(section)
+                            this._cache.get(section).data
                         ), 
                         target,
+                        modified: this._cache.get(section).modified,
                         path: this._path,
                         currently 
                     }));
