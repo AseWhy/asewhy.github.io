@@ -31,7 +31,7 @@
                 >
                     <button 
                         class='header-button' 
-                        v-on:click='loadSection(value.target)'
+                        :a-href='value.target'
                     >
                         {{ value.label }}
                     </button>
@@ -79,10 +79,6 @@
                 this.$app.Theming.next();
 
                 this.$forceUpdate();
-            },
-
-            loadSection(link) {
-                window.PageManager.goLink(link);
             }
         },
 

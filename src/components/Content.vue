@@ -24,6 +24,10 @@
 
             </div>
         </div>
+
+        <div class="last-updated" v-if="updated != null">
+            Обновлено {{ updated }}
+        </div>
     </div>
 </template>
 
@@ -76,7 +80,8 @@
                     code: -1,
                     message: ''
                 },
-                loadsrc: LOGO
+                loadsrc: LOGO,
+                updated: null
             }
         },
 
@@ -107,6 +112,8 @@
 
             // Страница успешно згружена
             this.$app.PageManager.on(EVD_SECTION_LOAD_OK, e => {
+                this.$set(this, 'updated', e.modified ? e.modified.toLocaleDateString() : null);
+
                 if(!e.currently && left)
                     clearInterval(left);
 
@@ -144,6 +151,11 @@
             transform: rotate(360deg) scale(1);
         }
     }
+
+    .last-updated {
+        padding: 0.5rem;
+        background: var(--default-dirty-color);
+    }
     
     .content {
         padding: 0.25rem;
@@ -154,6 +166,11 @@
         gap: 0.5rem;
         width: 100%;
     }
+    
+    .content-data {
+        z-index: -1;
+        padding: 0.5rem;
+    }
 
     .content.single {
         grid-template-areas: 'content';
@@ -163,7 +180,6 @@
     .content-view {
         grid-area: content;
         position: relative;
-        padding: 0.5rem;
         overflow: hidden;
         text-align: justify;
     }
@@ -174,7 +190,7 @@
         height: 0;
         display: none;
         opacity: 0;
-        z-index: 2;
+        z-index: 0;
     }
 
     .contentlink {

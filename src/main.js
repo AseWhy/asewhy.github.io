@@ -17,6 +17,13 @@ Object.assign(Vue.prototype, (($app, $methods) => ({ $app, $methods }))({
 
 (App => {
   window.addEventListener('click', async e => {
+    // For all clicks
+    if(e.target.hasAttribute('a-href')) {
+      e.preventDefault();
+
+      PageManager.goLink(e.target.getAttribute('a-href'));
+    }
+
     switch(e.target.tagName) {
       case 'A':
         if(e.target.href != null && e.target.href != '') {

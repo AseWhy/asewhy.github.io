@@ -19,29 +19,13 @@
 
         <div class="copyright">
             <strong> © Astecom (2021) </strong>
-
-            <span v-if="updated != null"> Дата последего обновления раздела: {{ updated }} </span>
         </div>
     </div>
 </template>
 
 <script>
-    import { EVD_SECTION_LOAD_OK } from '@/data/scripts/events-types.js';
-
     export default {
-        name: 'v-footer',
-
-        data() {
-            return {
-                updated: null
-            }
-        },
-        
-        mounted(){
-            this.$app.PageManager.on(EVD_SECTION_LOAD_OK, e => {
-                this.$set(this, 'updated', e.modified ? e.modified.toLocaleDateString() : null);
-            });
-        }
+        name: 'v-footer'
     }
 </script>
 
@@ -59,6 +43,7 @@
 
     .footer-content > * {
         display: grid;
+        grid-auto-rows: min-content;
     }
 
     .copyright-text {

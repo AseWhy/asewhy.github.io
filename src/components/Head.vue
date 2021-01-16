@@ -12,7 +12,10 @@
                     <h2> {{ name }} </h2>    
                 </div>
                 <div class="section-path">
-                    <h4> {{ path }} </h4>
+                    {{ path }}
+                </div>
+                <div class="section-date" v-if="date != null">
+                    От {{ date }}
                 </div>
             </div>
         </div>
@@ -29,7 +32,8 @@
         data(){
             return {
                 name: 'Pending...',
-                path: 'Pending...'
+                path: 'Pending...',
+                date: 'Pending...'
             }
         },
 
@@ -56,6 +60,7 @@
             this.$app.PageManager.on(EVD_SECTION_LOAD_START, e => {
                 this.$set(this, 'name', e.path[0]);
                 this.$set(this, 'path', e.path.join('/'));
+                this.$set(this, 'date', e.modified ? e.modified.toLocaleDateString() : null);
             });
 
             // Начинаем обработку этого холста
