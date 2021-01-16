@@ -75,13 +75,13 @@
                 content: 'Pending...',
                 single: false,
                 loading: false,
+                loadsrc: LOGO,
+                updated: null,
                 error: {
                     status: false,
                     code: -1,
                     message: ''
-                },
-                loadsrc: LOGO,
-                updated: null
+                }
             }
         },
 
@@ -155,11 +155,11 @@
     .last-updated {
         padding: 0.5rem;
         background: var(--default-dirty-color);
+        margin: 0.25rem 0;
         grid-area: date;
     }
     
     .content {
-        padding: 0.25rem;
         display: grid;
         grid-template-areas: 
                 'nav content'
