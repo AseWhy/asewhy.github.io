@@ -23,10 +23,20 @@
   export default {
     name: 'App',
 
-    data: () => {
+    data() {
       return {
         ui: 'ontouchstart' in window ? 'mobile' : 'desktop'
       }
+    },
+
+    mounted(){
+      window.addEventListener('resize', e => {
+        if(window.innerWidth < 768) {
+          this.ui = 'mobile';
+        } else {
+          this.ui = 'desktop';
+        }
+      })
     },
 
     components: {

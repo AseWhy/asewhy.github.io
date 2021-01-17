@@ -1,19 +1,8 @@
 import Vue from 'vue';
 import App from './App';
+import store from './store';
 
-import { Theming, PageManager, ImageHandler } from './data/scripts/main'
-
-window.PageManager = PageManager;
-window.Theming = Theming;
-window.ImageHandler = ImageHandler;
-
-Object.assign(Vue.prototype, (($app, $methods) => ({ $app, $methods }))({
-  Theming,
-  PageManager,
-  ImageHandler
-}, {
-  // Be added
-}));
+import { PageManager } from './data/scripts/main'
 
 (App => {
   window.addEventListener('click', async e => {
@@ -29,7 +18,7 @@ Object.assign(Vue.prototype, (($app, $methods) => ({ $app, $methods }))({
         if(e.target.href != null && e.target.href != '') {
           e.preventDefault();
     
-          if(await App.$methods.confirm('Вы уверены что хотите перейти по адресу "<span class="text-danger">' + e.target.href + '</span>"?')){
+          if(await astecConfirm('Вы уверены что хотите перейти по адресу "<span class="text-danger">' + e.target.href + '</span>"?')){
             window.location = e.target.href;
           }
         }
@@ -78,6 +67,8 @@ Object.assign(Vue.prototype, (($app, $methods) => ({ $app, $methods }))({
 })(
   new Vue({
     el: '#app',
+
+    store,
   
     components: { 
       App

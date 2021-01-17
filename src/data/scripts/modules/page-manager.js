@@ -63,6 +63,10 @@ export const PageManager = new class extends Module {
         window.location.hash = this._path.join('/');
     }
 
+    get path(){
+        return Array.from(this._path);
+    }
+
     get current(){
         return this._current;
     }
@@ -71,7 +75,10 @@ export const PageManager = new class extends Module {
         await this.load(this._default_entry);
     }
 
-    async goToLocation(){
+    async goToLocation(e){
+        if(e && e.oldURL)
+            return;
+
         this.parseLocation();
 
         await this.load(this._path[0], false);

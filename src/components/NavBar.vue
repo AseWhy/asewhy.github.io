@@ -4,15 +4,15 @@
 
         <div class="nav-conteiner">
             <nav-node
-                :children="data"
+                :children="pageData.sections"
             />
         </div>
     </div>
 </template>
 
 <script>
-    import { EVD_PAGE_LOAD_OK } from '@/data/scripts/events-types';
-
+    import { mapGetters } from 'vuex';
+    
     import NavNode from './NavNode.vue';
 
     export default {
@@ -22,18 +22,12 @@
             NavNode
         },
 
+        computed: mapGetters([ 'pageData' ]),
+
         data() {
             return {
-                data: new Array(),
-
                 active: true
             }
-        },
-
-        mounted() {
-            this.$app.PageManager.on(EVD_PAGE_LOAD_OK, e => {
-                this.$set(this, 'data', Array.from(e.sections));
-            });
         }
     }
 </script>

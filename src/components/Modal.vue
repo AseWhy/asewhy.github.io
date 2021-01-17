@@ -39,7 +39,7 @@
         },
 
         mounted(){
-            this.$methods.confirm = message => {
+            window.astecConfirm = message => {
                 this.$set(this, 'confirmation', true);
                 this.$set(this, 'message', message);
                 this.$set(this, 'header', 'Подтверждение');
@@ -51,32 +51,6 @@
                     }
                 });
             };
-
-            this.$methods.question = (header, message) => {
-                this.$set(this, 'confirmation', true);
-                this.$set(this, 'message', message);
-                this.$set(this, 'header', header);
-                this.$set(this, 'active', true);
-
-                return new Promise(res => {
-                    wait = status => {
-                        res(status);
-                    }
-                });
-            }
-
-            this.$methods.notice = (message) => {
-                this.$set(this, 'confirmation', false);
-                this.$set(this, 'message', message);
-                this.$set(this, 'header', 'Уведомление');
-                this.$set(this, 'active', true);
-
-                return new Promise(res => {
-                    wait = status => {
-                        res(status);
-                    }
-                });
-            }
         }
     }
 </script>

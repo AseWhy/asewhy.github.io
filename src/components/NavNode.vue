@@ -3,7 +3,7 @@
         <div class="node-cont" v-for="(node, index) in children" :key="node.target + '~' + index">
             <button
                 class="nav-action"
-                v-on:click="loadSection(node.target)"
+                :a-href="node.target"
             >
                 {{ node.label }}
             </button>
@@ -21,13 +21,7 @@
     export default {
         name: 'nav-node',
 
-        props: [ 'children' ],
-
-        methods: {
-            loadSection(link) {
-                window.PageManager.goLink(link);
-            }
-        }
+        props: [ 'children' ]
     }
 </script>
 

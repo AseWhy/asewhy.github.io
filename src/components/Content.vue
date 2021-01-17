@@ -1,67 +1,40 @@
 <template>
-    <div class="content" :class="{ single: single || error.status }">
+    <div class="content" :class="{ single: pageError.status ? true : pageData.single }">
         <nav-bar/>
 
-        <div class="error-content" v-if="error.status">
-            <h2> Ошибка загрузки страницы {{ error.code }}! </h2>
+        <div class="error-content" v-if="pageError.status">
+            <h2> Ошибка загрузки страницы {{ pageError.code }}! </h2>
 
             <p class='p-error-message'>
                 Сообщение обработчика: <br>
-                <span class='p-error-label'> {{ error.message }} </span>
+                <span class='p-error-label'> {{ pageError.message }} </span>
             </p>
 
-            <button class='button-go-home' v-on:click='$app.PageManager.load("router")'>На главную</button>
+            <button class='button-go-home' a-href='route:router'>На главную</button>
         </div>
         
         <div class="content-view" v-else>
-            <div class="loader" :class='{ active: loading }'>
+            <div class="loader" :class='{ active: pageSection.loading }'>
                 <div class="mask">
-                    <img :src="loadsrc">
+                    <img :src="pageData.loadsrc">
                 </div>
             </div>
 
-            <div class="content-data" v-html='content'>
+            <div class="content-data" v-html='pageSection.content'>
 
             </div>
         </div>
 
-        <div class="last-updated" v-if="updated != null">
-            Обновлено {{ updated }}
+        <div class="last-updated" v-if="pageSection.date != null">
+            Обновлено {{ pageSection.date }}
         </div>
     </div>
 </template>
 
 <script>
-    import { 
-        EVD_SECTION_LOAD_OK,
-        EVD_SECTION_LOAD_START,
-        EVD_PAGE_LOAD_OK,
-        EVD_PAGE_LOAD_ERROR
-    } from '@/data/scripts/events-types.js';
-
-    import { LOGO } from '@/data/scripts/static.js';
-    
     import NavBar from './NavBar';
 
-    function goTo(target_d){
-        if(target_d) {
-            const target = document.getElementById(target_d);
-            const header = document.querySelector('nav.header');
-
-            if(target) {
-                const rect = target.getBoundingClientRect();
-
-                document.body.scrollBy({ 
-                    top: rect.top - header.offsetHeight,
-                    behavior: 'smooth'
-                });
-            } else {
-                document.body.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        } else {
-            document.body.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    }
+    import { mapGetters, mapActions } from 'vuex';
 
     export default {
         name: 'v-content',
@@ -70,69 +43,12 @@
             NavBar
         },
 
-        data() {
-            return {
-                content: 'Pending...',
-                single: false,
-                loading: false,
-                loadsrc: LOGO,
-                updated: null,
-                error: {
-                    status: false,
-                    code: -1,
-                    message: ''
-                }
-            }
-        },
+        methods: mapActions([ 'watchPage' ]),
+
+        computed: mapGetters([ 'pageContent', 'pageData', 'pageError', 'pageSection' ]),
 
         mounted(){
-            let left = null;
-
-            // Загрузка не прошла без ошибок
-            this.$app.PageManager.on(EVD_PAGE_LOAD_ERROR, e => {
-                this.$set(this.error, 'status', true);
-                this.$set(this.error, 'code', e.code);
-                this.$set(this.error, 'message', e.message);
-            });
-
-            // Загружена новая страница
-            this.$app.PageManager.on(EVD_PAGE_LOAD_OK, e => {
-                this.$set(this.error, 'status', false);
-                this.$set(this, 'loadsrc', e.logo.src);
-                this.$set(this, 'single', e.singlepage);
-            });
-
-            // Секция начала загрузку
-            this.$app.PageManager.on(EVD_SECTION_LOAD_START, e => {
-                this.$set(this.error, 'status', false);
-
-                if(!e.currently)
-                    this.$set(this, 'loading', true);
-            });
-
-            // Страница успешно згружена
-            this.$app.PageManager.on(EVD_SECTION_LOAD_OK, e => {
-                this.$set(this, 'updated', e.modified ? e.modified.toLocaleDateString() : null);
-
-                if(!e.currently && left)
-                    clearInterval(left);
-
-                this.$set(this.error, 'status', false);
-
-                this.$set(this, 'content', e.content);
-
-                if(!e.currently) {
-                    left = setTimeout(() => {
-                        left = null;
-
-                        this.$set(this, 'loading', false);
-
-                        goTo(e.target);
-                    }, 500);
-                } else {
-                    goTo(e.target);
-                }
-            });
+            this.watchPage();
         }
     }
 </script>
@@ -164,7 +80,7 @@
         grid-template-areas: 
                 'nav content'
                 'date date';
-        grid-template-columns: max-content auto;
+        grid-template-columns: auto auto;
         position: relative;
         gap: 0.5rem;
         width: 100%;
@@ -290,11 +206,13 @@
     }
 
     h1, h2 {
-        margin: 0 0 0.5rem 0
+        margin: 0 0 0.5rem 0;
+        text-align: left;
     }
 
     h3, h4, h5, h6 {
         margin: 0;
+        text-align: left;
     }
 
     strong {

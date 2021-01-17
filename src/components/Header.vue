@@ -1,33 +1,33 @@
 <template>
     <nav class="header">
         <div class="head-mask container">
-            <span class="mobile-element left-menu" v-on:click="active = !active">
+            <button class="mobile-element left-menu" v-on:click="switchMenuVisibility()">
                 ☰
-            </span>
+            </button>
 
-            <div class="theme-switch auto-switch" :class="{ switched: $app.Theming.current != 'default' }" v-on:click="switchTheme()">
+            <button class="theme-switch auto-switch" :class="{ switched: appTheme != 'default' }" v-on:click="switchTheme()">
                 <img src="@/data/images/theme-switch.png">
-            </div>
+            </button>
 
             <span class="sign-separator desktop-element">
                 |
             </span>
 
             <span class='lg-text'>
-                <a :href='page.link' class="header-item">{{ page.name }}</a>
-                <img class="header-item header-title" :class="{ 'no-depends': !page.depends }" :src="page.icon"/>
+                <a :href='headerData.link' class="header-item">{{ headerData.name }}</a>
+                <img class="header-item header-title" :class="{ 'no-depends': !headerData.depends }" :src="headerData.icon"/>
             </span>
 
             <span class="sign-separator desktop-element">
                 |
             </span>
 
-            <div class="header-buttons" :class="{ active }">
+            <div class="header-buttons" :class="{ active: headerMenuActive }">
                 <span 
-                    v-for="(value, index) in buttons" 
+                    v-for="(value, index) in headerButtons" 
                     :key='index' 
-                    :class="{ hilight: value.hilight }" 
-                    v-on:click="active = false"
+                    :class="{ highlight: value.highlight }" 
+                    v-on:click="hideMenu()"
                 >
                     <button 
                         class='header-button' 
@@ -38,7 +38,7 @@
 
                     <span 
                         class='header-sepo desktop-element' 
-                        v-if="index + 1 < buttons.length"
+                        v-if="index + 1 < headerButtons.length"
                     >
                         /
                     </span>
@@ -49,52 +49,19 @@
 </template>
 
 <script>
-    import { EVD_PAGE_LOAD_OK, QUE_THEME_SWITCH } from '@/data/scripts/events-types.js';
-    import { LOGO } from '@/data/scripts/static.js'
+    import { mapActions, mapGetters } from 'vuex';
+
+    import { ThemesManager } from '@/data/scripts/main';
 
     export default {
         name: 'v-header',
 
-        data() {
-            return {
-                page: {
-                    depends: true,
-                    name: '#!AseWhy/Astecom',
-                    link: 'https://github.com/AseWhy',
-                    icon: LOGO
-                },
+        methods: mapActions([ 'switchTheme', 'switchMenuVisibility', 'hideMenu', 'watchHeader' ]),
 
-                buttons: [
-
-                ],
-
-                active: false,
-
-                homepage: 'route:router'
-            }
-        },
-
-        methods: {
-            switchTheme(){
-                this.$app.Theming.next();
-
-                this.$forceUpdate();
-            }
-        },
+        computed: mapGetters([ 'appTheme', 'headerMenuActive', 'headerButtons', 'headerData' ]),
 
         mounted(){
-            this.$app.PageManager.on(EVD_PAGE_LOAD_OK, e => {
-                this.$set(this, 'buttons', Array.concat( this.$app.PageManager.current != 'router' ? [{
-                    hilight: true,
-                    target: this.homepage,
-                    label: '❮ Домой'
-                }] : [], Array.from(e.buttons)));
-
-                this.$set(this.page, 'icon', e.logo.src)
-                this.$set(this.page, 'link', e.title.link)
-                this.$set(this.page, 'name', e.title.label)
-                this.$set(this.page, 'depends', e.logo.themed)
-            })
+            this.watchHeader();
         }
     }
 </script>
@@ -151,8 +118,8 @@
     }
 
     .head-mask .header-title {
-        width: 3.5rem;
-        height: 3.5rem;
+        width: 2.5rem;
+        height: 2.5rem;
     }
 
     .head-mask > span.sign-separator {
@@ -165,10 +132,16 @@
         height: 2.5rem;
         display: grid;
         width: 2rem;
-        margin: 0.5rem 0 0.5rem 0.5rem;
+        margin: 0.55rem;
         filter: var(--imgs-def-filter);
         overflow: hidden;
         grid-area: theme;
+        padding: 0;
+        border: none;
+        background-color: transparent;
+        outline: none;
+        cursor: default;
+        border-radius: 0.5rem;
     }
 
     .head-mask .theme-switch img {
@@ -223,13 +196,17 @@
     }
 
     .head-mask .left-menu {
-        width: 2rem;
+        width: 2.5rem;
         text-align: center;
         font-size: 1.5rem;
-        height: 2.25rem;
-        line-height: 2.25rem;
+        height: 2.5rem;
+        line-height: normal;
         grid-area: menu;
         margin: auto;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        border-radius: 0.5rem;
     }
 
     a {
@@ -250,7 +227,7 @@
         margin-right: 0.5rem;
     }
 
-    .container[ui='mobile'] .hilight .header-button {
+    .container[ui='mobile'] .highlight .header-button {
         background-color: var(--default-dirty-color);
     }
 

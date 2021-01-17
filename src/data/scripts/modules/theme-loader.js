@@ -1,4 +1,5 @@
 import { Module } from '../astecoms-module';
+
 import { EVD_THEME_LOAD_END, EVD_THEME_LOAD_START } from '../events-types';
 
 class ThemeEvent {
@@ -7,9 +8,9 @@ class ThemeEvent {
     }
 }
 
-export const WindowThemesManager = new class extends Module {
+export const ThemesManager = new class extends Module {
     constructor(config = null){
-        super('WindowThemesManager');
+        super('ThemesManager');
 
         this.config = config || {
             default: {
@@ -72,6 +73,8 @@ export const WindowThemesManager = new class extends Module {
         } else {
             this.load(arrays[this._current_index]);
         }
+
+        return arrays[this._current_index];
     }
 
     load(name) {

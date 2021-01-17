@@ -9,13 +9,13 @@
 
             <div class="section-path-data">
                 <div class="section-name"> 
-                    <h2> {{ name }} </h2>    
+                    <h2> {{ pageError.status ? 'Error' : pageData.name  }} </h2>    
                 </div>
                 <div class="section-path">
-                    {{ path }}
+                    {{ pageError.status ?  'Error/' + pageError.code + '/' + pageError.message : pageSection.path }}
                 </div>
-                <div class="section-date" v-if="date != null">
-                    От {{ date }}
+                <div class="section-date" v-if="pageError.status ? false : pageSection.date != null">
+                    От {{ pageSection.date }}
                 </div>
             </div>
         </div>
@@ -23,48 +23,31 @@
 </template>
 
 <script>
-    import { EVD_SECTION_LOAD_OK, EVD_PAGE_LOAD_OK, EVD_PAGE_LOAD_ERROR } from '@/data/scripts/events-types.js';
-    import { GlitchProgram } from '@/data/programs/glitch.js';
+    import { ImageHandler } from '@/data/scripts/main';
+    import { GlitchProgram } from '@/data/programs/glitch';
+
+    import { mapGetters } from 'vuex';
 
     export default {
         name: 'v-head',
 
-        data(){
-            return {
-                name: 'Pending...',
-                path: 'Pending...',
-                date: 'Pending...'
+        computed: mapGetters([ 'pageData', 'pageError', 'pageSection' ]),
+
+        beforeUpdate() {
+            const headers = this.$store.getters.pageData.header;
+
+            if(Array.isArray(headers)) {
+                ImageHandler.setTexture(headers[Math.floor(Math.random() * headers.length)]);
+            } else {
+                ImageHandler.setTexture(headers);
             }
         },
 
-        mounted(){
-            this.$app.ImageHandler.draw(this.$refs.rendertarget);
-
-            // Загрузка страницы прошла успешно
-            this.$app.PageManager.on(EVD_PAGE_LOAD_OK, e => {
-                if(!e.currently)
-                    if(Array.isArray(e.header)) {
-                        this.$app.ImageHandler.setTexture(e.header[ Math.floor(Math.random() * e.header.length) ]);
-                    } else {
-                        this.$app.ImageHandler.setTexture(e.header);
-                    }
-            });
-
-            // Загрузка не прошла без ошибок
-            this.$app.PageManager.on(EVD_PAGE_LOAD_ERROR, e => {
-                this.$set(this, 'name', 'Error');
-                this.$set(this, 'path', 'Error/' + e.code + '/' + e.message);
-            });
-
-            // Загрузка страницы была успешной
-            this.$app.PageManager.on(EVD_SECTION_LOAD_OK, e => {
-                this.$set(this, 'name', e.path[0]);
-                this.$set(this, 'path', e.path.join('/'));
-                this.$set(this, 'date', e.modified ? e.modified.toLocaleDateString() : null);
-            });
-
+        mounted() {
+            // Рисуем по ссылке на холсте
+            ImageHandler.draw(this.$refs.rendertarget);
             // Начинаем обработку этого холста
-            this.$app.ImageHandler.enable(GlitchProgram);
+            ImageHandler.enable(GlitchProgram);
         }
     }
 </script>
