@@ -1,31 +1,40 @@
+// Import static data
 import { LOGO } from '@/data/scripts/static';
-import { EVD_PAGE_LOAD_OK } from '@/data/scripts/events-types.js';
+
+// Import events
+import { EVD_PAGE_LOAD_OK } from '@/data/scripts/events-types';
+
+// Import managers
 import { PageManager } from '@/data/scripts/main';
 
+// Import mutations
+import { HEADER_DATA_UPDATE, HIDE_MENU, SHOW_MENU, SWITCH_MENU_VISIBILITY } from '../mutations';
+
+// Declare home route
 const HOME = 'route:router';
 
 export default {
     actions: {
         watchHeader(ctx){
             // Загружена новая страница
-            PageManager.on(EVD_PAGE_LOAD_OK, ctx.commit.bind(ctx, 'headerDataUpdate'));
+            PageManager.on(EVD_PAGE_LOAD_OK, ctx.commit.bind(ctx, HEADER_DATA_UPDATE));
         },
 
         switchMenuVisibility(ctx){
-            ctx.commit('switchMenuVisibility');
+            ctx.commit(SWITCH_MENU_VISIBILITY);
         },
 
         hideMenu(ctx){
-            ctx.commit('hideMenu');
+            ctx.commit(HIDE_MENU);
         },
 
         showMenu(ctx){
-            ctx.commit('showMenu');
+            ctx.commit(SHOW_MENU);
         }
     },
 
     mutations: {
-        headerDataUpdate(state, data){
+        [HEADER_DATA_UPDATE](state, data){
             if(PageManager.current != 'router') {
                 state.headerButtons = Array.concat([
                     {
@@ -44,15 +53,15 @@ export default {
             state.headerData.depends = data.logo.themed;
         },
 
-        switchMenuVisibility(state){
+        [SWITCH_MENU_VISIBILITY](state){
             state.headerMenuActive = !state.headerMenuActive;
         },
 
-        hideMenu(state){
+        [HIDE_MENU](state){
             state.headerMenuActive = false;
         },
 
-        showMenu(state){
+        [SHOW_MENU](state){
             state.headerMenuActive = true;
         }
     },

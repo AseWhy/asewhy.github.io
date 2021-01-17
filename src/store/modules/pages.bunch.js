@@ -1,6 +1,14 @@
-import { EVD_SECTION_LOAD_OK, EVD_SECTION_LOAD_START, EVD_PAGE_LOAD_OK, EVD_PAGE_LOAD_ERROR} from '@/data/scripts/events-types.js';
-import { PageManager } from '../../data/scripts/main';
-import { LOGO } from '@/data/scripts/static.js';
+// Import static data
+import { LOGO } from '@/data/scripts/static';
+
+// Import events
+import { EVD_SECTION_LOAD_OK, EVD_SECTION_LOAD_START, EVD_PAGE_LOAD_OK, EVD_PAGE_LOAD_ERROR} from '@/data/scripts/events-types';
+
+// Import mutations
+import { PAGE_LOAD_ERROR, SHOW_LOADER, START_PAGE_LOAD, STOP_PAGE_LOAD, HIDE_LOADER, SECTION_LOAD_END, PAGE_LOAD_END } from '../mutations';
+
+// Import managers
+import { PageManager } from '@/data/scripts/main';
 
 // Биндим таймаут на этот адрес, чтобы в случе чего его сбросить.
 let left;
@@ -30,35 +38,35 @@ export default {
     actions: {
         watchPage(ctx){
             // Загрузка не прошла без ошибок
-            PageManager.on(EVD_PAGE_LOAD_ERROR, ctx.commit.bind(ctx, 'pageLoadError'));
+            PageManager.on(EVD_PAGE_LOAD_ERROR, ctx.commit.bind(ctx, PAGE_LOAD_ERROR));
             // Загружена новая страница
-            PageManager.on(EVD_PAGE_LOAD_OK, ctx.commit.bind(ctx, 'pageLoadEnd'));
+            PageManager.on(EVD_PAGE_LOAD_OK, ctx.commit.bind(ctx, PAGE_LOAD_END));
             // Секция начала загрузку
-            PageManager.on(EVD_SECTION_LOAD_START, ctx.dispatch.bind(ctx, 'startPageLoad'));
+            PageManager.on(EVD_SECTION_LOAD_START, ctx.dispatch.bind(ctx, START_PAGE_LOAD));
             // Страница успешно згружена
-            PageManager.on(EVD_SECTION_LOAD_OK, ctx.dispatch.bind(ctx, 'stopPageLoad'));
+            PageManager.on(EVD_SECTION_LOAD_OK, ctx.dispatch.bind(ctx, STOP_PAGE_LOAD));
         },
 
         startPageLoad(ctx){
-            ctx.commit('showLoader');
+            ctx.commit(SHOW_LOADER);
         },
 
         stopPageLoad(ctx, data){
             if(!data.currently && left)
                 clearInterval(left);
 
-            ctx.commit('sectionLoadEnd', data);
+            ctx.commit(SECTION_LOAD_END, data);
 
             if(!data.currently) {
                 left = setTimeout(() => {
                     left = null;
 
-                    ctx.commit('hideLoader', data);
+                    ctx.commit(HIDE_LOADER, data);
 
                     goTo(data.target);
                 }, 500);
             } else {
-                ctx.commit('hideLoader', data);
+                ctx.commit(HIDE_LOADER, data);
 
                 goTo(data.target);
             }
@@ -67,7 +75,7 @@ export default {
 
     mutations: {
         // Мутатор начала загрузки
-        pageLoadEnd(state, data){
+        [PAGE_LOAD_END](state, data){
             state.pageError.status = false;
             state.pageData.header = data.header;
             state.pageData.loadsrc = data.logo.src;
@@ -77,27 +85,27 @@ export default {
         },
 
         // Мутатор ошибки загрузки
-        pageLoadError(state, data){
+        [PAGE_LOAD_ERROR](state, data){
             state.pageError.status = true;
             state.pageError.code = data.code;
             state.pageError.message = data.message;
         },
 
         // Мутатор показа загрузчика
-        showLoader(state){
+        [SHOW_LOADER](state){
             state.pageSection.loading = true;
         },
 
         // Мутатор скрытия загрузчика
-        hideLoader(state){
+        [HIDE_LOADER](state){
             state.pageError.status = false;
 
             state.pageSection.loading = false;
         },
 
         // Мутатор окончания загрузки
-        sectionLoadEnd(state, data){
-            state.pageSection.data = data.modified ? data.modified.toLocaleDateString() : null;
+        [SECTION_LOAD_END](state, data){
+            state.pageSection.date = data.modified ? data.modified.toLocaleDateString() : null;
             state.pageSection.path = PageManager.path.join('/');
             state.pageSection.content = data.content;
         }

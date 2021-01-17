@@ -25,7 +25,7 @@
 
     data() {
       return {
-        ui: 'ontouchstart' in window ? 'mobile' : 'desktop'
+        ui: 'ontouchstart' in window || window.innerWidth < 768 ? 'mobile' : 'desktop'
       }
     },
 

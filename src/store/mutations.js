@@ -1,0 +1,12 @@
+export const UPDATE_THEME_DATA = 'updateThemeData';
+export const PAGE_LOAD_ERROR = 'pageLoadError';
+export const PAGE_LOAD_END = 'pageLoadEnd';
+export const START_PAGE_LOAD = 'startPageLoad';
+export const STOP_PAGE_LOAD = 'stopPageLoad';
+export const SHOW_LOADER = 'showLoader';
+export const SECTION_LOAD_END = 'sectionLoadEnd';
+export const HIDE_LOADER = 'hideLoader';
+export const HEADER_DATA_UPDATE = 'headerDataUpdate';
+export const SWITCH_MENU_VISIBILITY = 'switchMenuVisibility';
+export const HIDE_MENU = 'hideMenu';
+export const SHOW_MENU = 'showMenu';
