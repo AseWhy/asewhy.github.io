@@ -56,13 +56,9 @@
     export default {
         name: 'v-header',
 
-        methods: mapActions([ 'switchTheme', 'switchMenuVisibility', 'hideMenu', 'watchHeader' ]),
+        methods: mapActions([ 'switchTheme', 'switchMenuVisibility', 'hideMenu' ]),
 
         computed: mapGetters([ 'appTheme', 'headerMenuActive', 'headerButtons', 'headerData' ]),
-
-        mounted(){
-            this.watchHeader();
-        }
     }
 </script>
 

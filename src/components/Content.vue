@@ -43,13 +43,7 @@
             NavBar
         },
 
-        methods: mapActions([ 'watchPage' ]),
-
-        computed: mapGetters([ 'pageContent', 'pageData', 'pageError', 'pageSection' ]),
-
-        mounted(){
-            this.watchPage();
-        }
+        computed: mapGetters([ 'pageContent', 'pageData', 'pageError', 'pageSection' ])
     }
 </script>
 

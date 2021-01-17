@@ -20,8 +20,12 @@
   import Footer from './components/Footer';
   import Modal from './components/Modal';
 
+  import { mapActions } from 'vuex';
+
   export default {
     name: 'App',
+
+    methods: mapActions([ 'watchPage', 'watchHeader', 'watchTheme']),
 
     data() {
       return {
@@ -36,7 +40,14 @@
         } else {
           this.ui = 'desktop';
         }
-      })
+      });
+
+      // Мониторим изменения на странице
+      this.watchPage();
+      // Мониторим изменения в заголовке
+      this.watchHeader();
+      // Мониторим изменения темы
+      this.watchTheme();
     },
 
     components: {

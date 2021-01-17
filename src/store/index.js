@@ -19,9 +19,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     actions: {
-        watchTheme(){
+        watchTheme(ctx){
             // Тема была измененена
-            PageManager.on(EVD_THEME_LOAD_END, ctx.commit.bind(ctx, UPDATE_THEME_DATA));
+            ThemesManager.on(EVD_THEME_LOAD_END, ctx.commit.bind(ctx, UPDATE_THEME_DATA));
         },
 
         switchTheme(){
@@ -31,7 +31,7 @@ export default new Vuex.Store({
 
     mutations: {
         [UPDATE_THEME_DATA](state, theme){
-            state.appTheme = theme.theme;
+            state.appTheme = theme.name;
         }
     },
 
