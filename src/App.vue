@@ -146,4 +146,8 @@
     position: relative;
     overflow: hidden;
   }
+
+  a * {
+    pointer-events: none;
+  }
 </style>
