@@ -9,6 +9,10 @@ export class Module extends EventEmitter {
         this[NAME] = name;
     }
 
+    getName(){
+        return this[NAME];
+    }
+
     getNamespace(key){
         return 'user.settings.' + this[NAME] + '.' + key;
     }

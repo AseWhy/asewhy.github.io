@@ -142,7 +142,8 @@ export const ImageHandler = new class ImageHandler extends Module {
         this._canvas.height = this._canvas.offsetHeight;
         this._canvas.width = this._canvas.offsetWidth;
 
-        this.setTexture(this._texutre_url);
+        if(typeof this._texutre_url == 'string')
+            this.setTexture(this._texutre_url);
 
         this._gl.viewport(0, 0, this._canvas.width, this._canvas.height);
     }

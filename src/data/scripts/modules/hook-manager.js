@@ -5,8 +5,6 @@ export const HookManager = new class HookManager extends Module {
         super('HookManager');
 
         this._hooks = new Map();
-
-        console.log(this._hooks);
     }
 
     registerHook(_from){
@@ -14,7 +12,7 @@ export const HookManager = new class HookManager extends Module {
 
         for(let i = 0, leng = keys.length; i < leng; i++) {
             if(typeof _from[keys[i]] == 'function')
-                this._hooks.set(_from.constructor.name + '.' + keys[i], _from[keys[i]].bind(_from));
+                this._hooks.set(_from.getName() + '.' + keys[i], _from[keys[i]].bind(_from));
         }
     }
 
