@@ -21,24 +21,32 @@ const webpackConfig = merge(baseWebpackConfig, {
       usePostCSS: true
     })
   },
+
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
+
   output: {
     path: config.build.assetsRoot,
+
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
+
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
+
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': env
     }),
+
     new UglifyJsPlugin({
       uglifyOptions: {
         compress: {
           warnings: false
         }
       },
+
       sourceMap: config.build.productionSourceMap,
+
       parallel: true
     }),
     // extract css into its own file
@@ -117,10 +125,12 @@ const webpackConfig = merge(baseWebpackConfig, {
       },
       {
         from: './robots.txt',
+
         to: 'robots.txt'
       },
       {
         from: './sitemap.xml',
+
         to: 'sitemap.xml'
       }
     ])

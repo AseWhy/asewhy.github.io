@@ -1,7 +1,11 @@
 import { EVD_PAGE_LOAD_OK, EVD_PAGE_LOAD_ERROR, EVD_SECTION_LOAD_OK, EVD_SECTION_LOAD_START } from '../events-types';
 import { Module } from '../astecoms-module';
 import marked from 'marked';
-import hljs from 'highlight.js';
+
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
+
+hljs.registerLanguage('js', javascript);
 
 marked.setOptions({
     highlight: (code, language) => {
