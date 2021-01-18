@@ -48,8 +48,6 @@ bool isGliched(float x, float y){
 void main(void) {
     float u_fl = f_mod(float(u_step), u_resolution.y);
 
-    gl_FragColor = getPoint(floor(gl_FragCoord.x), floor(gl_FragCoord.y));
-
     if(
         int(gl_FragCoord.y) - LINE_RADIUSES < int(u_resolution.y * u_fl) &&
         int(gl_FragCoord.y) + LINE_RADIUSES > int(u_resolution.y * u_fl)

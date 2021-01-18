@@ -1,13 +1,15 @@
+import { DefaultProgram } from '../../programs/default';
+
 import { Module } from "../astecoms-module";
 
-export const ImageHandler = new class extends Module {
+export const ImageHandler = new class ImageHandler extends Module {
     constructor(){
         super('ImageHandler');
 
         this._gl = null;
         this._canvas = null;
         this._observer = new ResizeObserver(this.__resize.bind(this));
-        this._program = null;
+        this._programs = new Array();
         this._buffer = null;
         this._step = 0;
         this._last = Date.now();
@@ -16,18 +18,18 @@ export const ImageHandler = new class extends Module {
         this._disabled = this.get('disabled');
         this._draw = this.__draw.bind(this);
 
-        this._settings = ((defaults, uniforms, attrs) => ({ defaults, uniforms, attrs }))({
-            // To pass something...
-        }, {
-            step: null,
-            resolution: null,
-            texture: null,
-            texture_resolution: null
-        }, {
-            position: null
-        })
-
         requestAnimationFrame(this._draw);
+    }
+    
+    /**
+     * Возвращает хуки для вызова функций из DOM
+     */
+    getHooks(){
+        return [
+            'disableAll',
+            'enableAll',
+            'chStatusAll'
+        ]
     }
 
     disableAll(){
@@ -48,17 +50,19 @@ export const ImageHandler = new class extends Module {
         this.set('disabled', this._disabled);
     }
 
-    enable(program) {
+    enable(Program) {
         if(this._canvas == null)
             throw new Error('Handler not loaded.');
 
-        this._program = new program(this);
+        const program = new Program(this);
 
-        this._settings.uniforms.step                = this._gl.getUniformLocation(this._program._program, "u_step");
-        this._settings.uniforms.texture             = this._gl.getUniformLocation(this._program._program, "u_texture"),
-        this._settings.uniforms.texture_resolution  = this._gl.getUniformLocation(this._program._program, "u_texture_resolution"),
-        this._settings.uniforms.resolution          = this._gl.getUniformLocation(this._program._program, "u_resolution");
-        this._settings.attrs.position               = this._gl.getAttribLocation(this._program._program, "a_position");
+        program._settings.uniforms.step                   = this._gl.getUniformLocation(program._program, "u_step");
+        program._settings.uniforms.texture                = this._gl.getUniformLocation(program._program, "u_texture"),
+        program._settings.uniforms.texture_resolution     = this._gl.getUniformLocation(program._program, "u_texture_resolution"),
+        program._settings.uniforms.resolution             = this._gl.getUniformLocation(program._program, "u_resolution");
+        program._settings.attrs.position                  = this._gl.getAttribLocation(program._program, "a_position");
+
+        this._programs.push(program);
     }
 
     setTexture(path_to_img){
@@ -94,7 +98,6 @@ export const ImageHandler = new class extends Module {
                 _._gl.texParameteri(_._gl.TEXTURE_2D, _._gl.TEXTURE_WRAP_T, _._gl.REPEAT);
                 _._gl.texParameteri(_._gl.TEXTURE_2D, _._gl.TEXTURE_MIN_FILTER, _._gl.LINEAR);
 
-
                 _._texture = {
                     data: bitmap,
                     width: image.width,
@@ -124,6 +127,9 @@ export const ImageHandler = new class extends Module {
             1.0, -1.0,
             -1.0, -1.0
         ]), this._gl.STATIC_DRAW);
+
+        // Enable defautl program
+        this.enable(DefaultProgram);
     }
 
     stop(){
@@ -151,33 +157,38 @@ export const ImageHandler = new class extends Module {
         if(this._step > 2139095039)
             this._step = 0;
 
-        if(this._gl == null || this._disabled)
+        if(this._gl == null)
             return;
 
         this._gl.clear(this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT);
         this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._buffer);
 
-        if(this._program != null) {
-            this._gl.useProgram(this._program._program);
+        for(let i = 0, leng = this._programs.length, current; i < leng; i++) {
+            current = this._programs[i];
+
+            // Если обработчик был ранее выключен, то рендерится стандартная программа обработки.
+            if(this._disabled && !(current instanceof DefaultProgram))
+                continue;
+
+            this._gl.useProgram(current._program);
 
             // uniforms
-            this._gl.uniform2f(this._settings.uniforms.resolution, this._canvas.offsetWidth, this._canvas.offsetHeight);
-            this._gl.uniform1i(this._settings.uniforms.step, this._step);
+            this._gl.uniform2f(current._settings.uniforms.resolution, this._canvas.offsetWidth, this._canvas.offsetHeight);
+            this._gl.uniform1i(current._settings.uniforms.step, this._step);
 
             // attrs
-            this._gl.enableVertexAttribArray(this._settings.attrs.position);
-            this._gl.vertexAttribPointer(this._settings.attrs.position, 2, this._gl.FLOAT, false, 0, 0);
+            this._gl.enableVertexAttribArray(current._settings.attrs.position);
+            this._gl.vertexAttribPointer(current._settings.attrs.position, 2, this._gl.FLOAT, false, 0, 0);
 
             if(this._texture) {
-                this._gl.uniform1i(this._settings.uniforms.texture, 0);
+                this._gl.uniform1i(current._settings.uniforms.texture, 0);
                 this._gl.activeTexture(this._gl.TEXTURE0);
                 this._gl.bindTexture(this._gl.TEXTURE_2D, this._texture.data);
     
-                this._gl.uniform2f(this._settings.uniforms.texture_resolution, this._texture.width, this._texture.height);
+                this._gl.uniform2f(current._settings.uniforms.texture_resolution, this._texture.width, this._texture.height);
             }
 
-            this._program.Draw(delta, this._step);
-
+            current.draw(delta, this._step);
         }
 
         this._gl.drawArrays(this._gl.TRIANGLE_STRIP, 0, 4);

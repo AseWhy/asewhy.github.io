@@ -8,7 +8,7 @@ class ThemeEvent {
     }
 }
 
-export const ThemesManager = new class extends Module {
+export const ThemesManager = new class ThemesManager extends Module {
     constructor(config = null){
         super('ThemesManager');
 

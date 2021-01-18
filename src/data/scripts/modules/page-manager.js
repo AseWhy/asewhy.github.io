@@ -37,7 +37,7 @@ class PageManagerEvent {
     }
 }
 
-export const PageManager = new class extends Module {
+export const PageManager = new class PageManager extends Module {
     constructor(default_entry){
         super('PageManager');
 

@@ -2,7 +2,7 @@ import Vue from 'vue';
 import App from './App';
 import store from './store';
 
-import { PageManager } from './data/scripts/main'
+import { PageManager, HookManager } from './data/scripts/main';
 
 (App => {
   window.addEventListener('click', async e => {
@@ -11,6 +11,12 @@ import { PageManager } from './data/scripts/main'
       e.preventDefault();
 
       PageManager.goLink(e.target.getAttribute('a-href'));
+    }
+    // Handle hooks
+    if(e.target.hasAttribute('a-hook')) {
+      e.preventDefault();
+
+      HookManager.dispatchHook(e.target.getAttribute('a-hook'));
     }
 
     switch(e.target.tagName) {
