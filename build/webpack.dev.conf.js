@@ -68,11 +68,11 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         ignore: ['.*']
       },
       {
-        from: '../robots.txt',
+        from: './robots.txt',
         to: 'robots.txt'
       },
       {
-        from: '../sitemap.xml',
+        from: './sitemap.xml',
         to: 'sitemap.xml'
       }
     ])

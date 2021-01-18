@@ -56,11 +56,11 @@ export const PageManager = new class PageManager extends Module {
     }
 
     parseLocation(){
-        this._path = window.location.hash.substring(1).split('/');
+        this._path = window.location.hash.substring(2).split('/');
     }
 
     updateLocation(){
-        window.location.hash = this._path.join('/');
+        window.location.hash = '!' + this._path.join('/');
     }
 
     get path(){
