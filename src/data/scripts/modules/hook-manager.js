@@ -5,6 +5,8 @@ export const HookManager = new class HookManager extends Module {
         super('HookManager');
 
         this._hooks = new Map();
+
+        console.log(this._hooks);
     }
 
     registerHook(_from){
