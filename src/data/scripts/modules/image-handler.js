@@ -1,3 +1,5 @@
+import { ResizeObserver } from 'resize-observer';
+
 import { DefaultProgram } from '../../programs/default';
 
 import { Module } from "../astecoms-module";
