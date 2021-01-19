@@ -110,7 +110,20 @@
 
     .head-mask > .lg-text {
         grid-area: lg;
-        width: max-content;
+        width: fit-content;
+        display: grid;
+        grid-template-areas: '. .';
+        grid-template-columns: calc(100% - 2.5rem) 2.5rem;
+    }
+
+    .head-mask > .lg-text > a {
+        width: 100%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .head-mask > .lg-text > img {
+        margin: auto;
     }
 
     .head-mask .header-title {
@@ -229,7 +242,7 @@
 
     .container[ui='mobile'] .head-mask {
         grid-template-areas: 'menu lg . buttons theme';
-        grid-template-columns: max-content max-content max-content max-content auto;
+        grid-template-columns: max-content auto max-content;
     }
 
     .container[ui='mobile'] .header .theme-switch {
