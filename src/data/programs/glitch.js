@@ -10,7 +10,7 @@ export class GlitchProgram extends Program {
             // Handler
             handler,
             // Program
-            toProgram(handler._gl, vertex, fragment),
+            toProgram(handler._context, vertex, fragment),
             // Settings
             ((uniforms) => ({ uniforms }))({
                 gliches : 'u_gliches',
@@ -31,9 +31,9 @@ export class GlitchProgram extends Program {
 
     draw(delta, step){
         if(Math.floor(step) % (5 + Math.floor(Math.random() * 10)) == 0){
-            this._handler._gl.uniform1f(this._settings.uniforms.random, 10 + Math.floor(Math.random() * 5));
+            this._handler._context.uniform1f(this._settings.uniforms.random, 10 + Math.floor(Math.random() * 5));
 
-            this._handler._gl.uniform4fv(this._settings.uniforms.gliches, this.glitches());
+            this._handler._context.uniform4fv(this._settings.uniforms.gliches, this.glitches());
         }
     }
 }

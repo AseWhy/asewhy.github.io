@@ -12,7 +12,7 @@ export class Program {
 
         if(this._settings.uniforms)
             for(let key in this._settings.uniforms) {
-                this._settings.uniforms[key] = this._handler._gl.getUniformLocation(this._program, this._settings.uniforms[key]);
+                this._settings.uniforms[key] = this._handler._context.getUniformLocation(this._program, this._settings.uniforms[key]);
             }
     }
 }

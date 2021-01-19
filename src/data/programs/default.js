@@ -10,7 +10,7 @@ export class DefaultProgram extends Program {
             // Handler
             handler,
             // Program
-            toProgram(handler._gl, vertex, fragment)
+            toProgram(handler._context, vertex, fragment)
         );
     }
 
