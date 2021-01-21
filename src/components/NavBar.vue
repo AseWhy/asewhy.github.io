@@ -78,7 +78,10 @@
     .nav-bar .nav-conteiner {
         display: none;
         position: sticky;
-        top: 4.5rem;
+        overflow-y: scroll;
+        height: calc(100vh - 5.5rem);
+        padding: 0.5rem;
+        top: 5rem;
     }
 
     .content.single .nav-bar {
