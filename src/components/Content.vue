@@ -80,6 +80,21 @@
         width: 100%;
     }
     
+    .timeline-data-container {
+        display: inline-block;
+    }
+    
+    .timeline {
+        text-align: left;
+        border-left: 0.125rem solid;
+        display: block;
+        padding: 0 0.5rem;
+    }
+
+    .timeline[started] {
+        padding-bottom: 0.5rem;
+    }
+
     .content-data {
         z-index: -1;
         padding: 0.5rem;
