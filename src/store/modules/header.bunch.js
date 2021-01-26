@@ -13,6 +13,9 @@ import { HEADER_DATA_UPDATE, HIDE_MENU, SHOW_MENU, SWITCH_MENU_VISIBILITY } from
 // Declare home route
 const HOME = 'route:router';
 
+// Export locales
+import locale from '@/data/locale.json';
+
 export default {
     actions: {
         watchHeader(ctx){
@@ -40,7 +43,7 @@ export default {
                     {
                         highlight: true,
                         target: HOME,
-                        label: '❮ Домой'
+                        label: locale['header_back_buttons']
                     }
                 ], data.buttons);
             } else {

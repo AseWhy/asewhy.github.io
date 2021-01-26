@@ -3,14 +3,21 @@
         <nav-bar/>
 
         <div class="error-content" v-if="pageError.status">
-            <h2> Ошибка загрузки страницы {{ pageError.code }}! </h2>
+            <h2> 
+                {{ $locale['error_header'][pageSection.lang] }} {{ pageError.code }}!
+            </h2>
 
             <p class='p-error-message'>
-                Сообщение обработчика: <br>
-                <span class='p-error-label'> {{ pageError.message }} </span>
+                {{ $locale['error_message'][pageSection.lang] }} <br>
+
+                <span class='p-error-label'> 
+                    {{ pageError.message }}
+                </span>
             </p>
 
-            <button class='button-go-home' a-href='route:router'>На главную</button>
+            <button class='button-go-home' a-href='route:router'>
+                {{ $locale['error_go_home'][pageSection.lang] }}
+            </button>
         </div>
         
         <div class="content-view" v-else>
@@ -26,7 +33,16 @@
         </div>
 
         <div class="last-updated" v-if="pageSection.date != null">
-            Обновлено {{ pageSection.date }}
+            {{ $locale['updated_label'][pageSection.lang] }} {{ pageSection.date }}
+        </div>
+
+        <div class="translator-tip" v-if="pageSection.data.get('Translator') != null">
+            {{ $locale['translate_start'][pageSection.lang] }}
+            <strong class='translator-link' v-html="pageSection.data.get('Translator').replace(/(.*)(\(.*\))/g, `<a href='$2'>$1</a>`)"></strong>
+            {{ $locale['translate_end'][pageSection.lang] }}
+            <a href="mailto:astecom@mail.ru">
+                <strong> {{ $locale['common_here'][pageSection.lang] }} </strong>
+            </a>
         </div>
     </div>
 </template>
@@ -34,7 +50,7 @@
 <script>
     import NavBar from './NavBar';
 
-    import { mapGetters, mapActions } from 'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
         name: 'v-content',
@@ -62,7 +78,7 @@
         }
     }
 
-    .last-updated {
+    .last-updated, .translator-tip {
         padding: 0.5rem;
         background: var(--default-dirty-color);
         margin: 0.25rem 0;
@@ -112,6 +128,7 @@
         position: relative;
         overflow: hidden;
         text-align: justify;
+        min-height: 150pt;
     }
 
     .loader {

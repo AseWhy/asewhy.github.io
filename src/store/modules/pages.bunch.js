@@ -5,10 +5,13 @@ import { LOGO } from '@/data/scripts/static';
 import { EVD_SECTION_LOAD_OK, EVD_SECTION_LOAD_START, EVD_PAGE_LOAD_OK, EVD_PAGE_LOAD_ERROR} from '@/data/scripts/events-types';
 
 // Import mutations
-import { PAGE_LOAD_ERROR, SHOW_LOADER, START_PAGE_LOAD, STOP_PAGE_LOAD, HIDE_LOADER, SECTION_LOAD_END, PAGE_LOAD_END } from '../mutations';
+import { PAGE_LOAD_ERROR, SHOW_LOADER, START_PAGE_LOAD, STOP_PAGE_LOAD, HIDE_LOADER, SECTION_LOAD_END, PAGE_LOAD_END, SWITCH_MENU_LANGUAGE } from '../mutations';
 
 // Import managers
 import { PageManager } from '@/data/scripts/main';
+
+// Static data
+import { DEFAULT_LANGUAGE } from '../../data/scripts/static';
 
 // Биндим таймаут на этот адрес, чтобы в случе чего его сбросить.
 let left;
@@ -70,6 +73,10 @@ export default {
 
                 goTo(data.target);
             }
+        },
+
+        switchLang(ctx){
+            ctx.commit(SWITCH_MENU_LANGUAGE);
         }
     },
 
@@ -108,12 +115,22 @@ export default {
             state.pageSection.date = data.modified ? data.modified.toLocaleDateString() : null;
             state.pageSection.path = PageManager.path.join('/');
             state.pageSection.content = data.content;
+            state.pageSection.data = data.PageData;
+            state.pageSection.lang = PageManager.language;
+        },
+
+        [SWITCH_MENU_LANGUAGE](state, data) {
+            PageManager.language = state.pageSection.lang = PageManager.language == 'ru' ? 'us' : 'ru';
+
+            PageManager.update();
         }
     },
 
     state: {
         pageSection: {
             date: null,
+            data: new Map(),
+            lang: DEFAULT_LANGUAGE,
             content: 'Pending...',
             path: 'Pending...',
             loading: false,

@@ -8,5 +8,6 @@ export const SECTION_LOAD_END = 'sectionLoadEnd';
 export const HIDE_LOADER = 'hideLoader';
 export const HEADER_DATA_UPDATE = 'headerDataUpdate';
 export const SWITCH_MENU_VISIBILITY = 'switchMenuVisibility';
+export const SWITCH_MENU_LANGUAGE = 'switchMenuLanguage'
 export const HIDE_MENU = 'hideMenu';
 export const SHOW_MENU = 'showMenu';

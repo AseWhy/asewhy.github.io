@@ -1,6 +1,6 @@
 <template>
     <div class="nav-bar" :class='{ active }'>
-        <span class="nav-header"> <h1> Навигация </h1> <button class="hide-nav-bar" v-on:click="active = !active"> {{ active ? '❮❮' : '❯❯' }} </button> </span>
+        <span class="nav-header"> <h1> {{ $locale['menu_nav'][pageSection.lang] }} </h1> <button class="hide-nav-bar" v-on:click="active = !active"> {{ active ? '❮❮' : '❯❯' }} </button> </span>
 
         <div class="nav-conteiner">
             <nav-node
@@ -22,7 +22,7 @@
             NavNode
         },
 
-        computed: mapGetters([ 'pageData' ]),
+        computed: mapGetters([ 'pageData', 'pageSection' ]),
 
         data() {
             return {

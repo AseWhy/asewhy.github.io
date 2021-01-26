@@ -1,0 +1,86 @@
+{
+    "common_here": {
+        "ru": "сюда",
+        "us": "here"
+    },
+
+    "header_back_buttons": {
+        "ru": "❮ Домой",
+        "us": "❮ Home"
+    },
+
+    "menu_nav": {
+        "ru": "Навигация",
+        "us": "Navigation"
+    },
+    
+    "updated_label": {
+        "ru": "Обновлено",
+        "us": "Updated at"
+    },
+
+    "translate_start": {
+        "ru": "Перевел",
+        "us": "Translated"
+    },
+    
+    "translate_end": {
+        "ru": "если вы можете помочь с переводом то можете написать",
+        "us": "if you can help with translation you can write"
+    },
+
+    "footer_license_header": {
+        "ru": "Лицензия",
+        "us": "License"
+    },
+
+    "footer_license_text_start": {
+        "ru": "Текст доступен по лицензии",
+        "us": "Text available under license"
+    },
+
+    "footer_license_text_end": {
+        "ru": ", на дизайн и исходный код распостраняется лицензия",
+        "us": ", the design and source code are licensed by"
+    },
+
+    "footer_links_header": {
+        "ru": "Ссылки",
+        "us": "Links"
+    },
+
+    "footer_links_d_repo": {
+        "ru": "Репозиторий этого сайта",
+        "us": "The repository of this site"
+    },
+
+    "footer_links_d_git": {
+        "ru": "Я на GitHub",
+        "us": "I'm on GitHub"
+    },
+
+    "footer_links_d_contact": {
+        "ru": "Напишите мне",
+        "us": "Contact with me"
+    },
+
+    "footer_links_d_vk": {
+        "ru": "Я в Vk",
+        "us": "I'm in Vk"
+    },
+
+    "error_header": {
+        "ru": "Ошибка загрузки страницы",
+        "us": "I'm in Vk"
+    },
+
+    "error_message": {
+        "ru": "Сообщение обработчика:",
+        "us": "I'm in Vk"
+    },
+
+    "error_go_home": {
+        "ru": "На главную",
+        "us": "I'm in Vk"
+    }
+}

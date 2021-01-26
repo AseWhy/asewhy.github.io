@@ -2,18 +2,22 @@
     <div class="footer">
         <div class="footer-content">
             <div class="tip">
-                <h4> Лицензия </h4>
+                <h4> {{ $locale['footer_license_header'][pageSection.lang] }} </h4>
                 
                 <p class='copyright-text'>
-                    Текст доступен по лицензии <a href="https://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike</a>, на дизайн и исходный код распостраняется лицензия <a href="https://opensource.org/licenses/BSD-2-Clause">BDS</a>.
+                   {{ $locale['footer_license_text_start'][pageSection.lang] }}
+                   <a href="https://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike</a>
+                   {{ $locale['footer_license_text_end'][pageSection.lang] }}
+                   <a href="https://opensource.org/licenses/BSD-2-Clause">BDS</a>.
                 </p>
             </div>
 
             <div class="links">
-                <h4> Ссылки </h4>
-                <a href="https://github.com/AseWhy/asewhy.github.io">Репозиторий этого сайта</a>
-                <a href="https://github.com/AseWhy">Я на GitHub</a>
-                <a href="https://vk.com/astecom">Я в Vk</a>
+                <h4> {{ $locale['footer_links_header'][pageSection.lang] }} </h4>
+                <a href="https://github.com/AseWhy/asewhy.github.io"> {{ $locale['footer_links_d_repo'][pageSection.lang] }} </a>
+                <a href="https://github.com/AseWhy"> {{ $locale['footer_links_d_git'][pageSection.lang] }} </a>
+                <a href="mailto:astecom@mail.ru"> {{ $locale['footer_links_d_contact'][pageSection.lang] }} </a>
+                <a href="https://vk.com/astecom"> {{ $locale['footer_links_d_vk'][pageSection.lang] }} </a>
             </div>
         </div>
 
@@ -24,8 +28,12 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex'
+
     export default {
-        name: 'v-footer'
+        name: 'v-footer',
+
+        computed: mapGetters([ 'pageSection' ])
     }
 </script>
 

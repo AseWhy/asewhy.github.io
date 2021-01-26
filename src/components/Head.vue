@@ -13,6 +13,10 @@
                 </div>
                 <div class="section-path">
                     {{ pageError.status ?  'Error/' + pageError.code + '/' + pageError.message : pageSection.path }}
+
+                    <div class="localisation-snippets" :lang="pageSection.lang" v-on:click="switchLang()">
+                        <img src="@/data/images/langs-switch.jpg">
+                    </div>
                 </div>
                 <div class="section-date" v-if="pageError.status ? false : pageSection.date != null">
                     От {{ pageSection.date }}
@@ -26,10 +30,12 @@
     import { ImageHandler } from '@/data/scripts/main';
     import { GlitchProgram } from '@/data/programs/glitch';
 
-    import { mapGetters } from 'vuex';
+    import { mapActions, mapGetters } from 'vuex';
 
     export default {
         name: 'v-head',
+
+        methods: mapActions([ 'switchLang' ]),
 
         computed: mapGetters([ 'pageData', 'pageError', 'pageSection' ]),
 
@@ -65,6 +71,38 @@
         height: var(--height);
     }
 
+    .section-path > .localisation-snippets {
+        overflow: hidden;
+        padding: 0;
+        margin: 0.25rem 0.5rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 20%;
+        cursor: pointer;
+    }
+
+    .localisation-snippets > img {
+        transition: var(--base-transition);
+        position: relative;
+        height: 100%;
+        width: 200%;
+        margin: 0px;
+        left: 0px;
+        padding: 0px;
+    }
+
+    .localisation-snippets > img:hover {
+        margin-left: -0.25rem;
+    }
+
+    .localisation-snippets[lang='us'] > img:hover {
+        margin-left: 0.25rem;
+    }
+
+    .localisation-snippets[lang='us'] > img{
+        left: -100%;
+    }
+
     .front-content {
         width: 100%;
         height: var(--height);
@@ -78,6 +116,10 @@
         margin-top: auto;
     }
 
+    .section-path {
+        line-height: 2rem;
+    }
+
     .section-path-data * {
         color: var(--default-color);
         background-color: var(--sub-color);
@@ -85,6 +127,7 @@
         margin: 0.25rem 0;
         width: fit-content;
         text-transform: uppercase;
+        display: flex;
     }
 
     .gl-version {

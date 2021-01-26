@@ -5,7 +5,7 @@
                 class="nav-action"
                 :a-href="node.target"
             >
-                {{ node.label }}
+                {{ node.label[pageSection.lang] }}
             </button>
 
             <nav-node
@@ -18,10 +18,14 @@
 </template>
 
 <script>    
+    import { mapGetters } from 'vuex'
+
     export default {
         name: 'nav-node',
 
-        props: [ 'children' ]
+        props: [ 'children' ],
+
+        computed: mapGetters([ 'pageSection' ])
     }
 </script>
 

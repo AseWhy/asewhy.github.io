@@ -5,6 +5,7 @@ import marked from 'marked';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 import xml from 'highlight.js/lib/languages/xml';
+import { DEFAULT_LANGUAGE } from '../static';
 
 hljs.registerLanguage('js', javascript);
 hljs.registerLanguage('html', xml);
@@ -51,6 +52,8 @@ export const PageManager = new class PageManager extends Module {
         this._default_entry = default_entry;
         this._current = null;
         this._page_data = null;
+        this._language = this.get('language') || DEFAULT_LANGUAGE;
+        this._args = new Map();
         this._cache = new Map();
         this._path = new Array();
 
@@ -63,11 +66,42 @@ export const PageManager = new class PageManager extends Module {
     }
 
     parseLocation(){
-        this._path = window.location.hash.substring(2).split('/');
+        const raw = window.location.hash.substring(2).split('?');
+        const path = raw[0] || '';
+        const params = raw[1] || '';
+
+        this._args = new Map(params.split('&').map(e => {
+            const data = e.split('=');
+
+            if(data.length == 2)
+                return [data[0], data[1]];
+            else
+                return null;
+        }).filter(e => e != null));
+
+        this._path = path.split('/');
+
+        this.parseParams();
     }
 
     updateLocation(){
-        window.location.hash = '!' + this._path.join('/');
+        window.location.hash = '!' + this._path.join('/') + (this._args.size > 0 ? '?' + [...this._args.entries()].map(([key, value]) => key + '=' + value).join('&') : '');
+    }
+
+    parseParams(){
+        for(const [key, value] of this._args) {
+            switch(key) {
+                case 'lang':
+                    this._language = value;
+                break;
+            }
+        }
+    }
+
+    update() {
+        this._cache.delete(this._path[1]);
+        
+        return this.goTo(this._path[1]);
     }
 
     get path(){
@@ -76,6 +110,19 @@ export const PageManager = new class PageManager extends Module {
 
     get current(){
         return this._current;
+    }
+
+    set language(value) {
+        this._language = value;
+        
+        this.set('language', this._language);
+        this._args.set('lang', this._language);
+
+        this.updateLocation();
+    }
+
+    get language(){ 
+        return this._language;
     }
 
     async goHome(){
@@ -97,7 +144,6 @@ export const PageManager = new class PageManager extends Module {
     async goLink(link) {
         let page;
 
-        // Load path like route:page/section#header
         if(link.substring(0, 6) === 'route:') {
             const endmarker = link.indexOf('/');
 
@@ -173,7 +219,11 @@ export const PageManager = new class PageManager extends Module {
         for(let i = 0, leng = this._page_data.content.length;i < leng; i++) {
             if(this._page_data.content[i].name === section) {
                 if(!this._cache.has(section)) {
-                    const request = await fetch('../static/data/routes/' + this._page_data.content[i].src);
+                    const request = await (() => {
+                        const url = '../static/data/routes/' + this._page_data.content[i].src;
+
+                        return fetch(url.replace(/\$lang/g, this._language));
+                    })();
 
                     if(request.status != 200) {
                         this.emit(EVD_PAGE_LOAD_ERROR, new PageManagerEvent({ code: request.status, message: 'Error loading page' }));
@@ -181,8 +231,14 @@ export const PageManager = new class PageManager extends Module {
                         return;
                     }
 
-                    const data = (await request.text())
+                    const PageData = new Map()
+                        , data = (await request.text())
                             .replace(/^(#+)(.*)~\[([aA-zZаА-яЯёЁ_0-9]+)\]$/gm, "$1 <span id='$3' class='marker'></span>$2\n")
+                            .replace(/^@define[ \t]+([^ \t]+)[ \t]+([^\n]*)$/gm, (m, p1, p2) => {
+                                PageData.set(p1, p2);
+
+                                return '';
+                            })
                             .replace(
                                 />[ \t]*\[([^\]]+)\][ \t]*([аА-яЯёЁ0-9aA-zZ \t_]+)[ \t]*{([^}]*)}/gm, 
                                 (m, p1, p2, p3) => {
@@ -201,7 +257,7 @@ export const PageManager = new class PageManager extends Module {
                             )
                         , modified = request.headers.get('last-modified') ? new Date(request.headers.get('last-modified')) : null;
 
-                    this._cache.set(section, { data, modified });
+                    this._cache.set(section, { data, modified, PageData });
 
                     this.emit(EVD_SECTION_LOAD_OK, new PageManagerEvent({ 
                         content: marked(
@@ -209,18 +265,22 @@ export const PageManager = new class PageManager extends Module {
                         ),
                         target,
                         modified,
+                        PageData,
                         path: this._path,
                         currently
                     }));
 
                     return;
                 } else {
+                    const cache = this._cache.get(section);
+
                     this.emit(EVD_SECTION_LOAD_OK, new PageManagerEvent({ 
                         content: marked(
-                            this._cache.get(section).data
+                            cache.data
                         ), 
                         target,
-                        modified: this._cache.get(section).modified,
+                        modified: cache.modified,
+                        PageData: cache.PageData,
                         path: this._path,
                         currently 
                     }));

@@ -33,7 +33,7 @@
                         class='header-button' 
                         :a-href='value.target'
                     >
-                        {{ value.label }}
+                        {{ value.label[pageSection.lang] }}
                     </button>
 
                     <span 
@@ -51,14 +51,12 @@
 <script>
     import { mapActions, mapGetters } from 'vuex';
 
-    import { ThemesManager } from '@/data/scripts/main';
-
     export default {
         name: 'v-header',
 
         methods: mapActions([ 'switchTheme', 'switchMenuVisibility', 'hideMenu' ]),
 
-        computed: mapGetters([ 'appTheme', 'headerMenuActive', 'headerButtons', 'headerData' ]),
+        computed: mapGetters([ 'appTheme', 'headerMenuActive', 'headerButtons', 'headerData', 'pageSection' ]),
     }
 </script>
 

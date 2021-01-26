@@ -3,6 +3,10 @@ import App from './App';
 import store from './store';
 
 import { PageManager, HookManager } from './data/scripts/main';
+import locale from './data/locale.json';
+
+// Set global locale
+Vue.prototype.$locale = locale;
 
 (App => {
   window.addEventListener('click', async e => {
