@@ -38,7 +38,7 @@
 
         <div class="translator-tip" v-if="pageSection.data.get('Translator') != null">
             {{ $locale['translate_start'][pageSection.lang] }}
-            <strong class='translator-link' v-html="pageSection.data.get('Translator').replace(/(.*)(\(.*\))/g, `<a href='$2'>$1</a>`)"></strong>
+            <strong class='translator-link' v-html="pageSection.data.get('Translator').replace(/(.*)\((.*)\)/g, `<a href='http://$2'>$1</a>`)"></strong>
             {{ $locale['translate_end'][pageSection.lang] }}
             <a href="mailto:astecom@mail.ru">
                 <strong> {{ $locale['common_here'][pageSection.lang] }} </strong>
