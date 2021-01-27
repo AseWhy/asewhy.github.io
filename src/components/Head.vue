@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div class="section-date" v-if="pageError.status ? false : pageSection.date != null">
-                    От {{ pageSection.date }}
+                    {{ $locale['common_from'][pageSection.lang] }} {{ pageSection.date }}
                 </div>
             </div>
         </div>

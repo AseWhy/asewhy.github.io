@@ -4,6 +4,11 @@
         "us": "here"
     },
 
+    "common_from": {
+        "ru": "От",
+        "us": "From"
+    },
+
     "header_back_buttons": {
         "ru": "❮ Домой",
         "us": "❮ Home"
