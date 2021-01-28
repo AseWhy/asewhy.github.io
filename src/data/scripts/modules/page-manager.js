@@ -92,7 +92,7 @@ export const PageManager = new class PageManager extends Module {
         for(const [key, value] of this._args) {
             switch(key) {
                 case 'lang':
-                    this._language = value;
+                    this.language = value;
                 break;
             }
         }
@@ -101,7 +101,7 @@ export const PageManager = new class PageManager extends Module {
     update() {
         this._cache.delete(this._path[1]);
         
-        return this.goTo(this._path[1]);
+        return this.goTo(this._path[1], this._path[2]);
     }
 
     get path(){
@@ -113,7 +113,18 @@ export const PageManager = new class PageManager extends Module {
     }
 
     set language(value) {
-        this._language = value;
+        switch(value){
+            case 'ru':
+            case 'en':
+                this._language = value;
+                break;
+            case 'us':
+                this._language = 'en';
+                break;
+            default:
+                this._language = DEFAULT_LANGUAGE;
+                break;
+        }
         
         this.set('language', this._language);
         this._args.set('lang', this._language);

@@ -14,11 +14,24 @@
                 <div class="section-path">
                     {{ pageError.status ?  'Error/' + pageError.code + '/' + pageError.message : pageSection.path }}
 
-                    <div class="localisation-snippets" :lang="pageSection.lang" v-on:click="switchLang()">
+                    <div 
+                        class="localisation-snippets" 
+                        :lang="pageSection.lang"
+                        :lang_origin="pageSection.lang_origin"
+                        v-on:click="switchLang()"
+                    >
                         <img src="@/data/images/langs-switch.jpg">
                     </div>
                 </div>
-                <div class="section-date" v-if="pageError.status ? false : pageSection.date != null">
+
+                <div 
+                    class="section-date" 
+                    v-if="
+                        pageError.status ? 
+                            false :
+                            pageSection.date != null
+                    "
+                >
                     {{ $locale['common_from'][pageSection.lang] }} {{ pageSection.date }}
                 </div>
             </div>
@@ -95,11 +108,11 @@
         margin-left: -0.25rem;
     }
 
-    .localisation-snippets[lang='us'] > img:hover {
+    .localisation-snippets[lang_origin='right'] > img:hover {
         margin-left: 0.25rem;
     }
 
-    .localisation-snippets[lang='us'] > img{
+    .localisation-snippets[lang='en'] > img{
         left: -100%;
     }
 

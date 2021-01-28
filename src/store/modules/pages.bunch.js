@@ -13,6 +13,9 @@ import { PageManager } from '@/data/scripts/main';
 // Static data
 import { DEFAULT_LANGUAGE } from '../../data/scripts/static';
 
+// Locale
+import locale from '../../data/locale.json'
+
 // Биндим таймаут на этот адрес, чтобы в случе чего его сбросить.
 let left;
 
@@ -119,8 +122,20 @@ export default {
             state.pageSection.lang = PageManager.language;
         },
 
+        // Мутатор изменения языка
         [SWITCH_MENU_LANGUAGE](state, data) {
-            PageManager.language = state.pageSection.lang = PageManager.language == 'ru' ? 'us' : 'ru';
+            const languages = Object.keys(locale.languages)
+                , current = languages.indexOf(PageManager.language);
+            
+            if(current + 1 == languages.length) {
+                PageManager.language = state.pageSection.lang = languages[0];
+            } else
+                PageManager.language = state.pageSection.lang = languages[current + 1];
+
+            if(current + 2 == languages.length)
+                state.pageSection.lang_origin = 'right';
+            else
+                state.pageSection.lang_origin = 'left';
 
             PageManager.update();
         }
@@ -128,9 +143,9 @@ export default {
 
     state: {
         pageSection: {
-            date: null,
             data: new Map(),
             lang: DEFAULT_LANGUAGE,
+            lang_origin: '',
             content: 'Pending...',
             path: 'Pending...',
             loading: false,
