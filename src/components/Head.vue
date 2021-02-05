@@ -104,16 +104,16 @@
         padding: 0px;
     }
 
+    .localisation-snippets[lang='en'] > img {
+        left: -100%;
+    }
+
     .localisation-snippets > img:hover {
         margin-left: -0.25rem;
     }
 
     .localisation-snippets[lang_origin='right'] > img:hover {
         margin-left: 0.25rem;
-    }
-
-    .localisation-snippets[lang='en'] > img{
-        left: -100%;
     }
 
     .front-content {

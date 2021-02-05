@@ -82,14 +82,22 @@
         padding: 0.5rem;
         background: var(--default-dirty-color);
         margin: 0.25rem 0;
+    }
+
+    .last-updated {
         grid-area: date;
+    }
+
+    .translator-tip {
+        grid-area: translated;
     }
     
     .content {
         display: grid;
         grid-template-areas: 
                 'nav content'
-                'date date';
+                'date date'
+                'translated translated';
         grid-template-columns: auto auto;
         position: relative;
         gap: 0.5rem;
@@ -119,7 +127,8 @@
     .content.single {
         grid-template-areas: 
                     'content'
-                    'date';
+                    'date'
+                    'translated';
         grid-template-columns: 100%;
     }
 
@@ -267,7 +276,8 @@
     .container[ui='mobile'] .content {
         grid-template-areas: 
                         'content'
-                        'date';
+                        'date'
+                        'translated';
         grid-template-columns: max-content max-content;
         grid-template-columns: 100%;
     }

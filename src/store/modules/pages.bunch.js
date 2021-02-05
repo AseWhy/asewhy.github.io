@@ -120,6 +120,16 @@ export default {
             state.pageSection.content = data.content;
             state.pageSection.data = data.PageData;
             state.pageSection.lang = PageManager.language;
+
+            (() => {
+                const languages = Object.keys(locale.languages)
+                    , current = languages.indexOf(PageManager.language);
+
+                if(current + 2 == languages.length)
+                    state.pageSection.lang_origin = 'left';
+                else
+                    state.pageSection.lang_origin = 'right';
+            })()
         },
 
         // Мутатор изменения языка
@@ -133,9 +143,9 @@ export default {
                 PageManager.language = state.pageSection.lang = languages[current + 1];
 
             if(current + 2 == languages.length)
-                state.pageSection.lang_origin = 'right';
-            else
                 state.pageSection.lang_origin = 'left';
+            else
+                state.pageSection.lang_origin = 'right';
 
             PageManager.update();
         }
