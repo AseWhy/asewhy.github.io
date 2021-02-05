@@ -120,6 +120,7 @@ export default {
             state.pageSection.content = data.content;
             state.pageSection.data = data.PageData;
             state.pageSection.lang = PageManager.language;
+            state.pageSection.source = PageManager.source;
 
             (() => {
                 const languages = Object.keys(locale.languages)
@@ -156,6 +157,7 @@ export default {
             data: new Map(),
             lang: DEFAULT_LANGUAGE,
             lang_origin: '',
+            source: '',
             content: 'Pending...',
             path: 'Pending...',
             loading: false,

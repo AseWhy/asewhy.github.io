@@ -99,7 +99,7 @@ export const PageManager = new class PageManager extends Module {
     }
 
     update() {
-        this._cache.delete(this._path[1]);
+        this._cache.clear();
         
         return this.goTo(this._path[1], this._path[2]);
     }
@@ -110,6 +110,16 @@ export const PageManager = new class PageManager extends Module {
 
     get current(){
         return this._current;
+    }
+
+    get source(){
+        for(let i = 0, leng = this._page_data.content.length;i < leng; i++) {
+            if(this._page_data.content[i].name === this.path[1]) {
+                return '../static/data/routes/' + this._page_data.content[i].src.replace(/\$lang/g, this._language);
+            }
+        }
+
+        return null;
     }
 
     set language(value) {

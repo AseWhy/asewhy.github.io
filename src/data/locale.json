@@ -33,10 +33,15 @@
         "ru": "Перевел",
         "en": "Translated"
     },
-    
-    "translate_end": {
+
+    "translate_mid": {
         "ru": "если вы можете помочь с переводом то можете написать",
         "en": "if you can help with translation you can write"
+    },
+    
+    "translate_end": {
+        "ru": "Вы так-же можете посмотреть исходник файлы страницы",
+        "en": "You can also see the source files of the page"
     },
 
     "footer_license_header": {

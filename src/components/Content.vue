@@ -32,17 +32,26 @@
             </div>
         </div>
 
-        <div class="last-updated" v-if="pageSection.date != null">
-            {{ $locale['updated_label'][pageSection.lang] }} {{ pageSection.date }}
-        </div>
+        <div class="info">
+            <div class="last-updated" v-if="pageSection.date != null">
+                {{ $locale['updated_label'][pageSection.lang] }} {{ pageSection.date }}
+            </div>
 
-        <div class="translator-tip" v-if="pageSection.data.get('Translator') != null">
-            {{ $locale['translate_start'][pageSection.lang] }}
-            <strong class='translator-link' v-html="pageSection.data.get('Translator').replace(/(.*)\((.*)\)/g, `<a href='http://$2'>$1</a>`)"></strong>
-            {{ $locale['translate_end'][pageSection.lang] }}
-            <a href="mailto:astecom@mail.ru">
-                <strong> {{ $locale['common_here'][pageSection.lang] }} </strong>
-            </a>
+            <div class="translator-tip" v-if="pageSection.data.get('Translator') != null">
+                {{ $locale['translate_start'][pageSection.lang] }}
+                <strong 
+                    class='translator-link' 
+                    v-html="pageSection.data.get('Translator').replace(/(.*)\((.*)\)/g, `<a href='http://$2'>$1</a>`)"
+                ></strong>
+                {{ $locale['translate_mid'][pageSection.lang] }}
+                <a href="mailto:astecom@mail.ru">
+                    <strong>{{ $locale['common_here'][pageSection.lang] }}</strong>
+                </a>. 
+                {{ $locale['translate_end'][pageSection.lang] }}
+                <a :href="pageSection.source">
+                    <strong>{{ $locale['common_here'][pageSection.lang] }}</strong>
+                </a>
+            </div>
         </div>
     </div>
 </template>
@@ -84,20 +93,15 @@
         margin: 0.25rem 0;
     }
 
-    .last-updated {
-        grid-area: date;
-    }
-
-    .translator-tip {
-        grid-area: translated;
+    .info {
+        grid-area: info;
     }
     
     .content {
         display: grid;
         grid-template-areas: 
                 'nav content'
-                'date date'
-                'translated translated';
+                'info info';
         grid-template-columns: auto auto;
         position: relative;
         gap: 0.5rem;
@@ -127,8 +131,7 @@
     .content.single {
         grid-template-areas: 
                     'content'
-                    'date'
-                    'translated';
+                    'info';
         grid-template-columns: 100%;
     }
 
@@ -276,8 +279,7 @@
     .container[ui='mobile'] .content {
         grid-template-areas: 
                         'content'
-                        'date'
-                        'translated';
+                        'info';
         grid-template-columns: max-content max-content;
         grid-template-columns: 100%;
     }
