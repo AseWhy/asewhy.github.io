@@ -1,4 +1,3 @@
-import 'simplemde/dist/simplemde.min.css';
 import * as SimpleMDE from 'simplemde';
 import locale from '../locale.json';
 import marked from 'marked';

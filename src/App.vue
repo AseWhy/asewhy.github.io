@@ -63,6 +63,7 @@
 <style>
   /* Local fonts */
   @import url(bootstrap/dist/css/bootstrap.min.css);
+  @import url(simplemde/dist/simplemde.min.css);
 
   /* Google fonts */
   @import url(https://fonts.googleapis.com/css2?family=Fira+Code:wght@300&display=swap);
