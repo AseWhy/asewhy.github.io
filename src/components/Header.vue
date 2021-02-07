@@ -67,7 +67,7 @@
         position: fixed;
         display: block;
         padding: 0.5rem;
-        z-index: 1;
+        z-index: 1000;
         left: 0;
         top: 0;
         background-color: var(--default-color);

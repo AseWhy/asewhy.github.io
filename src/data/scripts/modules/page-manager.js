@@ -6,6 +6,7 @@ import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 import xml from 'highlight.js/lib/languages/xml';
 import { DEFAULT_LANGUAGE } from '../static';
+import Expand from '../markdown-expand';
 
 hljs.registerLanguage('js', javascript);
 hljs.registerLanguage('html', xml);
@@ -13,7 +14,16 @@ hljs.registerLanguage('xml', xml);
 
 marked.setOptions({
     highlight: (code, language) => {
-        return hljs.highlight(language, code).value;
+        if(
+            [
+                'js',
+                'html',
+                'xml'
+            ].includes(language)
+        )
+            return hljs.highlight(language, code).value;
+        else
+            return code;
     }
 })
 
@@ -253,29 +263,13 @@ export const PageManager = new class PageManager extends Module {
                     }
 
                     const PageData = new Map()
-                        , data = (await request.text())
-                            .replace(/^(#+)(.*)~\[([aA-zZаА-яЯёЁ_0-9]+)\]$/gm, "$1 <span id='$3' class='marker'></span>$2\n")
-                            .replace(/^@define[ \t]+([^ \t]+)[ \t]+([^\n]*)$/gm, (m, p1, p2) => {
+                        , data = Expand(
+                                await request.text()
+                            ).replace(/^@define[ \t]+([^ \t]+)[ \t]+([^\n]*)$/gm, (m, p1, p2) => {
                                 PageData.set(p1, p2);
-
+                
                                 return '';
                             })
-                            .replace(
-                                />[ \t]*\[([^\]]+)\][ \t]*([аА-яЯёЁ0-9aA-zZ \t_]+)[ \t]*{([^}]*)}/gm, 
-                                (m, p1, p2, p3) => {
-                                    return `<li class="timeline" ${
-                                        p1 == '$' ? 'started="true"' : p1 == '#' ? 'ended="true"' : ''
-                                    }><div class="timeline-data-container"><code>${
-                                        p1 != '$' && p1 != '#' ? p1 : ''
-                                    }</code>${
-                                        p1 != '$' && p1 != '#' ? ' - ' : ''
-                                    }<strong>${
-                                        p2
-                                    }</strong><div class="timeline-description">${
-                                        marked(p3.trim())
-                                    }</div></div></li>`
-                                }
-                            )
                         , modified = request.headers.get('last-modified') ? new Date(request.headers.get('last-modified')) : null;
 
                     this._cache.set(section, { data, modified, PageData });

@@ -60,6 +60,7 @@
     import NavBar from './NavBar';
 
     import { mapGetters } from 'vuex';
+    import InitEditor from '../data/scripts/markdown-editor';
 
     export default {
         name: 'v-content',
@@ -68,7 +69,80 @@
             NavBar
         },
 
-        computed: mapGetters([ 'pageContent', 'pageData', 'pageError', 'pageSection' ])
+        computed: mapGetters([ 'pageContent', 'pageData', 'pageError', 'pageSection' ]),
+    
+        updated: () => {
+            const mdtargets = document.querySelectorAll('.mdtarget');
+
+            for(let value of mdtargets) {
+                if(value.hasAttribute('inited'))
+                    continue;
+
+                InitEditor(value);
+
+                value.setAttribute('inited', 1);
+            }
+
+            const forms = document.querySelectorAll('form');
+
+            for(let value of forms) {
+                (async value => {
+                    let sending = false;
+
+                    const success = value.querySelector('[type="success"]')
+                        , error = value.querySelector('[type="error"]')
+                        , fail = value.querySelector('[type="check-fail"]')
+                        , loading = value.querySelector('[type="loading"]');
+
+                    if(value.getAttribute('check')) {
+                        const responce = await fetch(value.getAttribute('check'));
+                        const json = await responce.json();
+
+                        if(!json) {
+                            if(loading)
+                                loading.classList = '';
+                            if(fail)
+                                fail.classList = 'active';
+                        } else {
+                            if(loading)
+                                loading.classList = '';
+                        }
+                    } else {
+                        if(loading)
+                            loading.classList = '';
+                    }
+
+                    value.onsubmit = async (e) => {
+                        e.preventDefault();
+
+                        if(sending)
+                            return;
+
+                        sending = true;
+
+                        const responce = await fetch(
+                            value.action,
+                            {
+                                method: 'post',
+                                body: new FormData(value)
+                            }
+                        );
+
+                        const data = await responce.json();
+
+                        if(data) {
+                            if(success)
+                                success.classList = 'active';
+                        } else {
+                            if(error)
+                                error.classList = 'active';
+                        }
+
+                        sending = false;
+                    }
+                })(value);
+            }
+        }
     }
 </script>
 
@@ -203,6 +277,100 @@
 
     .button-go-home:hover {
         background-color: var(--default-dirty-color);
+    }
+
+    .auto-form {
+        display: grid;
+        padding: 0.25rem;
+        border: 1px solid;
+        border-radius: 0.5rem;
+        margin: auto;
+        position: relative;
+    }
+
+    .auto-form p {
+        padding: 0.5rem;
+        margin: 0;
+    }
+
+    .auto-form div[type] {
+        opacity: 0;
+        position: absolute;
+        background-color: var(--default-semi-opacity);
+        backdrop-filter: blur(0.25rem);
+        padding: 1rem;
+        z-index: -10;
+        width: 100%;
+        height: 100%;
+        border-radius: 0.5rem;
+        text-align: center;
+        transition: var(--base-transition);
+    }
+
+    .auto-form div[type].active {
+        z-index: 10;
+        opacity: 1;
+    }
+
+    .auto-input {
+        background: var(--default-color);
+        border: none;
+        resize: none;
+        margin: 5pt;
+    }
+
+    .auto-submit {
+        background-color: var(--default-dirty-color);
+        border: none;
+        border-radius: 0.5rem;
+    }
+
+    .editor-toolbar.fullscreen::before, .editor-toolbar.fullscreen::after {
+        display: none;
+    }
+
+    .editor-toolbar, editor-toolbar.fullscreen, .editor-toolbar.disabled-for-preview, .editor-preview-active {
+        background-color: var(--default-color) !important;
+        border: none;
+    }
+
+    .editor-toolbar > a::before {
+        color: var(--sub-color);
+    }
+
+    .editor-toolbar > a:hover, .editor-toolbar > a.active {
+        background-color: var(--default-color);
+    }
+
+    .editor-toolbar.disabled-for-preview > a:not(.no-disable) {
+        background-color: var(--default-dirty-color);
+    }
+
+    .CodeMirror, .editor-preview-side {
+        color: var(--sub-color);
+        background-color: var(--default-color);
+        border: none;
+    }
+
+    .CodeMirror-cursor {
+        border-left: var(--sub-color) 1px solid;
+    }
+
+    .CodeMirror-selected, .CodeMirror-selectedtext {
+        background: none;
+        border: 1px var(--sub-color);
+    }
+
+    .CodeMirror.CodeMirror-fullscreen, .editor-preview-side {
+        border: none;
+    }
+
+    .editor-preview-side.editor-preview-active-side {
+        border-left: 1px solid;
+    }
+
+    .editor-preview pre, .editor-preview-side pre {
+        background: var(--default-dirty-color);
     }
 
     img {

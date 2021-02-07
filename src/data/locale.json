@@ -14,6 +14,11 @@
         "en": "From"
     },
 
+    "common_of": {
+        "ru": "из",
+        "en": "of"
+    },
+
     "header_back_buttons": {
         "ru": "❮ Домой",
         "en": "❮ Home"

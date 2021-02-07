@@ -22,7 +22,7 @@
         </div>
 
         <div class="copyright">
-            <strong> © Astecom (2021) </strong>
+            <strong> © Astecom {{ new Date().getFullYear() }} </strong>
         </div>
     </div>
 </template>
