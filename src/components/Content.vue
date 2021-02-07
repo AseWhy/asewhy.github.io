@@ -297,7 +297,6 @@
         opacity: 0;
         position: absolute;
         background-color: var(--default-semi-opacity);
-        backdrop-filter: blur(0.25rem);
         padding: 1rem;
         z-index: -10;
         width: 100%;
@@ -529,5 +528,12 @@
 
     .hljs-strong {
         font-weight: bold;
+    }
+    
+    @supports ((-webkit-backdrop-filter: blur(2rem)) or (backdrop-filter: blur(2rem))) {
+        .auto-form div[type] {
+            background-color: var(--default-semi-opacity-1);
+            backdrop-filter: blur(2rem);
+        }
     }
 </style>

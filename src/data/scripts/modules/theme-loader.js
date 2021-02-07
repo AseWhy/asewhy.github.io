@@ -21,7 +21,7 @@ export const ThemesManager = new class ThemesManager extends Module {
                 '--defult-ripple-color': 'rgba(0, 0, 0, 0.4)',
                 '--default-semi-opacity': 'rgba(255, 255, 255, 0.9)',
                 '--default-semi-opacity-1': 'rgba(255, 255, 255, 0.25)',
-                '--base-transition': '300ms cubic-bezier(0.215, 0.610, 0.355, 1)'
+                '--base-transition': '300ms cubic-bezier(0.64, -0.18, 0.29, 1.22)'
             },
 
             darked: {
@@ -32,7 +32,7 @@ export const ThemesManager = new class ThemesManager extends Module {
                 '--defult-ripple-color': 'rgba(200, 200, 200, 0.4)',
                 '--default-semi-opacity': 'rgba(25, 25, 25, 0.9)',
                 '--default-semi-opacity-1': 'rgba(25, 25, 25, 0.25)',
-                '--base-transition': '300ms cubic-bezier(0.215, 0.610, 0.355, 1)'
+                '--base-transition': '300ms cubic-bezier(0.64, -0.18, 0.29, 1.22)'
             }
         }
 

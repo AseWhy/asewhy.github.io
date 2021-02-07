@@ -23,26 +23,28 @@
             </span>
 
             <div class="header-buttons" :class="{ active: headerMenuActive }">
-                <span 
-                    v-for="(value, index) in headerButtons" 
-                    :key='index' 
-                    :class="{ highlight: value.highlight }" 
-                    v-on:click="hideMenu()"
-                >
-                    <button 
-                        class='header-button' 
-                        :a-href='value.target'
-                    >
-                        {{ value.label[pageSection.lang] }}
-                    </button>
-
+                <div class="buttons-mask">
                     <span 
-                        class='header-sepo desktop-element' 
-                        v-if="index + 1 < headerButtons.length"
+                        v-for="(value, index) in headerButtons" 
+                        :key='index' 
+                        :class="{ highlight: value.highlight }" 
+                        v-on:click="hideMenu()"
                     >
-                        /
+                        <button 
+                            class='header-button' 
+                            :a-href='value.target'
+                        >
+                            {{ value.label[pageSection.lang] }}
+                        </button>
+
+                        <span 
+                            class='header-sepo desktop-element' 
+                            v-if="index + 1 < headerButtons.length"
+                        >
+                            /
+                        </span>
                     </span>
-                </span>
+                </div>
             </div>
         </div>
     </nav>
@@ -86,7 +88,7 @@
         grid-area: mask;
         grid-template-areas: 'theme . lg . buttons';
         grid-template-rows: 3.5rem;
-        grid-template-columns: max-content max-content max-content max-content max-content;
+        grid-template-columns: max-content max-content max-content max-content auto;
         background-color: var(--default-color);
         line-height: 3.5rem;
         height: 3.5rem;
@@ -167,6 +169,12 @@
 
     .head-mask .header-buttons {
         grid-area: buttons;
+        overflow-y: hidden;
+        overflow-x: scroll;
+    }
+
+    .buttons-mask {
+        width: max-content;
     }
 
     .head-mask .header-buttons > :not(:first-child)::marker {
@@ -248,24 +256,41 @@
         margin-right: 0.5rem;
     }
 
-    .container[ui='mobile'] .header-buttons {
-        position: absolute;
+    .container[ui='mobile'] .buttons-mask {
         display: grid;
-        left: -100%;
-        width: min(80%, 400pt);
+        width: 0;
         height: calc(100vh - 3.5rem);
         grid-auto-flow: row;
         grid-auto-rows: 3.5rem;
-        top: 4.5rem;
-        background: var(--default-color);
+        background: var(--default-semi-opacity);
         transition: var(--base-transition);
+        backdrop-filter: blur(5rem);
+        opacity: 0;
+        overflow-x: hidden;
+    }
+
+    .container[ui='mobile'] .header-buttons {
+        position: absolute;
+        overflow: initial;
+        left: 0;
+        top: 4.5rem;
+        height: max-content;
     }
 
     .container[ui='mobile'] .header-button {
         width: 100%;
+        background: transparent;
     }
 
-    .container[ui='mobile'] .header-buttons.active {
-        left: 0%;
+    .container[ui='mobile'] .header-buttons.active .buttons-mask {
+        opacity: 1;
+        width: min(80vw, 400pt);
+    }
+
+    @supports ((-webkit-backdrop-filter: blur(2rem)) or (backdrop-filter: blur(2rem))) {
+        .container[ui='mobile'] .buttons-mask {
+            background-color: var(--default-semi-opacity-1);
+            backdrop-filter: blur(2rem);
+        }
     }
 </style>

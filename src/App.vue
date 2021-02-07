@@ -34,11 +34,35 @@
     },
 
     mounted(){
+      let cw = 0,
+          sw = 0,
+          ws = 0;
+
       window.addEventListener('resize', e => {
-        if(window.innerWidth < 768) {
-          this.ui = 'mobile';
+        const header_b = document.querySelector('.header-buttons');
+
+        if(this.ui == 'desktop') {
+          sw = header_b.scrollWidth;
+          cw = header_b.clientWidth;
+          ws = window.innerWidth;
+        }
+
+        if(header_b) {
+          if(this.ui == 'desktop') {
+            if(cw < sw) {
+              this.ui = 'mobile';
+            }
+          } else {
+            if(window.innerWidth > ws) {
+              this.ui = 'desktop';
+            }
+          }
         } else {
-          this.ui = 'desktop';
+          if(window.innerWidth < 768) {
+            this.ui = 'mobile';
+          } else {
+            this.ui = 'desktop';
+          }
         }
       });
 
