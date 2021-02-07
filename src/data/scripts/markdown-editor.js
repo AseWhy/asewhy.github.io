@@ -9,6 +9,8 @@ export default function InitEditor(element) {
     let editor = new SimpleMDE({ 
         element,
 
+        spellChecker: false,
+
         previewRender: function(plainText) {
             return marked(plainText);
         },
