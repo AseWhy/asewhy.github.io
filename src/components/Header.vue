@@ -57,7 +57,24 @@
 </template>
 
 <script>
+    import { ResizeObserver } from 'resize-observer';
     import { mapActions, mapGetters } from 'vuex';
+
+    function resize(){
+        const caret = document.querySelector('.caret')
+            , container = document.querySelector('.container');
+
+        if(container && container.getAttribute('ui') == 'desktop')
+            if(this.$refs.movment && this.$refs.movment[0]) {
+                caret.style.left = this.$refs.movment[0].offsetLeft + 'px';
+                caret.style.width = this.$refs.movment[0].offsetWidth + 'px';
+            } else {
+                caret.style.left = '0px';
+                caret.style.width = '0px';
+            }
+    }
+
+    let resize_t;
 
     export default {
         name: 'v-header',
@@ -66,19 +83,13 @@
 
         computed: mapGetters([ 'appTheme', 'headerMenuActive', 'headerButtons', 'headerData', 'pageSection' ]),
 
-        updated: function() {
-            const caret = document.querySelector('.caret')
-                , container = document.querySelector('.container');
+        mounted() {
+            resize_t = resize.bind(this);
 
-            if(container && container.getAttribute('ui') == 'desktop')
-                if(this.$refs.movment && this.$refs.movment[0]) {
-                    caret.style.left = this.$refs.movment[0].offsetLeft + 'px';
-                    caret.style.width = this.$refs.movment[0].offsetWidth + 'px';
-                } else {
-                    caret.style.left = '0px';
-                    caret.style.width = '0px';
-                }
-        }
+            new ResizeObserver(resize_t).observe(document.documentElement);
+        },
+
+        updated: () => resize_t()
     }
 </script>
 
