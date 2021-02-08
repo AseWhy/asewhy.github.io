@@ -89,7 +89,7 @@ export const PageManager = new class PageManager extends Module {
                 return null;
         }).filter(e => e != null));
 
-        this._path = path.split('/');
+        this._path = path.split('/').filter(e => e.length > 0);
 
         this.parseParams();
     }
@@ -166,10 +166,13 @@ export const PageManager = new class PageManager extends Module {
 
         this.parseLocation();
 
-        await this.load(this._path[0], false);
+        if(this._path[1] != null) {
+            await this.load(this._path[0], false);
 
-        if(this._path[1] != null)
             await this.goTo(this._path[1], this._path[2]);
+        } else {
+            await this.load(this._path[0], true);
+        }
     }
 
     async goLink(link) {
