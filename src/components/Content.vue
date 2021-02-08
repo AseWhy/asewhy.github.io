@@ -71,14 +71,14 @@
 
         computed: mapGetters([ 'pageContent', 'pageData', 'pageError', 'pageSection' ]),
     
-        updated: () => {
+        updated: async () => {
             const mdtargets = document.querySelectorAll('.mdtarget');
 
             for(let value of mdtargets) {
                 if(value.hasAttribute('inited'))
                     continue;
 
-                InitEditor(value);
+                await InitEditor(value);
 
                 value.setAttribute('inited', 1);
             }
@@ -147,6 +147,8 @@
 </script>
 
 <style>
+    @import url('../data/styles/marked.css');
+
     @keyframes load {
         from {
             transform: rotate(0deg) scale(1);
@@ -277,99 +279,6 @@
 
     .button-go-home:hover {
         background-color: var(--default-dirty-color);
-    }
-
-    .auto-form {
-        display: grid;
-        padding: 0.25rem;
-        border: 1px solid;
-        border-radius: 0.5rem;
-        margin: auto;
-        position: relative;
-    }
-
-    .auto-form p {
-        padding: 0.5rem;
-        margin: 0;
-    }
-
-    .auto-form div[type] {
-        opacity: 0;
-        position: absolute;
-        background-color: var(--default-semi-opacity);
-        padding: 1rem;
-        z-index: -10;
-        width: 100%;
-        height: 100%;
-        border-radius: 0.5rem;
-        text-align: center;
-        transition: var(--base-transition);
-    }
-
-    .auto-form div[type].active {
-        z-index: 10;
-        opacity: 1;
-    }
-
-    .auto-input {
-        background: var(--default-color);
-        border: none;
-        resize: none;
-        margin: 5pt;
-    }
-
-    .auto-submit {
-        background-color: var(--default-dirty-color);
-        border: none;
-        border-radius: 0.5rem;
-    }
-
-    .editor-toolbar.fullscreen::before, .editor-toolbar.fullscreen::after {
-        display: none;
-    }
-
-    .editor-toolbar, editor-toolbar.fullscreen, .editor-toolbar.disabled-for-preview, .editor-preview-active {
-        background-color: var(--default-color) !important;
-        border: none;
-    }
-
-    .editor-toolbar > a::before {
-        color: var(--sub-color);
-    }
-
-    .editor-toolbar > a:hover, .editor-toolbar > a.active {
-        background-color: var(--default-color);
-    }
-
-    .editor-toolbar.disabled-for-preview > a:not(.no-disable) {
-        background-color: var(--default-dirty-color);
-    }
-
-    .CodeMirror, .editor-preview-side {
-        color: var(--sub-color);
-        background-color: var(--default-color);
-        border: none;
-    }
-
-    .CodeMirror-cursor {
-        border-left: var(--sub-color) 1px solid;
-    }
-
-    .CodeMirror-selected, .CodeMirror-selectedtext {
-        background: none;
-        border: 1px var(--sub-color);
-    }
-
-    .CodeMirror.CodeMirror-fullscreen, .editor-preview-side {
-        border: none;
-    }
-
-    .editor-preview-side.editor-preview-active-side {
-        border-left: 1px solid;
-    }
-
-    .editor-preview pre, .editor-preview-side pre {
-        background: var(--default-dirty-color);
     }
 
     img {
@@ -528,12 +437,5 @@
 
     .hljs-strong {
         font-weight: bold;
-    }
-    
-    @supports ((-webkit-backdrop-filter: blur(2rem)) or (backdrop-filter: blur(2rem))) {
-        .auto-form div[type] {
-            background-color: var(--default-semi-opacity-1);
-            backdrop-filter: blur(2rem);
-        }
     }
 </style>

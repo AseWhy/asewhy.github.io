@@ -21,5 +21,7 @@ export default function Expand(input){
                         marked(p3.trim())
                     }</div></div></li>`
                 }
-            );
+            ).replace(/{{(.*)}}/g, (m, p1) => {
+                return eval(`(() => ${p1})();`);
+            });
 }

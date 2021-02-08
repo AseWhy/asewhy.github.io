@@ -1,11 +1,11 @@
 import { EVD_PAGE_LOAD_OK, EVD_PAGE_LOAD_ERROR, EVD_SECTION_LOAD_OK, EVD_SECTION_LOAD_START } from '../events-types';
+import { DEFAULT_LANGUAGE } from '../static';
 import { Module } from '../astecoms-module';
-import marked from 'marked';
 
+import marked from 'marked';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 import xml from 'highlight.js/lib/languages/xml';
-import { DEFAULT_LANGUAGE } from '../static';
 import Expand from '../markdown-expand';
 
 hljs.registerLanguage('js', javascript);

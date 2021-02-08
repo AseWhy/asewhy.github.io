@@ -1,11 +1,16 @@
-import * as SimpleMDE from 'simplemde';
 import locale from '../locale.json';
 import marked from 'marked';
 import { PageManager } from './main';
 
 const MAX_CHARS = 2000;
 
-export default function InitEditor(element) {
+let SimpleMDE = null;
+
+export default async function InitEditor(element) {
+    if(!SimpleMDE) {
+        SimpleMDE = await import('simplemde');
+    }
+
     let editor = new SimpleMDE({ 
         element,
 
