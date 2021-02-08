@@ -8,19 +8,22 @@ import { EVD_PAGE_LOAD_OK } from '@/data/scripts/events-types';
 import { PageManager } from '@/data/scripts/main';
 
 // Import mutations
-import { HEADER_DATA_UPDATE, HIDE_MENU, SHOW_MENU, SWITCH_MENU_VISIBILITY } from '../mutations';
+import { HEADER_DATA_UPDATE, HIDE_MENU, SHOW_MENU, SWITCH_MENU_VISIBILITY, SWITCH_PAGE_SELECTION } from '../mutations';
 
 // Declare home route
 const HOME = 'route:router';
 
 // Export locales
 import locale from '@/data/locale.json';
+import { EVD_SECTION_LOAD_OK } from '../../data/scripts/events-types';
 
 export default {
     actions: {
         watchHeader(ctx){
             // Загружена новая страница
             PageManager.on(EVD_PAGE_LOAD_OK, ctx.commit.bind(ctx, HEADER_DATA_UPDATE));
+            // Изменена текущая секция
+            PageManager.on(EVD_SECTION_LOAD_OK, ctx.commit.bind(ctx, SWITCH_PAGE_SELECTION));
         },
 
         switchMenuVisibility(ctx){
@@ -56,6 +59,10 @@ export default {
             state.headerData.depends = data.logo.themed;
         },
 
+        [SWITCH_PAGE_SELECTION](state) {
+            state.headerData.selected = PageManager.path[1];
+        },
+
         [SWITCH_MENU_VISIBILITY](state){
             state.headerMenuActive = !state.headerMenuActive;
         },
@@ -72,6 +79,7 @@ export default {
     state: {
         headerData: {
             depends: true,
+            selected: null,
             name: '#!AseWhy/Astecom',
             link: 'https://github.com/AseWhy',
             icon: LOGO

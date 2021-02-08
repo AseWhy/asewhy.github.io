@@ -27,12 +27,16 @@
                     <span 
                         v-for="(value, index) in headerButtons" 
                         :key='index' 
-                        :class="{ highlight: value.highlight }" 
+                        :class="{highlight: value.highlight}" 
                         v-on:click="hideMenu()"
                     >
                         <button 
                             class='header-button' 
                             :a-href='value.target'
+                            :class="{
+                                selected: headerData.selected == value.target
+                            }"
+                            :ref="headerData.selected == value.target ? 'movment' : null"
                         >
                             {{ value.label[pageSection.lang] }}
                         </button>
@@ -45,6 +49,8 @@
                         </span>
                     </span>
                 </div>
+
+                <div class="caret"></div>
             </div>
         </div>
     </nav>
@@ -59,6 +65,20 @@
         methods: mapActions([ 'switchTheme', 'switchMenuVisibility', 'hideMenu' ]),
 
         computed: mapGetters([ 'appTheme', 'headerMenuActive', 'headerButtons', 'headerData', 'pageSection' ]),
+
+        updated: function() {
+            const caret = document.querySelector('.caret')
+                , container = document.querySelector('.container');
+
+            if(container && container.getAttribute('ui') == 'desktop')
+                if(this.$refs.movment && this.$refs.movment[0]) {
+                    caret.style.left = this.$refs.movment[0].offsetLeft + 'px';
+                    caret.style.width = this.$refs.movment[0].offsetWidth + 'px';
+                } else {
+                    caret.style.left = '0px';
+                    caret.style.width = '0px';
+                }
+        }
     }
 </script>
 
@@ -77,6 +97,16 @@
 
     .header-buttons {
         grid-area: buttons;
+        position: relative;
+    }
+
+    .caret {
+        position: absolute;
+        top: calc(100% - 0.25rem);
+        height: 0.25rem;
+        background: white;
+        transition: var(--base-transition);
+        z-index: 10;
     }
 
     .theme-switch {
@@ -187,6 +217,7 @@
         overflow: hidden;
         background-color: var(--default-color);
         height: 100%;
+        outline: none;
     }
 
     .head-mask .header-button:hover {
@@ -236,6 +267,10 @@
 
     img.header-item.no-depends {
         filter: none;
+    }
+
+    .container[ui='mobile'] .caret {
+        display: none;
     }
 
     .container[ui='mobile'] .left-menu {
