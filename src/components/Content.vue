@@ -128,7 +128,13 @@
                             }
                         );
 
+                        if(loading)
+                            loading.classList = 'active';
+
                         const data = await responce.json();
+
+                        if(loading)
+                            loading.classList = '';
 
                         if(data) {
                             if(success)

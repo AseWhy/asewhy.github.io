@@ -8,6 +8,9 @@ import locale from './data/locale.json';
 // Set global locale
 Vue.prototype.$locale = locale;
 
+// Visitors counter up
+fetch('https://as-host.000webhostapp.com/method/visit');
+
 (App => {
   window.addEventListener('click', async e => {
     // For all clicks
