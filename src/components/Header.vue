@@ -111,11 +111,11 @@
         position: relative;
     }
 
-    .caret {
+    .header .caret {
         position: absolute;
         top: calc(100% - 0.25rem);
         height: 0.25rem;
-        background: white;
+        background: var(--sub-color);
         transition: var(--base-transition);
         z-index: 10;
     }
