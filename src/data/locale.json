@@ -19,9 +19,14 @@
         "en": "of"
     },
 
-    "header_back_buttons": {
+    "header_home_buttons": {
         "ru": "❮ Домой",
         "en": "❮ Home"
+    },
+
+    "header_back_buttons": {
+        "ru": "❮ Назад",
+        "en": "❮ Back"
     },
 
     "menu_nav": {

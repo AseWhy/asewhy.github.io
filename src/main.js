@@ -2,7 +2,6 @@ import Vue from 'vue';
 import App from './App';
 import store from './store';
 
-import { PageManager, HookManager } from './data/scripts/main';
 import locale from './data/locale.json';
 
 // Set global locale
@@ -12,6 +11,8 @@ Vue.prototype.$locale = locale;
 fetch('https://as-host.000webhostapp.com/method/visit');
 
 (App => {
+  const { PageManager, HookManager } = require('./data/scripts/main');
+
   window.addEventListener('click', async e => {
     // For all clicks
     if(e.target.hasAttribute('a-href')) {

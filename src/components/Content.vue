@@ -59,8 +59,7 @@
 <script>
     import NavBar from './NavBar';
 
-    import { mapGetters } from 'vuex';
-    import InitEditor from '../data/scripts/markdown-editor';
+    import { mapActions, mapGetters } from 'vuex';
 
     export default {
         name: 'v-content',
@@ -69,86 +68,13 @@
             NavBar
         },
 
+        methods:  mapActions([ 'updateContent' ]),
+
         computed: mapGetters([ 'pageContent', 'pageData', 'pageError', 'pageSection' ]),
-    
-        updated: async () => {
-            const mdtargets = document.querySelectorAll('.mdtarget');
 
-            for(let value of mdtargets) {
-                if(value.hasAttribute('inited'))
-                    continue;
+        updated() { this.updateContent() },
 
-                await InitEditor(value);
-
-                value.setAttribute('inited', 1);
-            }
-
-            const forms = document.querySelectorAll('form');
-
-            for(let value of forms) {
-                (async value => {
-                    let sending = false;
-
-                    const success = value.querySelector('[type="success"]')
-                        , error = value.querySelector('[type="error"]')
-                        , fail = value.querySelector('[type="check-fail"]')
-                        , loading = value.querySelector('[type="loading"]');
-
-                    if(value.getAttribute('check')) {
-                        const responce = await fetch(value.getAttribute('check'));
-                        const json = await responce.json();
-
-                        if(!json) {
-                            if(loading)
-                                loading.classList = '';
-                            if(fail)
-                                fail.classList = 'active';
-                        } else {
-                            if(loading)
-                                loading.classList = '';
-                        }
-                    } else {
-                        if(loading)
-                            loading.classList = '';
-                    }
-
-                    value.onsubmit = async (e) => {
-                        e.preventDefault();
-
-                        if(sending)
-                            return;
-
-                        sending = true;
-
-                        const responce = await fetch(
-                            value.action,
-                            {
-                                method: 'post',
-                                body: new FormData(value)
-                            }
-                        );
-
-                        if(loading)
-                            loading.classList = 'active';
-
-                        const data = await responce.json();
-
-                        if(loading)
-                            loading.classList = '';
-
-                        if(data) {
-                            if(success)
-                                success.classList = 'active';
-                        } else {
-                            if(error)
-                                error.classList = 'active';
-                        }
-
-                        sending = false;
-                    }
-                })(value);
-            }
-        }
+        mounted() { this.updateContent() }
     }
 </script>
 
@@ -190,6 +116,18 @@
         width: 100%;
     }
     
+    .content-data .preview {
+        width: 300px;
+        margin: 0.25rem;
+        border: none;
+        background-color: var(--default-color);
+        border: 1px solid var(--sub-color);
+        display: block;
+        padding: 0.25rem;
+        margin-top: 1rem;
+        z-index: 0;
+    }
+
     .timeline-data-container {
         display: inline-block;
     }
@@ -231,7 +169,7 @@
         height: 0;
         display: none;
         opacity: 0;
-        z-index: 0;
+        z-index: 1;
     }
 
     .contentlink {

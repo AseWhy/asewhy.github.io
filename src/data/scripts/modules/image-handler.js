@@ -1,8 +1,9 @@
-import { ResizeObserver } from 'resize-observer';
-
 import { DefaultProgram } from '../../programs/default';
 
 import { Module } from "../astecoms-module";
+
+if(!ResizeObserver)
+    window.ResizeObserver = import('resize-observer');
 
 export const ImageHandler = new class ImageHandler extends Module {
     constructor(){

@@ -8,14 +8,20 @@ import { EVD_PAGE_LOAD_OK } from '@/data/scripts/events-types';
 import { PageManager } from '@/data/scripts/main';
 
 // Import mutations
-import { HEADER_DATA_UPDATE, HIDE_MENU, SHOW_MENU, SWITCH_MENU_VISIBILITY, SWITCH_PAGE_SELECTION } from '../mutations';
+import { HEADER_DATA_UPDATE, HIDE_MENU, RESTORE_ORIGINALS_BUTTONS, SHOW_BACK_BUTTON, SHOW_MENU, SWITCH_MENU_VISIBILITY, SWITCH_PAGE_SELECTION } from '../mutations';
 
 // Declare home route
 const HOME = 'route:router';
 
 // Export locales
 import locale from '@/data/locale.json';
+
+// Section events
 import { EVD_SECTION_LOAD_OK } from '../../data/scripts/events-types';
+import Vue from 'vue';
+
+// Buttons
+const BUTTONS_BUFFER = new Array();
 
 export default {
     actions: {
@@ -36,6 +42,14 @@ export default {
 
         showMenu(ctx){
             ctx.commit(SHOW_MENU);
+        },
+
+        showBackButton(ctx, onback) {
+            ctx.commit(SHOW_BACK_BUTTON, onback);
+        },
+
+        restoreOriginalsButtons(ctx) {
+            ctx.commit(RESTORE_ORIGINALS_BUTTONS);
         }
     },
 
@@ -46,7 +60,7 @@ export default {
                     {
                         highlight: true,
                         target: HOME,
-                        label: locale['header_back_buttons']
+                        label: locale['header_home_buttons']
                     }
                 ], data.buttons);
             } else {
@@ -73,6 +87,34 @@ export default {
 
         [SHOW_MENU](state){
             state.headerMenuActive = true;
+        },
+
+        [SHOW_BACK_BUTTON](state, onback) {
+            if(!state.backbutton) {
+                BUTTONS_BUFFER.push(...state.headerButtons);
+
+                state.headerButtons.splice(0, Infinity, {
+                    highlight: true,
+                    target: HOME,
+                    clicked: onback,
+                    label: locale['header_back_buttons']
+                });
+
+                state.backbutton = true;
+            }
+        },
+
+        [RESTORE_ORIGINALS_BUTTONS](state) {
+            if(state.backbutton) {
+                state.headerButtons.splice(0, Infinity);
+                
+                Vue.nextTick(() => {
+                    state.headerButtons.push(...BUTTONS_BUFFER);
+                    BUTTONS_BUFFER.splice(0, Infinity);
+                })
+
+                state.backbutton = false;
+            }
         }
     },
 
@@ -88,6 +130,8 @@ export default {
         headerButtons: [
 
         ],
+
+        backbutton: false,
 
         headerMenuActive: false
     },

@@ -27,8 +27,8 @@
                     <span 
                         v-for="(value, index) in headerButtons" 
                         :key='index' 
-                        :class="{highlight: value.highlight}" 
-                        v-on:click="hideMenu()"
+                        :class="{ highlight: value.highlight }" 
+                        v-on:click="value.clicked && value.clicked() || hideMenu()"
                     >
                         <button 
                             class='header-button' 
@@ -100,7 +100,7 @@
         position: fixed;
         display: block;
         padding: 0.5rem;
-        z-index: 1000;
+        z-index: 9;
         left: 0;
         top: 0;
         background-color: var(--default-color);

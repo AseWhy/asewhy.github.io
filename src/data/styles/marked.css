@@ -43,6 +43,10 @@
     border-radius: 0.5rem;
 }
 
+.editor-toolbar.fullscreen {
+    z-index: 1000;
+}
+
 .editor-toolbar.fullscreen::before, .editor-toolbar.fullscreen::after {
     display: none;
 }

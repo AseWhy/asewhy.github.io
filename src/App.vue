@@ -8,7 +8,10 @@
 
     <v-modal/>
     <v-head/>
+    
     <v-content/>
+    <v-preview/>
+
     <v-footer/>
   </div>
 </template>
@@ -18,6 +21,7 @@
   import Head from './components/Head';
   import Content from './components/Content';
   import Footer from './components/Footer';
+  import Preview from './components/Preview';
   import Modal from './components/Modal';
 
   import { mapActions } from 'vuex';
@@ -79,7 +83,8 @@
       'v-head': Head,
       'v-content': Content,
       'v-footer': Footer,
-      'v-modal': Modal
+      'v-modal': Modal,
+      'v-preview': Preview
     }
   }
 </script>

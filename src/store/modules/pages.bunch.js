@@ -5,13 +5,16 @@ import { LOGO } from '@/data/scripts/static';
 import { EVD_SECTION_LOAD_OK, EVD_SECTION_LOAD_START, EVD_PAGE_LOAD_OK, EVD_PAGE_LOAD_ERROR} from '@/data/scripts/events-types';
 
 // Import mutations
-import { PAGE_LOAD_ERROR, SHOW_LOADER, START_PAGE_LOAD, STOP_PAGE_LOAD, HIDE_LOADER, SECTION_LOAD_END, PAGE_LOAD_END, SWITCH_MENU_LANGUAGE } from '../mutations';
+import { PAGE_LOAD_ERROR, SHOW_LOADER, START_PAGE_LOAD, STOP_PAGE_LOAD, HIDE_LOADER, SECTION_LOAD_END, PAGE_LOAD_END, SWITCH_MENU_LANGUAGE, SWITCH_PREVIEW, PREVIEW_LOADED } from '../mutations';
 
 // Import managers
 import { PageManager } from '@/data/scripts/main';
 
 // Static data
 import { DEFAULT_LANGUAGE } from '../../data/scripts/static';
+
+//
+import InitEditor from '../../data/scripts/markdown-editor';
 
 // Locale
 import locale from '../../data/locale.json'
@@ -40,6 +43,93 @@ function goTo(target_d){
     }
 };
 
+
+async function pagePostProcessing(ctx) {
+    // Page post processing
+    const mdtargets = document.querySelectorAll('.content-data .mdtarget');
+
+    for(let value of mdtargets) {
+        if(value.hasAttribute('inited'))
+            continue;
+
+        await InitEditor(value);
+
+        value.setAttribute('inited', 1);
+    }
+
+    const forms = document.querySelectorAll('form');
+
+    for(let value of forms) {
+        (async value => {
+            let sending = false;
+
+            const success = value.querySelector('.content-data [type="success"]')
+                , error = value.querySelector('.content-data [type="error"]')
+                , fail = value.querySelector('.content-data [type="check-fail"]')
+                , loading = value.querySelector('.content-data [type="loading"]');
+
+            if(value.getAttribute('check')) {
+                const responce = await fetch(value.getAttribute('check'));
+                const json = await responce.json();
+
+                if(!json) {
+                    if(loading)
+                        loading.classList = '';
+                    if(fail)
+                        fail.classList = 'active';
+                } else {
+                    if(loading)
+                        loading.classList = '';
+                }
+            } else {
+                if(loading)
+                    loading.classList = '';
+            }
+
+            value.onsubmit = async (e) => {
+                e.preventDefault();
+
+                if(sending)
+                    return;
+
+                sending = true;
+
+                const responce = await fetch(
+                    value.action,
+                    {
+                        method: 'post',
+                        body: new FormData(value)
+                    }
+                );
+
+                if(loading)
+                    loading.classList = 'active';
+
+                const data = await responce.json();
+
+                if(loading)
+                    loading.classList = '';
+
+                if(data) {
+                    if(success)
+                        success.classList = 'active';
+                } else {
+                    if(error)
+                        error.classList = 'active';
+                }
+
+                sending = false;
+            }
+        })(value);
+    }
+
+    const previews = document.querySelectorAll('.content-data .preview');
+
+    for(let preview of previews) {
+        preview.addEventListener('click', ctx.commit.bind(ctx, SWITCH_PREVIEW, preview.getAttribute('src')));
+    }
+}
+
 export default {
     actions: {
         watchPage(ctx){
@@ -67,19 +157,35 @@ export default {
                 left = setTimeout(() => {
                     left = null;
 
-                    ctx.commit(HIDE_LOADER, data);
-
                     goTo(data.target);
+
+                    ctx.commit(HIDE_LOADER, data);
                 }, 500);
             } else {
-                ctx.commit(HIDE_LOADER, data);
-
                 goTo(data.target);
+
+                ctx.commit(HIDE_LOADER, data);
             }
         },
 
         switchLang(ctx){
             ctx.commit(SWITCH_MENU_LANGUAGE);
+        },
+
+        updateContent(ctx){
+            pagePostProcessing(ctx);
+        },
+
+        hidePreview(ctx) {
+            ctx.commit(SWITCH_PREVIEW, null)
+        },
+
+        activePreview(ctx, path) {
+            ctx.commit(SWITCH_PREVIEW, path)
+        },
+
+        previewLoaded(ctx) {
+            ctx.commit(PREVIEW_LOADED);
         }
     },
 
@@ -130,11 +236,11 @@ export default {
                     state.pageSection.lang_origin = 'left';
                 else
                     state.pageSection.lang_origin = 'right';
-            })()
+            })();
         },
 
         // Мутатор изменения языка
-        [SWITCH_MENU_LANGUAGE](state, data) {
+        [SWITCH_MENU_LANGUAGE](state) {
             const languages = Object.keys(locale.languages)
                 , current = languages.indexOf(PageManager.language);
             
@@ -149,6 +255,15 @@ export default {
                 state.pageSection.lang_origin = 'right';
 
             PageManager.update();
+        },
+
+        [SWITCH_PREVIEW](state, data) {
+            state.previewData.preview = data;
+            state.previewData.previewLoaded = false;
+        },
+
+        [PREVIEW_LOADED](state) {
+            state.previewData.previewLoaded = true;
         }
     },
 
@@ -171,6 +286,11 @@ export default {
             loadsrc: LOGO
         },
 
+        previewData: {
+            preview: null,
+            previewLoaded: false,
+        },
+
         pageError: {
             status: false,
             code: -1,
@@ -185,6 +305,10 @@ export default {
 
         pageError(state){
             return state.pageError;
+        },
+
+        previewData(state) {
+            return state.previewData;
         },
 
         pageSection(state){
