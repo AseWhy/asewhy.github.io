@@ -54,21 +54,22 @@
 
             async removeOrder(id) {
                 if(await AdminApi.removeOrder(id)) {
+                    await this.fetchData();
+
                     this.$forceUpdate();
                 }
+            },
+
+            async fetchData(){
+                this.$data.visitors = await AdminApi.fetchVisitors();
+                this.$data.orders = await AdminApi.fetchOrders();
             }
         },
 
         computed: mapGetters([ 'adminData' ]),
 
-        async mounted(){
-            this.$data.visitors = await AdminApi.fetchVisitors();
-            this.$data.orders = await AdminApi.fetchOrders();
-        },
-
-        async updated(){
-            this.$data.visitors = await AdminApi.fetchVisitors();
-            this.$data.orders = await AdminApi.fetchOrders();
+        mounted(){
+            this.fetchData();
         }
     }
 </script>
