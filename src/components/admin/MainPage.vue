@@ -14,9 +14,17 @@
         <div class="orders">
             <div class="mask" v-if="orders != nell && orders.length != 0">
                 <div class="order-container" v-for="(order, index) in orders" :key="order.id + '.' + index">
-                    <h2> {{ order.header }}  <span class='created_at'> от {{ (new Date(order.created_at)).toLocaleString() }} </span> </h2>
-                    <div class="order-body" v-html="marked(order.body)">
-                    </div>
+                    <h2> {{ order.header }} 
+                        <span class='created_at'> от {{ (new Date(order.created_at)).toLocaleString() }} </span> 
+                    </h2>
+
+                    <div class="order-body" v-html="marked(order.body)"></div>
+
+                    <p class="sender-data">
+                        <span class='from'> {{ order.from_name }} </span>
+                        <span class='mail'> {{ order.from_email }} </span>
+                    </p>
+                    <hr>
                 </div>
             </div>
             <p v-else> Кажется сообщений нет... </p>
@@ -53,13 +61,28 @@
 </script>
 
 <style>
-    .orders {
+    .sender-data > span {
+        font-family: monospace;
+    }
+
+    .sender-data > span:first-child { 
+        color: var(--cyan);
+    }
+
+    .sender-data > span:last-child { 
+        color: var(--green);
+    }
+
+    .orders, .common-info {
         padding: 0.5rem;
     }
 
     .order-body {
-        padding: 0.25rem;
+        padding: 0.5rem;
         margin-bottom: 0.5rem;
+        background-color: var(--default-dirty-color);
+        border-radius: 0.5rem;
+        margin-top: 0.25rem;
     }
 
     .order-container > h2 {
