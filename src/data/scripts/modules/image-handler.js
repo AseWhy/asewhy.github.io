@@ -2,8 +2,7 @@ import { DefaultProgram } from '../../programs/default';
 
 import { Module } from "../astecoms-module";
 
-if(!ResizeObserver)
-    window.ResizeObserver = import('resize-observer');
+let _rc = window.ResizeObserver;
 
 export const ImageHandler = new class ImageHandler extends Module {
     constructor(){
@@ -11,7 +10,7 @@ export const ImageHandler = new class ImageHandler extends Module {
 
         this._context = null;
         this._canvas = null;
-        this._observer = new ResizeObserver(this.__resize.bind(this));
+        this._observer = _rc ? new _rc(this.__resize.bind(this)) : null;
         this._programs = new Array();
         this._buffer = null;
         this._step = 0;
@@ -113,7 +112,12 @@ export const ImageHandler = new class ImageHandler extends Module {
         })
     }
 
-    draw(canvas) {
+    async draw(canvas) {
+        if(this._observer == null) {
+            _rc = await import('resize-observer');
+            this._observer = new _rc(this.__resize.bind(this));
+        }
+
         this._observer.observe(canvas);
         this._canvas = canvas;
 
@@ -143,7 +147,9 @@ export const ImageHandler = new class ImageHandler extends Module {
     }
 
     stop(){
-        this._observer.unobserve(this._canvas);
+        if(this._observer != null)
+            this._observer.unobserve(this._canvas);
+            
         this._canvas = null;
         this._context = null;
     }

@@ -16,3 +16,7 @@ export const RESTORE_ORIGINALS_BUTTONS = 'restoreOriginalsButtons';
 export const SHOW_BACK_BUTTON = 'showBackButton';
 export const HIDE_MENU = 'hideMenu';
 export const SHOW_MENU = 'showMenu';
+export const FETCH_ADMIN_ACCESS = 'fetchAdminAccess';
+export const SHOW_ADMIN_PANEL = 'showAdminPanel';
+export const HIDE_ADMIN_PANEL = 'hideAdminPanel';
+export const GO_TO_ADMIN_ROUTE = 'goToAdminRoute';

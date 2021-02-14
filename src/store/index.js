@@ -42,6 +42,16 @@ export default new Vuex.Store({
     getters: {
         appTheme(state){
             return state.appTheme;
+        },
+
+        isWebGlSupports() {
+            try{
+                var canvas = document.createElement( 'canvas' ); 
+                return !! window.WebGLRenderingContext && ( 
+                    canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' ) );
+            }catch( e ) { 
+                return false;
+            } 
         }
     },
 

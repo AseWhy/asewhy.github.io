@@ -9,7 +9,9 @@
     <v-modal/>
     <v-head/>
     
-    <v-content/>
+    <v-content v-if="!adminData.panel"/>
+    <v-admin v-else/>
+    
     <v-preview/>
 
     <v-footer/>
@@ -23,13 +25,16 @@
   import Footer from './components/Footer';
   import Preview from './components/Preview';
   import Modal from './components/Modal';
+  import Admin from './components/Admin';
 
-  import { mapActions } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
 
   export default {
     name: 'App',
 
     methods: mapActions([ 'watchPage', 'watchHeader', 'watchTheme']),
+
+    computed: mapGetters([ 'adminData' ]),
 
     data() {
       return {
@@ -84,15 +89,16 @@
       'v-content': Content,
       'v-footer': Footer,
       'v-modal': Modal,
-      'v-preview': Preview
+      'v-preview': Preview,
+      'v-admin': Admin
     }
   }
 </script>
 
 <style>
   /* Local fonts */
-  @import url(bootstrap/dist/css/bootstrap.min.css);
-  @import url(simplemde/dist/simplemde.min.css);
+  @import 'bootstrap/dist/css/bootstrap.min.css';
+  @import 'simplemde/dist/simplemde.min.css';
 
   /* Google fonts */
   @import url(https://fonts.googleapis.com/css2?family=Fira+Code:wght@300&display=swap);

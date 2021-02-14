@@ -5,19 +5,37 @@ import { LOGO } from '@/data/scripts/static';
 import { EVD_SECTION_LOAD_OK, EVD_SECTION_LOAD_START, EVD_PAGE_LOAD_OK, EVD_PAGE_LOAD_ERROR} from '@/data/scripts/events-types';
 
 // Import mutations
-import { PAGE_LOAD_ERROR, SHOW_LOADER, START_PAGE_LOAD, STOP_PAGE_LOAD, HIDE_LOADER, SECTION_LOAD_END, PAGE_LOAD_END, SWITCH_MENU_LANGUAGE, SWITCH_PREVIEW, PREVIEW_LOADED } from '../mutations';
+import { 
+    PAGE_LOAD_ERROR,
+    SHOW_LOADER, 
+    START_PAGE_LOAD, 
+    STOP_PAGE_LOAD, 
+    HIDE_LOADER, 
+    SECTION_LOAD_END, 
+    PAGE_LOAD_END, 
+    SWITCH_MENU_LANGUAGE, 
+    SWITCH_PREVIEW, 
+    PREVIEW_LOADED,
+    FETCH_ADMIN_ACCESS,
+    SHOW_ADMIN_PANEL,
+    HIDE_ADMIN_PANEL,
+    GO_TO_ADMIN_ROUTE
+} from '../mutations';
 
 // Import managers
 import { PageManager } from '@/data/scripts/main';
 
+// Import admin api
+import { AdminApi } from '@/data/scripts/main';
+
 // Static data
-import { DEFAULT_LANGUAGE } from '../../data/scripts/static';
+import { DEFAULT_LANGUAGE } from '@/data/scripts/static';
 
 //
-import InitEditor from '../../data/scripts/markdown-editor';
+import InitEditor from '@/data/scripts/markdown-editor';
 
 // Locale
-import locale from '../../data/locale.json'
+import locale from '@/data/locale.json'
 
 // Биндим таймаут на этот адрес, чтобы в случе чего его сбросить.
 let left;
@@ -43,7 +61,7 @@ function goTo(target_d){
     }
 };
 
-
+// Постобработка сраницы
 async function pagePostProcessing(ctx) {
     // Page post processing
     const mdtargets = document.querySelectorAll('.content-data .mdtarget');
@@ -186,6 +204,22 @@ export default {
 
         previewLoaded(ctx) {
             ctx.commit(PREVIEW_LOADED);
+        },
+
+        activeAdminMode(ctx) {
+            ctx.commit(SHOW_ADMIN_PANEL);
+        },
+
+        disableAdminMode(ctx) {
+            ctx.commit(HIDE_ADMIN_PANEL);
+        },
+
+        goToAdminRoute(ctx, route){
+            ctx.commit(GO_TO_ADMIN_ROUTE, route);
+        },
+
+        async fetchAdminAccess(ctx) {
+            ctx.commit(FETCH_ADMIN_ACCESS, await AdminApi.fetchAccess());
         }
     },
 
@@ -264,6 +298,22 @@ export default {
 
         [PREVIEW_LOADED](state) {
             state.previewData.previewLoaded = true;
+        },
+
+        [FETCH_ADMIN_ACCESS](state, access) {
+            state.adminData.access = access ? 1 : 2;
+        },
+
+        [SHOW_ADMIN_PANEL](state) {
+            state.adminData.panel = true;
+        },
+
+        [HIDE_ADMIN_PANEL](state) {
+            state.adminData.panel = false;
+        },
+
+        [GO_TO_ADMIN_ROUTE](state, route) {
+            state.adminData.route = route;
         }
     },
 
@@ -291,6 +341,22 @@ export default {
             previewLoaded: false,
         },
 
+        adminData: {
+            active: AdminApi.is_admin_active || false,
+            // 0 - pending acceess
+            // 1 - allow access
+            // 2 - access denied
+            access: 0,
+            // 
+            // State of admin panel
+            // 
+            panel: false,
+            // 
+            // Current admin route
+            // 
+            route: 'index'
+        },
+
         pageError: {
             status: false,
             code: -1,
@@ -313,6 +379,10 @@ export default {
 
         pageSection(state){
             return state.pageSection;
+        },
+
+        adminData(state) {
+            return state.adminData;
         }
     }
 };
