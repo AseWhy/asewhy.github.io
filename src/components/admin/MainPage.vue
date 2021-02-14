@@ -4,7 +4,7 @@
 
         <table>
             <tr>
-                <td> Количество уникальных посетителей за сутки </td>
+                <td> Количество уникальных посетителей за сутки: </td>
                 <td> {{ visitors ? visitors : 'Pending...' }} </td>
             </tr>
         </table>
@@ -23,6 +23,8 @@
                     <p class="sender-data">
                         <span class='from'> {{ order.from_name }} </span>
                         <span class='mail'> {{ order.from_email }} </span>
+
+                        <a v-on:click="removeOrder(order.id)" class='rm-order-button'> Удалить </a>
                     </p>
                     <hr>
                 </div>
@@ -48,7 +50,13 @@
         },
 
         methods: { 
-            marked
+            marked,
+
+            async removeOrder(id) {
+                if(await AdminApi.removeOrder(id)) {
+                    this.$forceUpdate();
+                }
+            }
         },
 
         computed: mapGetters([ 'adminData' ]),
@@ -56,11 +64,26 @@
         async mounted(){
             this.$data.visitors = await AdminApi.fetchVisitors();
             this.$data.orders = await AdminApi.fetchOrders();
+        },
+
+        async updated(){
+            this.$data.visitors = await AdminApi.fetchVisitors();
+            this.$data.orders = await AdminApi.fetchOrders();
         }
     }
 </script>
 
 <style>
+    .rm-order-button {
+        color: var(--danger);
+        cursor: pointer;
+    }
+
+    .rm-order-button:hover {
+        color: var(--danger);
+        text-decoration: underline;
+    }
+
     .sender-data > span {
         font-family: monospace;
     }

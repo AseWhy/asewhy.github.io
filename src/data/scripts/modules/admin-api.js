@@ -81,4 +81,17 @@ export const AdminApi = new class AdminApi extends Module {
             return false;
         }
     }
+
+    async removeOrder(id) {
+        try {
+            const responce = await fetch(API_HOST + 'method/remove_order?token=' + this.access_token + '&id=' + id);
+
+            if(responce.status === 200)
+                return responce.json();
+            else
+                return false;
+        } catch (e) {
+            return false;
+        }
+    }
 }
