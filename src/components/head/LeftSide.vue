@@ -69,7 +69,7 @@
         transition: var(--base-transition);
         position: relative;
         height: 100%;
-        width: 200%;
+        min-width: 200%;
         margin: 0px;
         left: 0px;
         padding: 0px;

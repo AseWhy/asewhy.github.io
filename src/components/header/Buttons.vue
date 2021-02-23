@@ -91,7 +91,8 @@
     .head-mask .header-buttons {
         grid-area: buttons;
         overflow-y: hidden;
-        overflow-x: scroll;
+        overflow-x: auto;
+        scrollbar-width: thin;
     }
 
     .buttons-mask {
