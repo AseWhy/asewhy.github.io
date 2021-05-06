@@ -83,16 +83,16 @@
         margin: auto;
         animation: load 0.85s infinite;
     }
-    
+
     .content-data {
         z-index: -1;
-        padding: 0.5rem;
+        padding: 1.5rem 1rem;
     }
 
     .timeline-data-container {
         display: inline-block;
     }
-    
+
     .timeline {
         text-align: left;
         border-left: 0.125rem solid;
@@ -176,7 +176,7 @@
     }
 
     .container[ui='mobile'] .content {
-        grid-template-areas: 
+        grid-template-areas:
                         'content'
                         'info';
         grid-template-columns: max-content max-content;
