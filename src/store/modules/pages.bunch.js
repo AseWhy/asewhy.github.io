@@ -2,37 +2,27 @@
 import { LOGO } from '@/data/scripts/static';
 
 // Import events
-import { EVD_SECTION_LOAD_OK, EVD_SECTION_LOAD_START, EVD_PAGE_LOAD_OK, EVD_PAGE_LOAD_ERROR} from '@/data/scripts/events-types';
+import { EVD_SECTION_LOAD_OK, EVD_SECTION_LOAD_START, EVD_PAGE_LOAD_OK, EVD_PAGE_LOAD_ERROR } from '@/data/scripts/events-types';
 
 // Import mutations
-import { 
-    PAGE_LOAD_ERROR,
-    SHOW_LOADER, 
-    START_PAGE_LOAD, 
-    STOP_PAGE_LOAD, 
-    HIDE_LOADER, 
-    SECTION_LOAD_END, 
-    PAGE_LOAD_END, 
-    SWITCH_MENU_LANGUAGE, 
-    SWITCH_PREVIEW, 
-    PREVIEW_LOADED,
-    FETCH_ADMIN_ACCESS,
-    SHOW_ADMIN_PANEL,
-    HIDE_ADMIN_PANEL,
-    GO_TO_ADMIN_ROUTE
+import {
+  PAGE_LOAD_ERROR,
+  SHOW_LOADER,
+  START_PAGE_LOAD,
+  STOP_PAGE_LOAD,
+  HIDE_LOADER,
+  SECTION_LOAD_END,
+  PAGE_LOAD_END,
+  SWITCH_MENU_LANGUAGE,
+  SWITCH_PREVIEW,
+  PREVIEW_LOADED
 } from '../mutations';
 
 // Import managers
 import { PageManager } from '@/data/scripts/main';
 
-// Import admin api
-import { AdminApi } from '@/data/scripts/main';
-
 // Static data
 import { DEFAULT_LANGUAGE } from '@/data/scripts/static';
-
-//
-import InitEditor from '@/data/scripts/markdown-editor';
 
 // Locale
 import locale from '@/data/locale.json'
@@ -49,7 +39,7 @@ function goTo(target_d){
         if(target) {
             const rect = target.getBoundingClientRect();
 
-            document.body.scrollBy({ 
+            document.body.scrollBy({
                 top: rect.top - header.offsetHeight,
                 behavior: 'smooth'
             });
@@ -63,84 +53,6 @@ function goTo(target_d){
 
 // Постобработка сраницы
 async function pagePostProcessing(ctx) {
-    // Page post processing
-    const mdtargets = document.querySelectorAll('.content-data .mdtarget');
-
-    for(let value of mdtargets) {
-        if(value.hasAttribute('inited'))
-            continue;
-
-        await InitEditor(value);
-
-        value.setAttribute('inited', 1);
-    }
-
-    const forms = document.querySelectorAll('form');
-
-    for(let value of forms) {
-        (async value => {
-            let sending = false;
-
-            const success = value.querySelector('.content-data [type="success"]')
-                , error = value.querySelector('.content-data [type="error"]')
-                , fail = value.querySelector('.content-data [type="check-fail"]')
-                , loading = value.querySelector('.content-data [type="loading"]');
-
-            if(value.getAttribute('check')) {
-                const responce = await fetch(value.getAttribute('check'));
-                const json = await responce.json();
-
-                if(!json) {
-                    if(loading)
-                        loading.classList = '';
-                    if(fail)
-                        fail.classList = 'active';
-                } else {
-                    if(loading)
-                        loading.classList = '';
-                }
-            } else {
-                if(loading)
-                    loading.classList = '';
-            }
-
-            value.onsubmit = async (e) => {
-                e.preventDefault();
-
-                if(sending)
-                    return;
-
-                sending = true;
-
-                const responce = await fetch(
-                    value.action,
-                    {
-                        method: 'post',
-                        body: new FormData(value)
-                    }
-                );
-
-                if(loading)
-                    loading.classList = 'active';
-
-                const data = await responce.json();
-
-                if(loading)
-                    loading.classList = '';
-
-                if(data) {
-                    if(success)
-                        success.classList = 'active';
-                } else {
-                    if(error)
-                        error.classList = 'active';
-                }
-
-                sending = false;
-            }
-        })(value);
-    }
-
     const previews = document.querySelectorAll('.content-data .preview');
 
     for(let preview of previews) {
@@ -204,22 +116,6 @@ export default {
 
         previewLoaded(ctx) {
             ctx.commit(PREVIEW_LOADED);
-        },
-
-        activeAdminMode(ctx) {
-            ctx.commit(SHOW_ADMIN_PANEL);
-        },
-
-        disableAdminMode(ctx) {
-            ctx.commit(HIDE_ADMIN_PANEL);
-        },
-
-        goToAdminRoute(ctx, route){
-            ctx.commit(GO_TO_ADMIN_ROUTE, route);
-        },
-
-        async fetchAdminAccess(ctx) {
-            ctx.commit(FETCH_ADMIN_ACCESS, await AdminApi.fetchAccess());
         }
     },
 
@@ -258,26 +154,25 @@ export default {
             state.pageSection.date = data.modified ? data.modified.toLocaleDateString() : null;
             state.pageSection.path = PageManager.path.join('/');
             state.pageSection.content = data.content;
-            state.pageSection.data = data.PageData;
+            state.pageSection.data = data.pageData;
             state.pageSection.lang = PageManager.language;
             state.pageSection.source = PageManager.source;
 
-            (() => {
-                const languages = Object.keys(locale.languages)
-                    , current = languages.indexOf(PageManager.language);
+            const languages = Object.keys(locale.languages)
+            const current = languages.indexOf(PageManager.language);
 
-                if(current + 2 == languages.length)
-                    state.pageSection.lang_origin = 'left';
-                else
-                    state.pageSection.lang_origin = 'right';
-            })();
+            if(current + 2 == languages.length) {
+                state.pageSection.lang_origin = 'left';
+            } else {
+                state.pageSection.lang_origin = 'right';
+            }
         },
 
         // Мутатор изменения языка
         [SWITCH_MENU_LANGUAGE](state) {
             const languages = Object.keys(locale.languages)
-                , current = languages.indexOf(PageManager.language);
-            
+            const current = languages.indexOf(PageManager.language);
+
             if(current + 1 == languages.length) {
                 PageManager.language = state.pageSection.lang = languages[0];
             } else
@@ -298,22 +193,6 @@ export default {
 
         [PREVIEW_LOADED](state) {
             state.previewData.previewLoaded = true;
-        },
-
-        [FETCH_ADMIN_ACCESS](state, access) {
-            state.adminData.access = access ? 1 : 2;
-        },
-
-        [SHOW_ADMIN_PANEL](state) {
-            state.adminData.panel = true;
-        },
-
-        [HIDE_ADMIN_PANEL](state) {
-            state.adminData.panel = false;
-        },
-
-        [GO_TO_ADMIN_ROUTE](state, route) {
-            state.adminData.route = route;
         }
     },
 
@@ -341,22 +220,6 @@ export default {
             previewLoaded: false,
         },
 
-        adminData: {
-            active: AdminApi.is_admin_active || false,
-            // 0 - pending acceess
-            // 1 - allow access
-            // 2 - access denied
-            access: 0,
-            // 
-            // State of admin panel
-            // 
-            panel: false,
-            // 
-            // Current admin route
-            // 
-            route: 'index'
-        },
-
         pageError: {
             status: false,
             code: -1,
@@ -379,10 +242,6 @@ export default {
 
         pageSection(state){
             return state.pageSection;
-        },
-
-        adminData(state) {
-            return state.adminData;
         }
     }
 };

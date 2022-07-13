@@ -3,10 +3,12 @@ import { DEFAULT_LANGUAGE } from '../static';
 import { Module } from '../astecoms-module';
 
 import marked from 'marked';
+
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 import xml from 'highlight.js/lib/languages/xml';
-import Expand from '../markdown-expand';
+
+import expand from '../markdown-expand';
 
 hljs.registerLanguage('js', javascript);
 hljs.registerLanguage('html', xml);
@@ -110,7 +112,7 @@ export const PageManager = new class PageManager extends Module {
 
     update() {
         this._cache.clear();
-        
+
         return this.goTo(this._path[1], this._path[2]);
     }
 
@@ -137,22 +139,22 @@ export const PageManager = new class PageManager extends Module {
             case 'ru':
             case 'en':
                 this._language = value;
-                break;
+            break;
             case 'us':
                 this._language = 'en';
-                break;
+            break;
             default:
                 this._language = DEFAULT_LANGUAGE;
-                break;
+            break;
         }
-        
+
         this.set('language', this._language);
         this._args.set('lang', this._language);
 
         this.updateLocation();
     }
 
-    get language(){ 
+    get language(){
         return this._language;
     }
 
@@ -212,7 +214,7 @@ export const PageManager = new class PageManager extends Module {
 
             return;
         }
-        
+
         try {
             this._page_data = new LocationData(await request.json());
             this._cache = new Map();
@@ -261,29 +263,31 @@ export const PageManager = new class PageManager extends Module {
 
                     if(request.status != 200) {
                         this.emit(EVD_PAGE_LOAD_ERROR, new PageManagerEvent({ code: request.status, message: 'Error loading page' }));
-            
+
                         return;
                     }
 
-                    const PageData = new Map()
-                        , data = Expand(
-                                await request.text()
-                            ).replace(/^@define[ \t]+([^ \t]+)[ \t]+([^\n]*)$/gm, (m, p1, p2) => {
-                                PageData.set(p1, p2);
-                
-                                return '';
-                            })
-                        , modified = request.headers.get('last-modified') ? new Date(request.headers.get('last-modified')) : null;
+                    const pageData = new Map()
 
-                    this._cache.set(section, { data, modified, PageData });
+                    const data = expand(
+                        await request.text()
+                    ).replace(/^@define[ \t]+([^ \t]+)[ \t]+([^\n]*)$/gm, (m, p1, p2) => {
+                        pageData.set(p1, p2);
 
-                    this.emit(EVD_SECTION_LOAD_OK, new PageManagerEvent({ 
+                        return '';
+                    })
+
+                    const modified = request.headers.get('last-modified') ? new Date(request.headers.get('last-modified')) : null;
+
+                    this._cache.set(section, { data, modified, pageData });
+
+                    this.emit(EVD_SECTION_LOAD_OK, new PageManagerEvent({
                         content: marked(
                             data
                         ),
                         target,
                         modified,
-                        PageData,
+                        pageData,
                         path: this._path,
                         currently
                     }));
@@ -292,15 +296,15 @@ export const PageManager = new class PageManager extends Module {
                 } else {
                     const cache = this._cache.get(section);
 
-                    this.emit(EVD_SECTION_LOAD_OK, new PageManagerEvent({ 
+                    this.emit(EVD_SECTION_LOAD_OK, new PageManagerEvent({
                         content: marked(
                             cache.data
-                        ), 
+                        ),
                         target,
                         modified: cache.modified,
-                        PageData: cache.PageData,
+                        pageData: cache.pageData,
                         path: this._path,
-                        currently 
+                        currently
                     }));
 
                     return;

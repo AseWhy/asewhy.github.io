@@ -1,14 +1,14 @@
 <template>
     <div class="header-buttons" :class="{ active: headerMenuActive }">
         <div class="buttons-mask">
-            <span 
-                v-for="(value, index) in headerButtons" 
-                :key='index' 
-                :class="{ highlight: value.highlight }" 
+            <span
+                v-for="(value, index) in headerButtons"
+                :key='index'
+                :class="{ highlight: value.highlight }"
                 v-on:click="value.clicked && value.clicked() || hideMenu()"
             >
-                <button 
-                    class='header-button' 
+                <button
+                    class='header-button'
                     :a-href='value.target'
                     :class="{
                         selected: headerData.selected == value.target
@@ -18,8 +18,8 @@
                     {{ value.label[pageSection.lang] }}
                 </button>
 
-                <span 
-                    class='header-sepo desktop-element' 
+                <span
+                    class='header-sepo desktop-element'
                     v-if="index + 1 < headerButtons.length"
                 >
                     /
@@ -36,9 +36,9 @@
 
     function resize(){
         const caret = document.querySelector('.caret')
-            , container = document.querySelector('.container');
+        const container = document.querySelector('.container');
 
-        if(container && container.getAttribute('ui') == 'desktop')
+        if(container && container.getAttribute('ui') == 'desktop') {
             if(this.$refs.movment && this.$refs.movment[0]) {
                 caret.style.left = this.$refs.movment[0].offsetLeft + 'px';
                 caret.style.width = this.$refs.movment[0].offsetWidth + 'px';
@@ -46,6 +46,7 @@
                 caret.style.left = '0px';
                 caret.style.width = '0px';
             }
+        }
     }
 
     let resize_t;
@@ -128,8 +129,6 @@
         grid-auto-rows: 3.5rem;
         background: var(--default-semi-opacity);
         transition: var(--base-transition);
-        backdrop-filter: blur(5rem);
-        opacity: 0;
         overflow-x: hidden;
     }
 
@@ -147,14 +146,6 @@
     }
 
     .container[ui='mobile'] .header-buttons.active .buttons-mask {
-        opacity: 1;
         width: min(80vw, 400pt);
-    }
-
-    @supports ((-webkit-backdrop-filter: blur(2rem)) or (backdrop-filter: blur(2rem))) {
-        .container[ui='mobile'] .buttons-mask {
-            background-color: var(--default-semi-opacity-1);
-            backdrop-filter: blur(2rem);
-        }
     }
 </style>

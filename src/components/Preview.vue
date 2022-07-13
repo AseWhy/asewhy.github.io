@@ -35,15 +35,17 @@
 
         clear(){
             for(let key in localStorage) {
-                if(key.substring(0, 6) === 'cache:')
+                if(key.substring(0, 6) === 'cache:') {
                     localStorage.removeItem(key);
+                }
             }
         }
     };
 
     async function loadFrame(frame, src) {
-        if(!src)
+        if(!src) {
             return;
+        }
 
         const host = src.split('/').slice(0, -1).join('/');
 
@@ -69,7 +71,6 @@
         }
 
         const parser = new DOMParser();
-
         const doc = parser.parseFromString(data, "text/html");
 
         let scripts = doc.getElementsByTagName('script');
@@ -79,8 +80,6 @@
         styles = [...styles].map(e => { e.remove(); return e.hasAttribute('href') ? ['href', e.getAttribute('href')] : ['raw', e.innerHTML]; })
 
         document.documentElement.innerHTML = doc.documentElement.innerHTML;
-
-        console.log(document);
 
         for(let style of styles) {
             if(style[0] == 'href') {
@@ -95,7 +94,7 @@
                     istyl(Cache.get(c_src));
                 } else {
                     const responce = await fetch(c_src)
-                        , raw = await responce.text();
+                    const raw = await responce.text();
 
                     Cache.set(c_src, raw);
 
@@ -118,7 +117,7 @@
                     ieval(Cache.get(c_src));
                 } else {
                     const responce = await fetch(c_src)
-                        , raw = await responce.text();
+                    const raw = await responce.text();
 
                     Cache.set(c_src, raw);
 
@@ -140,7 +139,9 @@
         },
 
         async updated(){
-            const _ = this;
+            const _ = this
+
+            console.log(_.previewData);
 
             if(_.previewData.preview != null) {
                 _.showBackButton(() => {

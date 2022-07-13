@@ -33,32 +33,4 @@
 * **Любимый редактор** - VS code
 * **Главное в людях** - Такого нет. Я тут главный.
 
-По всем вопросам можно написать мне вот [**сюда**](mailto:astecom@mail.ru) или вот [**сюда**](mailto:astecoms@gmail.com). Или можно заполнить форму ниже
-
-<form class='auto-form' action='https://as-host.000webhostapp.com/method/new_order' check='https://as-host.000webhostapp.com/method/can_create_order'>
-    <h5 style='margin: 0.25rem 0.5rem;'> Напишите мне! </h5>
-    <p>
-        У вас есть интересный проект, и вы хотите предложить мне в нем поучавствовать? Напишите мне на почту, которая указана
-        выше, или заполните эту форму. Я срадостью возьмусь даже за некоммерческий проект, если он покажется мне интересным.
-        <strong> Обязательно укажите способ обратной связи с вами. Я отвечу при первой такой возможности! </strong>
-    </p>
-    <input class='auto-input' name='header' type='text' minLength='5' required maxLength='50' placeholder='Заголовок'>
-    <input class='auto-input' name='name' type='text' minLength='5' required maxLength='50' placeholder='С кем имею честь?'>
-    <input class='auto-input' name='email' type='email' minLength='5' required maxLength='50' placeholder='Куда ответить?'>
-    <div class='auto-message'>
-        <input class='auto-input mdtarget' name='body' minLength='50' placeholder='Сообщение'>
-    </div>
-    <input class='auto-submit'  type='submit' value='Отправить'>
-    <div type='loading' class='active'>
-        Загрузка...
-    </div>
-    <div type='check-fail'>
-        Отправка сообщения доступна раз в сутки.
-    </div>
-    <div type='error'>
-        При отправке произошла ошибка, попробуйте позже.
-    </div>
-    <div type='success'>
-        Спасибо за сообщение! Я отвечу на него по возможности.
-    </div>
-</form>
+По всем вопросам можно написать мне вот [**сюда**](mailto:astecom@mail.ru) или вот [**сюда**](mailto:astecoms@gmail.com).

@@ -4,8 +4,6 @@
 
         <div class="section-info-data">
             <left-side/>
-
-            <right-side/>
         </div>
     </div>
 </template>
@@ -13,14 +11,12 @@
 
 <script>
     import LeftSide from './LeftSide.vue'
-    import RightSide from './RightSide.vue'
 
     export default {
-        components: { 
-            LeftSide, 
-            RightSide 
+        components: {
+            LeftSide
         },
-        
+
         name: 'head-front'
     }
 </script>

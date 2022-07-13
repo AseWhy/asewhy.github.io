@@ -11,8 +11,9 @@ export const HookManager = new class HookManager extends Module {
         const keys = typeof _from.getHooks === 'function' ? _from.getHooks() : Object.getOwnPropertyNames(_from).map(e => e.substring(0, 4) === 'hook');
 
         for(let i = 0, leng = keys.length; i < leng; i++) {
-            if(typeof _from[keys[i]] == 'function')
+            if(typeof _from[keys[i]] == 'function') {
                 this._hooks.set(_from.getName() + '.' + keys[i], _from[keys[i]].bind(_from));
+            }
         }
     }
 

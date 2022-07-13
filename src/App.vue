@@ -2,16 +2,15 @@
   <div class="container" :ui='ui'>
     <v-header/>
 
-    <div 
+    <div
       class="header-mask"
     />
 
     <v-modal/>
     <v-head/>
-    
-    <v-content v-if="!adminData.panel"/>
-    <v-admin v-else/>
-    
+
+    <v-content/>
+
     <v-preview/>
 
     <v-footer/>
@@ -25,56 +24,33 @@
   import Footer from './components/Footer';
   import Preview from './components/Preview';
   import Modal from './components/Modal';
-  import Admin from './components/Admin';
 
-  import { mapActions, mapGetters } from 'vuex';
+  import { mapActions } from 'vuex';
+
+  function resize() {
+      if(window.innerWidth <= 991) {
+        this.ui = 'mobile';
+      } else {
+        this.ui = 'ontouchstart' in window  ? 'mobile' : 'desktop';
+      }
+  }
 
   export default {
     name: 'App',
 
     methods: mapActions([ 'watchPage', 'watchHeader', 'watchTheme']),
 
-    computed: mapGetters([ 'adminData' ]),
-
     data() {
       return {
-        ui: 'ontouchstart' in window || window.innerWidth < 768 ? 'mobile' : 'desktop'
+        ui: 'ontouchstart' in window || window.innerWidth <= 991 ? 'mobile' : 'desktop'
       }
     },
 
     mounted(){
-      let cw = 0,
-          sw = 0,
-          ws = 0;
-
-      window.addEventListener('resize', e => {
-        const header_b = document.querySelector('.header-buttons');
-
-        if(this.ui == 'desktop') {
-          sw = header_b.scrollWidth;
-          cw = header_b.clientWidth;
-          ws = window.innerWidth;
-        }
-
-        if(header_b) {
-          if(this.ui == 'desktop') {
-            if(cw < sw) {
-              this.ui = 'mobile';
-            }
-          } else {
-            if(window.innerWidth > ws) {
-              this.ui = 'desktop';
-            }
-          }
-        } else {
-          if(window.innerWidth < 768) {
-            this.ui = 'mobile';
-          } else {
-            this.ui = 'desktop';
-          }
-        }
-      });
-
+      // Слушаю изменение размера
+      window.addEventListener('resize', resize.bind(this));
+      // Резайзим
+      resize.call(this);
       // Мониторим изменения на странице
       this.watchPage();
       // Мониторим изменения в заголовке
@@ -89,8 +65,7 @@
       'v-content': Content,
       'v-footer': Footer,
       'v-modal': Modal,
-      'v-preview': Preview,
-      'v-admin': Admin
+      'v-preview': Preview
     }
   }
 </script>
@@ -98,7 +73,6 @@
 <style>
   /* Local fonts */
   @import 'bootstrap/dist/css/bootstrap.min.css';
-  @import 'simplemde/dist/simplemde.min.css';
 
   /* Google fonts */
   @import url(https://fonts.googleapis.com/css2?family=Fira+Code:wght@300&display=swap);
