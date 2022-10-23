@@ -1,0 +1,66 @@
+.WorkPlace {
+    width: 100%;
+    display: flex;
+    font-family: Montserrat;
+    gap: 1.5rem;
+
+    .colInfo {
+        width: 30%;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        img {
+            width: 50%;
+            float: left;
+        }
+
+        p {
+            color: white;
+            text-align: left;
+            margin: 0;
+        }
+    }
+
+    .colDates {
+        width: 10%;
+        border-right: 3px solid red;
+        color: red;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        text-align: right;
+        padding-right: 1.5rem;
+        text-transform: capitalize;
+    }
+
+    .colResponsibilities {
+        width: 60%;
+        
+        p {
+            text-align: justify;
+            line-height: normal;
+            color: white;
+        }
+    }
+
+    @media screen and (max-width: 750px) {
+        flex-direction: column-reverse;
+
+        .colResponsibilities {
+            width: 100%;
+
+            p {
+                text-align: left;
+            }
+        }
+
+        .colDates {
+            display: none;
+        }
+
+        .colInfo {
+            width: 100%;
+        }
+    }
+}

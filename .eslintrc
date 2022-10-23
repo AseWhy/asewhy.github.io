@@ -1,0 +1,23 @@
+{
+    "extends": [
+        "react-app",
+        "react-app/jest"
+    ],
+    "rules": {
+        "react-hooks/exhaustive-deps": "off",
+        "jsx-a11y/anchor-is-valid": "off",
+        "@typescript-eslint/no-unused-vars": "error",
+        "computed-property-spacing": ["error", "never", { "enforceForClassMembers": false }],
+        "comma-spacing": ["error", { "before": false, "after": true }],
+        "array-bracket-spacing": ["error", "always", {
+            "arraysInArrays": false,
+            "objectsInArrays": false
+        }],
+        "object-curly-spacing": ["error", "always"],
+        "no-mixed-spaces-and-tabs": ["error", "smart-tabs"],
+        "react/jsx-max-props-per-line": ["error", { "maximum": 1 }],
+        "react/jsx-closing-bracket-location": ["error", "line-aligned"],
+        "react/jsx-indent-props": ["error", 4],
+        "react/jsx-first-prop-new-line": [ "error", "multiline" ]
+    }
+}

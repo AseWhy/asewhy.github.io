@@ -1,0 +1,53 @@
+.AboutContent {
+    width: 100%;
+    background-color: black;
+    padding-top: 3.5rem;
+    overflow: hidden;
+
+    h2 {
+        color: white;
+        margin-top: 0;
+    }
+
+    p {
+        color: white;
+        line-height: 1.85rem;
+        text-align: justify;
+        margin-top: 0;
+        font-family: Montserrat;
+    }
+
+    > .sides {
+        padding-top: 3.5rem;
+        padding-bottom: 3.5rem;
+        display: flex;
+
+        > .rightSide {
+            margin-left: auto;
+            width: 70%;
+            padding: 3rem;
+        }
+    
+        > .leftSide {
+            width: 30%;
+            display: flex;
+
+            > div {
+                margin: auto;
+                transform: rotate(14deg);
+            }
+        }
+
+        @media screen and (max-width: 750px) {
+            > .rightSide {
+                padding: 1.5rem;
+                margin-left: 0;
+                width: 100%;
+            }
+
+            > .leftSide {
+                display: none;
+            }
+        }
+    }
+}
