@@ -21,7 +21,7 @@ export function MainContent() {
                 />
 
                 <p>
-                    Разработчик программного обеспечения
+                    Web разработчик
                 </p>
             </Parallax>
         </div>

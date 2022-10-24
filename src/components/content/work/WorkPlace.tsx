@@ -61,15 +61,18 @@ export function WorkPlace({
             <div
                 className={WorkPlaceStyles.colInfo}
             >
-                <img
-                    src={logo}
-                    alt="Company logo"
-                />
+                
+                <div>
+                    <img
+                        src={logo}
+                        alt="Company logo"
+                    />
 
-                <p> Сфера деятельности: <b> { sphere } </b> </p>
-                <p> Местоположение: { location } </p>
-                <p> Проект: <a href={project}> { project?.replace(/http(?:s)?:\/\//, "") } </a> </p>
-                <p> Сайт: <a href={site}> { site?.replace(/http(?:s)?:\/\//, "") } </a> </p>
+                    <p> Сфера деятельности: <b> { sphere } </b> </p>
+                    <p> Местоположение: { location } </p>
+                    <p> Проект: <a href={project}> { project?.replace(/http(?:s)?:\/\//, "") } </a> </p>
+                    <p> Сайт: <a href={site}> { site?.replace(/http(?:s)?:\/\//, "") } </a> </p>
+                </div>
             </div>
         </div>
     </Parallax>

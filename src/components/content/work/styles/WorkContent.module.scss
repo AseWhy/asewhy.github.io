@@ -3,7 +3,6 @@
     padding-top: 3.5rem;
     padding-left: 3rem;
     padding-right: 3rem;
-    overflow: hidden;
     text-align: center;
 
     h2 {
@@ -31,5 +30,14 @@
     @media screen and (max-width: 750px) {
         padding-left: 1.5rem;
         padding-right: 1.5rem;
+        padding-top: 0;
+
+        > p {
+            width: 100%;
+        }
+
+        .WorksList {
+            width: 100%;
+        }
     }
 }

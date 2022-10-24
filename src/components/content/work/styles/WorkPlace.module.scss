@@ -6,20 +6,25 @@
 
     .colInfo {
         width: 30%;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
+        
+        > div {
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 3.5rem;
+            gap: 1rem;
 
-        img {
-            width: 50%;
-            float: left;
-        }
+            img {
+                width: 50%;
+                float: left;
+            }
 
-        p {
-            color: white;
-            text-align: left;
-            margin: 0;
-        }
+            p {
+                color: white;
+                text-align: left;
+                margin: 0;
+            }
+        } 
     }
 
     .colDates {
@@ -61,6 +66,11 @@
 
         .colInfo {
             width: 100%;
+
+            > div {
+                position: relative;
+                top: 0;
+            } 
         }
     }
 }
