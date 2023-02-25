@@ -27,15 +27,15 @@ let question;
     console.log('Building changes...');
     execSync('npm run build');
 
+    console.log('Copy robots...');
+    execSync('cp ./robots.txt ./dist/robots.txt');
+    execSync('cp ./manifest.json ./dist/manifest.json');
+    
     console.log('Applying changes...');
     execSync('git add -A --');
 
     console.log('Commiting changes...');
     execSync('git commit --quiet -m"' + message + '"');
-
-    console.log('Copy robots...');
-    execSync('cp ./robots.txt ./dist/robots.txt');
-    execSync('cp ./manifest.json ./dist/manifest.json');
 
     console.log('Pushing changes...');
     execSync('git push');
