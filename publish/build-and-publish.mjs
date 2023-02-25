@@ -35,7 +35,7 @@ let question;
     execSync('git add -A --');
 
     console.log('Commiting changes...');
-    execSync('git commit --quiet -m"' + message + '"');
+    execSync('git commit --quiet -m "' + message + '"');
 
     console.log('Pushing changes...');
     execSync('git push');
