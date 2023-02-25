@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-scroll";
+
 import HeaderStyles from "./styles/Header.module.scss"
 
 export function Header() {

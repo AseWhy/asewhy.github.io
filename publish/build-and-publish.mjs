@@ -1,12 +1,12 @@
 
 
-const { execSync } = require("child_process")
-    ,   readline = require("readline");
+import { execSync } from "child_process";
+import { createInterface } from "readline";
 
 let question;
 
 {
-    const rl = readline.createInterface({
+    const rl = createInterface({
         input: process.stdin,
         output: process.stdout
     });
@@ -32,6 +32,10 @@ let question;
 
     console.log('Commiting changes...');
     execSync('git commit --quiet -m"' + message + '"');
+
+    console.log('Copy robots...');
+    execSync('cp ./robots.txt ./dist/robots.txt');
+    execSync('cp ./manifest.json ./dist/manifest.json');
 
     console.log('Pushing changes...');
     execSync('git push');
