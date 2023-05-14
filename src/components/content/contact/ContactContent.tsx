@@ -6,15 +6,11 @@ export function ContactContent() {
         className={ContactContentStyles.ContactContent}
         id="contacts"
     >
-        <h2> Связаться со мной </h2>
+        <h2> Поругаться со мной </h2>
 
         <Parallax
             opacity={ [ 0.5, 2 ] }
         >
-            <p>
-                Для связи со мной можно использовать контакты ниже
-            </p>
-
             <div
                 className={ContactContentStyles.CotactsFlex}
             >
