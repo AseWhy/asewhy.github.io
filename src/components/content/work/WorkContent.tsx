@@ -4,6 +4,7 @@ import { formatDuration, intervalToDuration } from "date-fns";
 import { ru } from "date-fns/locale";
 
 import WorkContentStyles from "./styles/WorkContent.module.scss"
+import { StackView } from "./HeaderLogoStack";
 
 const MIN_START = Math.min(...Experiance.map(e => e.dateStart.getTime()));
 const MAX_END = Math.max(...Experiance.map(e => e.dateEnd.getTime()));
@@ -20,6 +21,8 @@ export function WorkContent() {
             За время своего существования я успел поработать в некоторых местах, ниже приведен список этих мест, 
             с подробной информацией о каждом из мест работы
         </p>
+
+        <StackView/>
 
         <div
             className={WorkContentStyles.WorksList}

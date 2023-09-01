@@ -1,8 +1,9 @@
 import ru from "date-fns/esm/locale/ru/index.js";
 import format from "date-fns/format";
+import WorkPlaceStyles from "./styles/WorkPlace.module.scss";
+
 import { Parallax } from "react-scroll-parallax";
 import { Responsibility } from "./Responsibility";
-import WorkPlaceStyles from "./styles/WorkPlace.module.scss";
 
 export interface IWorkPlaceProps {
     name: string,
