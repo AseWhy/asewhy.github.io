@@ -10,6 +10,7 @@ export interface IWorkPlaceProps {
     location: string,
     sphere: string,
     site: string,
+    color?: string;
     logo: any,
     dateStart: Date,
     dateEnd: Date,
@@ -24,6 +25,7 @@ export function WorkPlace({
     dateStart,
     dateEnd,
     site,
+    color = 'red',
     sphere,
     location,
     project,
@@ -37,6 +39,7 @@ export function WorkPlace({
         >
             <div
                 className={WorkPlaceStyles.colDates}
+                style={{ color }}
             >
                 <span>
                     { format(dateStart, "LLLL yyyy", { locale: ru }) }

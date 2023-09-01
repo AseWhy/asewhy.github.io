@@ -1,6 +1,7 @@
 import { parse } from "date-fns";
 
 import RecodeLogo from "../assets/recode.svg";
+import BifitLogo from "../assets/bifit.svg";
 
 export const Experiance = [
     {
@@ -10,8 +11,8 @@ export const Experiance = [
         sphere: "Разработка программного обеспечения",
         site: "http://recode.team",
         logo: RecodeLogo,
-        dateStart: parse("21.01.2021", "dd.mm.yyyy", new Date()),
-        dateEnd: new Date(),
+        dateStart: parse("21.01.2021", "dd.MM.yyyy", new Date()),
+        dateEnd: parse("14.07.2023", "dd.MM.yyyy", new Date()),
         responsibilities: [
             "Создание и сопровождение баз данных PostgreSQL; Создание и сопровождение микросервисов и микрофронтендов Spring + React",
             "Перенос уже имеющейся разработки (PHP) на микросервисы",
@@ -50,6 +51,20 @@ export const Experiance = [
                     "Исправление мелких ошибок"
                 ]
             }
+        ]
+    },
+    {
+        name: "БИФИТ",
+        project: "https://www.bifit.ru/ru/distribute/index.html",
+        location: "Москва",
+        color: "skyblue",
+        sphere: "Разработка платформы для дистанционного банковского обслуживания:",
+        site: "https://www.bifit.ru",
+        logo: BifitLogo,
+        dateStart: parse("17.07.2023", "dd.MM.yyyy", new Date()),
+        dateEnd: new Date(),
+        responsibilities: [
+            "Проектирование и разработка нового функционала модуля"
         ]
     }
 ]
