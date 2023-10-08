@@ -9,6 +9,7 @@ import { StackView } from "./HeaderLogoStack";
 const MIN_START = Math.min(...Experiance.map(e => e.dateStart.getTime()));
 const MAX_END = Math.max(...Experiance.map(e => e.dateEnd.getTime()));
 const DIFFERENCE = intervalToDuration({ start: MIN_START, end: MAX_END });
+const format = ["years", "months", "weeks", "days"];
 
 export function WorkContent() {
     return <div
@@ -38,7 +39,7 @@ export function WorkContent() {
         <p
             className={WorkContentStyles.FootContent}
         >
-            Общий стаж: { formatDuration(DIFFERENCE, { locale: ru }) }
+            Общий стаж: { formatDuration(DIFFERENCE, { locale: ru, format }) }
         </p>
     </div>
 }
