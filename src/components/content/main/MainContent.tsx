@@ -1,15 +1,15 @@
 import { Parallax } from "react-scroll-parallax";
 import { TypeAnimation } from "react-type-animation";
-import MainContentStyles from "./styles/MainContent.module.scss";
 
+import MainContentModule from "./MainContent.module.scss";
 
 export function MainContent() {
     return <div
-        className={MainContentStyles.MainContent}
+        className={MainContentModule.MainContent}
         id="main"
     >
         <div
-            className={MainContentStyles.ShortDescription}
+            className={MainContentModule.ShortDescription}
         >
             <Parallax
                 translateY={[ '-200px', '200px' ]}

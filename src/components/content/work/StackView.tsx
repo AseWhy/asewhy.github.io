@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useSize } from "../../../hooks";
 import { Stack } from "./stack";
 
-import HeaderLogoStackModule from "./HeaderLogoStack.module.scss";
+import StackViewModule from "./StackView.module.scss";
 
 export interface StackViewPorps {
     height: number;
@@ -35,12 +35,10 @@ export function StackView() {
                         newIndex = slide - 1;
                     }
 
-                    let newOffset = imageWidth * newIndex;
-
                     setDirection(newIndex - slide);
                     setSlide(newIndex);
 
-                    setOffset(-newOffset);
+                    setOffset(-imageWidth * newIndex);
                 },
                 2500
             );
@@ -51,14 +49,14 @@ export function StackView() {
     );
 
     return  <div
-        className={HeaderLogoStackModule.container}
+        className={StackViewModule.container}
         ref={ref}
     >
         {
-            Stack.map(
+            isNaN(imageWidth) || isNaN(imageHeight) ? null : Stack.map(
                 (item, i) => <div
                     key={item}
-                    className={HeaderLogoStackModule.logo}
+                    className={StackViewModule.logo}
                     style={
                         {
                             position: 'relative',
@@ -71,7 +69,7 @@ export function StackView() {
                     <img
                         src={item}
                         width={imageWidth}
-                        className={HeaderLogoStackModule.sponsor}
+                        className={StackViewModule.sponsor}
                         style={
                             {
                                 height: imageHeight

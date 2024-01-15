@@ -1,4 +1,4 @@
-import { parse } from "date-fns";
+import { REF_WORK_START_DATE } from "../../../../service";
 
 import RecodeLogo from "../assets/recode.svg";
 import BifitLogo from "../assets/bifit.svg";
@@ -11,8 +11,8 @@ export const Experiance = [
         sphere: "Разработка программного обеспечения",
         site: "http://recode.team",
         logo: RecodeLogo,
-        dateStart: parse("21.01.2021", "dd.MM.yyyy", new Date()),
-        dateEnd: parse("14.07.2023", "dd.MM.yyyy", new Date()),
+        dateStart: REF_WORK_START_DATE,
+        dateEnd: new Date(2023, 6, 14),
         responsibilities: [
             "Создание и сопровождение баз данных PostgreSQL; Создание и сопровождение микросервисов и микрофронтендов Spring + React",
             {
@@ -52,7 +52,7 @@ export const Experiance = [
         sphere: "Разработка платформы для дистанционного банковского обслуживания:",
         site: "https://www.bifit.ru",
         logo: BifitLogo,
-        dateStart: parse("17.07.2023", "dd.MM.yyyy", new Date()),
+        dateStart: new Date(2023, 6, 23),
         dateEnd: new Date(),
         responsibilities: [
             {
@@ -61,7 +61,6 @@ export const Experiance = [
                     "Подготовка обновлений системы",
                     "Подготовка кастомных соборок системы",
                     "Работа с интеграцией внешних сервисов",
-                    "Работа с криптографией",
                     "Разработка нового функцианала системы по ТЗ (Java, TS (Vue))",
                     "Разработка и сопровождение баз данных (Postgresql, Oracle, Mssql)",
                     "Работа с legacy (Java / TS)",

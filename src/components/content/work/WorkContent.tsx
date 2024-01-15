@@ -2,9 +2,9 @@ import { WorkPlace } from "./WorkPlace";
 import { Experiance } from "./data";
 import { formatDuration, intervalToDuration } from "date-fns";
 import { ru } from "date-fns/locale";
+import { StackView } from "./StackView";
 
-import WorkContentStyles from "./styles/WorkContent.module.scss"
-import { StackView } from "./HeaderLogoStack";
+import WorkContentModule from "./WorkContent.module.scss"
 
 const MIN_START = Math.min(...Experiance.map(e => e.dateStart.getTime()));
 const MAX_END = Math.max(...Experiance.map(e => e.dateEnd.getTime()));
@@ -13,7 +13,7 @@ const format = ["years", "months", "weeks", "days"];
 
 export function WorkContent() {
     return <div
-        className={WorkContentStyles.WorksContent}
+        className={WorkContentModule.WorksContent}
         id="work"
     >
         <h2> Опыт работы </h2>
@@ -26,7 +26,7 @@ export function WorkContent() {
         <StackView/>
 
         <div
-            className={WorkContentStyles.WorksList}
+            className={WorkContentModule.WorksList}
         >
             {
                 Experiance.map(e => <WorkPlace
@@ -37,7 +37,7 @@ export function WorkContent() {
         </div>
 
         <p
-            className={WorkContentStyles.FootContent}
+            className={WorkContentModule.FootContent}
         >
             Общий стаж: { formatDuration(DIFFERENCE, { locale: ru, format }) }
         </p>

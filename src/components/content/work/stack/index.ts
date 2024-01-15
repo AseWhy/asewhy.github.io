@@ -7,6 +7,7 @@ import stack6 from "./6.png";
 import stack7 from "./7.png";
 import stack8 from "./8.png";
 import stack9 from "./9.png";
+import stack10 from "./10.png";
 
 export const Stack = [
     stack1,
@@ -17,5 +18,6 @@ export const Stack = [
     stack6,
     stack7,
     stack8,
-    stack9
-].sort( () => .5 - Math.random() );
+    stack9,
+    stack10
+];

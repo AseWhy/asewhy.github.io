@@ -1,4 +1,4 @@
-import ResponsibilityStyles from "./styles/Responsibility.module.scss"
+import ResponsibilityModule from "./Responsibility.module.scss"
 
 export interface IResponsibilityProps {
     responsibility: string | {
@@ -14,14 +14,14 @@ export function Responsibility({ responsibility }: IResponsibilityProps) {
         </p>
     } else {
         return <div
-            className={ResponsibilityStyles.Responsibility}
+            className={ResponsibilityModule.Responsibility}
         >
             <p>
                 { responsibility.group }
             </p>
 
             <div
-                className={ResponsibilityStyles.Childrens}
+                className={ResponsibilityModule.Childrens}
             >
                 {
                     responsibility.items?.map(e => <Responsibility

@@ -1,9 +1,10 @@
 import ru from "date-fns/esm/locale/ru/index.js";
 import format from "date-fns/format";
-import WorkPlaceStyles from "./styles/WorkPlace.module.scss";
 
 import { Parallax } from "react-scroll-parallax";
 import { Responsibility } from "./Responsibility";
+
+import WorkPlaceModule from "./WorkPlace.module.scss";
 
 export interface IWorkPlaceProps {
     name: string,
@@ -36,10 +37,10 @@ export function WorkPlace({
         opacity={ [ 0.25, 2 ] }
     >
         <div
-            className={WorkPlaceStyles.WorkPlace}
+            className={WorkPlaceModule.WorkPlace}
         >
             <div
-                className={WorkPlaceStyles.colDates}
+                className={WorkPlaceModule.colDates}
                 style={{ color }}
             >
                 <span>
@@ -52,7 +53,7 @@ export function WorkPlace({
             </div>
 
             <div
-                className={WorkPlaceStyles.colResponsibilities}
+                className={WorkPlaceModule.colResponsibilities}
             >
                 {
                     responsibilities.map((e, i) => <Responsibility
@@ -63,7 +64,7 @@ export function WorkPlace({
             </div>
 
             <div
-                className={WorkPlaceStyles.colInfo}
+                className={WorkPlaceModule.colInfo}
             >
                 
                 <div>

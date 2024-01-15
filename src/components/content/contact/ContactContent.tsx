@@ -1,9 +1,10 @@
 import { Parallax } from "react-scroll-parallax"
-import ContactContentStyles from "./styles/ContactContent.module.scss"
+
+import ContactContentModule from "./ContactContent.module.scss"
 
 export function ContactContent() {
     return <div
-        className={ContactContentStyles.ContactContent}
+        className={ContactContentModule.ContactContent}
         id="contacts"
     >
         <h2> Поругаться со мной </h2>
@@ -12,7 +13,7 @@ export function ContactContent() {
             opacity={ [ 0.5, 2 ] }
         >
             <div
-                className={ContactContentStyles.CotactsFlex}
+                className={ContactContentModule.CotactsFlex}
             >
                 <a href="https://vk.com/astecom">Я в ВК</a> |
                 <a href="https://t.me/astecom">Я в телеграмме</a> |
