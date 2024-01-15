@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-scroll";
 
-import HeaderStyles from "./styles/Header.module.scss"
+import HeaderModule from "./Header.module.scss"
 
 export function Header() {
     const [ sticky, setSticky ] = useState(false);
@@ -17,27 +17,27 @@ export function Header() {
     }, []);
 
     return <header
-        className={HeaderStyles.Header}
+        className={HeaderModule.Header}
         data-sticky={sticky}
     >
         <div
-            className={HeaderStyles.leftSide}
+            className={HeaderModule.leftSide}
         >
             <a
                 href="https://github.com/AseWhy"
-                className={HeaderStyles.headerButton}
+                className={HeaderModule.headerButton}
             >
                 AseWhy/Astecom
             </a>
         </div>
 
         <div
-            className={HeaderStyles.rightSide}
+            className={HeaderModule.rightSide}
         >
             <Link
                 to="main"
                 smooth={true}
-                className={HeaderStyles.headerButton}
+                className={HeaderModule.headerButton}
             >
                 Главная
             </Link>
@@ -46,7 +46,7 @@ export function Header() {
                 to="about"
                 smooth={true}
                 offset={-200}
-                className={HeaderStyles.headerButton}
+                className={HeaderModule.headerButton}
             >
                 Обо мне
             </Link>
@@ -55,7 +55,7 @@ export function Header() {
                 to="work"
                 smooth={true}
                 offset={-200}
-                className={HeaderStyles.headerButton}
+                className={HeaderModule.headerButton}
             >
                 Опыт работы
             </Link>
@@ -64,7 +64,7 @@ export function Header() {
                 to="contacts"
                 smooth={true}
                 offset={-200}
-                className={HeaderStyles.headerButton}
+                className={HeaderModule.headerButton}
             >
                 Контакты
             </Link>
