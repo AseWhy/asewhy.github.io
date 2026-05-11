@@ -1,7 +1,6 @@
 import ru from "date-fns/esm/locale/ru/index.js";
 import format from "date-fns/format";
 
-import { Parallax } from "react-scroll-parallax";
 import { Responsibility } from "./Responsibility";
 
 import WorkPlaceModule from "./WorkPlace.module.scss";
@@ -45,14 +44,11 @@ export function WorkPlace({
     const accent = ACCENT_BY_COLOR[color] ?? color;
     const nextAccent = nextColor ? (ACCENT_BY_COLOR[nextColor] ?? nextColor) : accent;
 
-    return <Parallax
-        opacity={ [ 0.25, 2 ] }
+    return <div
+        className={WorkPlaceModule.WorkPlace}
+        style={{ ['--job-accent' as any]: accent, ['--job-accent-next' as any]: nextAccent }}
+        data-last={last}
     >
-        <div
-            className={WorkPlaceModule.WorkPlace}
-            style={{ ['--job-accent' as any]: accent, ['--job-accent-next' as any]: nextAccent }}
-            data-last={last}
-        >
             <div
                 className={WorkPlaceModule.colDates}
             >
@@ -92,6 +88,5 @@ export function WorkPlace({
                     <p> Сайт: <a href={site}> { site?.replace(/http(?:s)?:\/\//, "") } </a> </p>
                 </div>
             </div>
-        </div>
-    </Parallax>
+    </div>
 }
