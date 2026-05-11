@@ -3,42 +3,167 @@
 .Header {
     position: fixed;
     top: 0;
-    height: 3.5rem;
+    height: var(--header-h);
     display: flex;
+    align-items: center;
     width: 100%;
-    z-index: 1;
-    font-family: Montserrat;
-    transition: background-color 0.5s;
+    z-index: 100;
+    font-family: var(--font-display);
+    border-bottom: 1px solid transparent;
+    transition: background-color var(--transition), backdrop-filter var(--transition), border-color var(--transition);
 
-    &[data-sticky="true"] {
-        background-color: rgba(0, 0, 0, 0.75);
+    &[data-sticky="true"],
+    &[data-open="true"] {
+        background-color: rgba(11, 13, 18, 0.6);
+        -webkit-backdrop-filter: blur(14px) saturate(160%);
+        backdrop-filter: blur(14px) saturate(160%);
+        border-bottom-color: var(--color-border);
     }
 
     > div {
-        height: 3.5rem;
+        height: var(--header-h);
         display: flex;
+        align-items: center;
 
         &.leftSide {
             margin-right: auto;
         }
-    
+
         &.rightSide {
             margin-left: auto;
         }
+    }
 
-        @media screen and (max-width: 750px) {
-            &.rightSide {
-                display: none;
-            }
+    .brand {
+        margin: auto;
+        padding-left: var(--space-5);
+        padding-right: var(--space-5);
+        text-decoration: none;
+        color: var(--color-text);
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        white-space: nowrap;
+    }
+
+    .headerButton {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        margin: auto;
+        padding: 0 var(--space-5);
+        height: var(--header-h);
+        text-decoration: none;
+        color: var(--color-text);
+        cursor: pointer;
+        transition: color var(--transition-fast);
+
+        &::after {
+            content: '';
+            position: absolute;
+            left: var(--space-5);
+            right: var(--space-5);
+            bottom: 0.6rem;
+            height: 2px;
+            border-radius: 2px;
+            background: var(--gradient-accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform var(--transition-fast);
         }
 
-        > .headerButton {
-            margin: auto;
-            padding-left: 1.5rem;
-            padding-right: 1.5rem;
-            text-decoration: none;
-            color: white;
-            cursor: pointer;
+        &:hover,
+        &:focus-visible {
+            color: #fff;
+
+            &::after {
+                transform: scaleX(1);
+            }
+        }
+    }
+
+    .burger {
+        display: none;
+        width: 2.5rem;
+        height: 2.5rem;
+        margin-left: auto;
+        margin-right: var(--space-3);
+        padding: 0;
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 5px;
+
+        span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            border-radius: 2px;
+            background: var(--color-text);
+            transition: transform var(--transition), opacity var(--transition);
+        }
+    }
+
+    &[data-open="true"] .burger span {
+        &:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        &:nth-child(2) {
+            opacity: 0;
+        }
+
+        &:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+    }
+
+    @media screen and (max-width: 750px) {
+        .burger {
+            display: inline-flex;
+        }
+
+        > div.rightSide {
+            position: fixed;
+            inset: var(--header-h) 0 auto 0;
+            height: auto;
+            flex-direction: column;
+            align-items: stretch;
+            background: rgba(11, 13, 18, 0.95);
+            -webkit-backdrop-filter: blur(16px) saturate(160%);
+            backdrop-filter: blur(16px) saturate(160%);
+            border-bottom: 1px solid var(--color-border);
+            padding: var(--space-3) 0 var(--space-4);
+            transform: translateY(-120%);
+            transition: transform var(--transition);
+        }
+
+        &[data-open="true"] > div.rightSide {
+            transform: translateY(0);
+        }
+
+        .headerButton {
+            margin: 0;
+            height: auto;
+            justify-content: center;
+            padding: var(--space-4) var(--space-5);
+            font-size: 1.05rem;
+
+            &::after {
+                left: 50%;
+                right: auto;
+                bottom: 0.5rem;
+                width: 2.5rem;
+                transform: translateX(-50%) scaleX(0);
+                transform-origin: center;
+            }
+
+            &:hover::after,
+            &:focus-visible::after {
+                transform: translateX(-50%) scaleX(1);
+            }
         }
     }
 }

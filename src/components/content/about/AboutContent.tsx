@@ -1,5 +1,6 @@
 import { Parallax } from "react-scroll-parallax"
 import { REF_BIRTH_DATE, REF_WORK_START_DATE, calcYearRest, numWord } from "../../../service"
+import { Experiance } from "../work/data"
 
 import AboutContentModule from "./AboutContent.module.scss"
 
@@ -11,6 +12,8 @@ const CUR_YEARS_TEMPLATE = "${value} ${variant}";
 const CUR_YEARS = numWord(CUR_YEARS_TEMPLATE, calcYearRest(REF_BIRTH_DATE), CUR_YEARS_VARIANTS);
 /** Количество лет в разработке */
 const CUR_YEARS_IN_DEV = numWord(CUR_YEARS_TEMPLATE, calcYearRest(REF_WORK_START_DATE), CUR_YEARS_VARIANTS);
+/** Склонения для форматирования компаний */
+const COMPANIES = numWord(CUR_YEARS_TEMPLATE, Experiance.length, [ 'компания', 'компании', 'компаний' ]);
 
 export function AboutContent() {
     return <div
@@ -32,7 +35,7 @@ export function AboutContent() {
                     />
                 </Parallax>
             </div>
-            
+
             <div
                 className={AboutContentModule.rightSide}
             >
@@ -49,6 +52,12 @@ export function AboutContent() {
                         На данный момент остановился на web разработке, и занимаюсь ей последние {CUR_YEARS_IN_DEV}.
                         Человек не конфликтный, и хотя и выгляжу как будто я завтра отброшу коньки, достаточно бодрый)
                     </p>
+
+                    <div className={AboutContentModule.stats}>
+                        <span className={AboutContentModule.chip}>{CUR_YEARS_IN_DEV} в разработке</span>
+                        <span className={AboutContentModule.chip}>{CUR_YEARS}</span>
+                        <span className={AboutContentModule.chip}>{COMPANIES}</span>
+                    </div>
                 </Parallax>
             </div>
         </div>

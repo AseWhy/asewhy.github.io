@@ -1,66 +1,134 @@
 .WorkPlace {
+    --job-accent: var(--color-accent);
+
     width: 100%;
     display: flex;
-    font-family: Montserrat;
-    gap: 1.5rem;
+    gap: var(--space-5);
+    font-family: var(--font-display);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+        border-color: var(--color-border-strong);
+    }
 
     .colInfo {
         width: 30%;
-        
+
         > div {
             display: flex;
-            padding-top: 10px;
-            padding-bottom: 10px;
             flex-direction: column;
+            gap: var(--space-3);
             position: sticky;
-            top: 3.5rem;
-            gap: 1rem;
+            top: calc(var(--header-h) + var(--space-4));
+            background: var(--color-surface-2);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: var(--space-5);
 
             img {
-                width: 50%;
-                float: left;
+                align-self: flex-start;
+                width: auto;
+                max-width: 70%;
+                max-height: 42px;
+                background: #fff;
+                border-radius: var(--radius-sm);
+                padding: var(--space-2) var(--space-3);
+                margin-bottom: var(--space-2);
             }
 
             p {
-                color: white;
+                color: var(--color-text-muted);
                 text-align: left;
+                font-size: var(--fs-small);
+                line-height: 1.5;
                 margin: 0;
+
+                b {
+                    color: var(--color-text);
+                }
+
+                a {
+                    color: var(--color-accent);
+                    word-break: break-word;
+                    text-decoration: none;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
             }
-        } 
+        }
     }
 
     .colDates {
-        width: 10%;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        border-right: 3px solid;
+        width: 12%;
+        min-width: 6.5rem;
+        padding: var(--space-2) var(--space-5) var(--space-2) 0;
+        border-right: 3px solid var(--job-accent);
         display: flex;
         justify-content: space-between;
         flex-direction: column;
         text-align: right;
-        padding-right: 1.5rem;
         text-transform: capitalize;
+        color: var(--color-text);
+        font-weight: 600;
+        font-size: var(--fs-small);
+
+        span {
+            position: relative;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                right: calc(-1 * var(--space-5) - 1.5px);
+                width: 11px;
+                height: 11px;
+                border-radius: 50%;
+                background: var(--job-accent);
+                box-shadow: 0 0 0 4px color-mix(in srgb, var(--job-accent) 22%, transparent);
+                transform: translate(50%, -50%);
+            }
+        }
     }
 
     .colResponsibilities {
-        width: 60%;
-        
-        p {
-            text-align: justify;
-            line-height: normal;
-            color: white;
+        width: 58%;
+        text-align: left;
+
+        > p {
+            position: relative;
+            padding-left: var(--space-5);
+            margin: 0 0 var(--space-3);
+            line-height: var(--lh-body);
+            color: var(--color-text);
+
+            &::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0.7em;
+                width: 8px;
+                height: 8px;
+                border-radius: 2px;
+                background: var(--gradient-accent);
+            }
         }
     }
 
     @media screen and (max-width: 750px) {
         flex-direction: column-reverse;
+        padding: var(--space-5);
 
         .colResponsibilities {
             width: 100%;
-
-            p {
-                text-align: left;
-            }
         }
 
         .colDates {
@@ -73,7 +141,7 @@
             > div {
                 position: relative;
                 top: 0;
-            } 
+            }
         }
     }
 }

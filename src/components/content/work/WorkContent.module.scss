@@ -1,47 +1,57 @@
 .WorksContent {
-    background-color: black;
-    padding-top: 3.5rem;
-    padding-left: 3rem;
-    padding-right: 3rem;
+    background: var(--color-bg);
+    padding: var(--space-section) var(--space-6);
     text-align: center;
 
     h2 {
-        color: white;
-        margin-top: 0;
+        margin: 0 auto var(--space-3);
+        font-size: var(--fs-h2);
+        color: var(--color-text);
+
+        &::after {
+            content: '';
+            display: block;
+            width: 3rem;
+            height: 4px;
+            margin: var(--space-3) auto 0;
+            border-radius: 2px;
+            background: var(--gradient-accent);
+        }
     }
 
     > p {
-        color: white;
-        line-height: 1.5rem;
-        text-align: center;
-        margin-top: 0;
-        width: 80%;
-        font-family: Montserrat;
-        margin: auto;
+        max-width: 60ch;
+        margin: 0 auto var(--space-6);
+        color: var(--color-text-muted);
+        line-height: var(--lh-body);
+        font-family: var(--font-display);
     }
 
     .WorksList {
-        margin-top: 2rem;
-        width: 80%;
-        margin-left: auto;
-        margin-right: auto;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-6);
+        max-width: var(--content-max);
+        margin: var(--space-7) auto 0;
     }
 
     .FootContent {
-        margin-top: 50px;
+        display: inline-block;
+        margin-top: var(--space-7);
+        padding: 0.5rem 1.1rem;
+        border-radius: var(--radius-pill);
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        color: var(--color-text-muted);
+        font-size: var(--fs-small);
+        font-family: var(--font-display);
     }
 
     @media screen and (max-width: 750px) {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-        padding-top: 0;
+        padding: var(--space-section) var(--space-4);
 
         > p {
-            width: 100%;
-        }
-
-        .WorksList {
-            width: 100%;
+            max-width: 100%;
         }
     }
 }
