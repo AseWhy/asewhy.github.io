@@ -62,6 +62,13 @@
   --transition: 0.3s var(--ease-out);
 }
 
+@media (max-width: 750px) {
+  :root {
+    --space-section: 2.25rem;
+    --space-7: 2rem;
+  }
+}
+
 *,
 *::before,
 *::after {
