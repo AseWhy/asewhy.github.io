@@ -1,4 +1,4 @@
-import { WorkPlace } from "./WorkPlace";
+import { WorkPlace, type IWorkPlaceProps } from "./WorkPlace";
 import { Experiance } from "./data";
 import { formatDuration, intervalToDuration } from "date-fns";
 import { ru } from "date-fns/locale";
@@ -33,6 +33,7 @@ export function WorkContent() {
                     {...e}
                     key={e.name}
                     last={i === Experiance.length - 1}
+                    nextColor={(Experiance[i + 1] as IWorkPlaceProps | undefined)?.color}
                 />)
             }
         </div>
