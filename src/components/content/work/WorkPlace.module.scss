@@ -68,6 +68,7 @@
     }
 
     .colDates {
+        position: relative;
         width: 12%;
         min-width: 6.5rem;
         padding: var(--space-2) var(--space-5) var(--space-2) 0;
@@ -80,6 +81,17 @@
         color: var(--color-text);
         font-weight: 600;
         font-size: var(--fs-small);
+
+        // connector that bridges the gap to the next card so the timeline is unbroken
+        &::after {
+            content: '';
+            position: absolute;
+            right: -3px;
+            top: 100%;
+            width: 3px;
+            height: calc(var(--space-6) * 3 + var(--space-5));
+            background: var(--job-accent);
+        }
 
         span {
             position: relative;
@@ -97,6 +109,10 @@
                 transform: translate(50%, -50%);
             }
         }
+    }
+
+    &[data-last="true"] .colDates::after {
+        display: none;
     }
 
     .colResponsibilities {

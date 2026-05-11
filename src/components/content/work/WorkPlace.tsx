@@ -13,6 +13,7 @@ export interface IWorkPlaceProps {
     sphere: string,
     site: string,
     color?: string;
+    last?: boolean;
     logo: any,
     dateStart: Date,
     dateEnd: Date,
@@ -33,6 +34,7 @@ export function WorkPlace({
     dateEnd,
     site,
     color = 'red',
+    last = false,
     sphere,
     location,
     project,
@@ -46,6 +48,7 @@ export function WorkPlace({
         <div
             className={WorkPlaceModule.WorkPlace}
             style={{ ['--job-accent' as any]: accent }}
+            data-last={last}
         >
             <div
                 className={WorkPlaceModule.colDates}
