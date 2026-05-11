@@ -13,6 +13,7 @@ export interface IWorkPlaceProps {
     sphere: string,
     site: string,
     color?: string;
+    nextColor?: string;
     last?: boolean;
     logo: any,
     dateStart: Date,
@@ -34,6 +35,7 @@ export function WorkPlace({
     dateEnd,
     site,
     color = 'red',
+    nextColor,
     last = false,
     sphere,
     location,
@@ -41,13 +43,14 @@ export function WorkPlace({
     responsibilities
 }: IWorkPlaceProps) {
     const accent = ACCENT_BY_COLOR[color] ?? color;
+    const nextAccent = nextColor ? (ACCENT_BY_COLOR[nextColor] ?? nextColor) : accent;
 
     return <Parallax
         opacity={ [ 0.25, 2 ] }
     >
         <div
             className={WorkPlaceModule.WorkPlace}
-            style={{ ['--job-accent' as any]: accent }}
+            style={{ ['--job-accent' as any]: accent, ['--job-accent-next' as any]: nextAccent }}
             data-last={last}
         >
             <div

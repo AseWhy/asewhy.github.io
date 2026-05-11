@@ -82,15 +82,22 @@
         font-weight: 600;
         font-size: var(--fs-small);
 
-        // connector that bridges the gap to the next card so the timeline is unbroken
+        // connector that bridges the gap to the next card, fading this job's
+        // colour into the next one around the centre of the gap
         &::after {
             content: '';
             position: absolute;
             right: -3px;
             top: 100%;
             width: 3px;
-            height: calc(var(--space-6) * 3 + var(--space-5));
-            background: var(--job-accent);
+            height: calc(var(--space-6) * 3 + var(--space-2));
+            background: linear-gradient(
+                to bottom,
+                var(--job-accent) 0%,
+                var(--job-accent) 30%,
+                var(--job-accent-next, var(--job-accent)) 70%,
+                var(--job-accent-next, var(--job-accent)) 100%
+            );
         }
 
         span {
