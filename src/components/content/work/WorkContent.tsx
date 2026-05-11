@@ -29,9 +29,10 @@ export function WorkContent() {
             className={WorkContentModule.WorksList}
         >
             {
-                Experiance.map(e => <WorkPlace
+                Experiance.map((e, i) => <WorkPlace
                     {...e}
                     key={e.name}
+                    last={i === Experiance.length - 1}
                 />)
             }
         </div>
