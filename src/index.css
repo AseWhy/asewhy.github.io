@@ -31,7 +31,7 @@
   --space-6: 2rem;
   --space-7: 3rem;
   --space-8: 4.5rem;
-  --space-section: clamp(2.5rem, 5vw, 4.5rem);
+  --space-section: 12px;
 
   /* Radii */
   --radius-sm: 8px;
@@ -64,7 +64,6 @@
 
 @media (max-width: 750px) {
   :root {
-    --space-section: 2.25rem;
     --space-7: 2rem;
   }
 }
@@ -77,6 +76,7 @@
 
 html {
   scroll-behavior: smooth;
+  background: var(--color-bg);
 }
 
 body {
