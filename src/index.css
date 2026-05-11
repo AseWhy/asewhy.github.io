@@ -31,7 +31,7 @@
   --space-6: 2rem;
   --space-7: 3rem;
   --space-8: 4.5rem;
-  --space-section: clamp(3.5rem, 8vw, 7rem);
+  --space-section: clamp(2.5rem, 5vw, 4.5rem);
 
   /* Radii */
   --radius-sm: 8px;
