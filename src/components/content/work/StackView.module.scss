@@ -3,51 +3,71 @@
     overflow: hidden;
     width: 100%;
     max-width: var(--content-max);
+    height: 96px;
     margin: var(--space-6) auto;
-    padding: var(--space-2) 0;
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
-    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: clamp(36px, 8%, 110px);
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    &::before {
+        left: 0;
+        background: linear-gradient(to right, var(--color-bg), transparent);
+    }
+
+    &::after {
+        right: 0;
+        background: linear-gradient(to left, var(--color-bg), transparent);
+    }
 }
 
 .track {
     display: flex;
-    width: max-content;
-    align-items: center;
-    animation: stackMarquee 36s linear infinite;
+    height: 100%;
+    will-change: transform;
+    transition-property: transform;
+    transition-timing-function: var(--ease-out);
+
+    &[data-animated="false"] {
+        transition-property: none;
+    }
 }
 
-.container:hover .track {
-    animation-play-state: paused;
-}
-
-.logo {
-    flex: 0 0 auto;
+.slot {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: clamp(110px, 13vw, 170px);
-    height: 64px;
+    height: 100%;
     padding: 0 var(--space-5);
 }
 
 .sponsor {
     max-width: 100%;
-    max-height: 100%;
+    max-height: 56%;
     object-fit: contain;
     object-position: center;
-    opacity: 0.72;
+    opacity: 0.8;
     transition: opacity var(--transition);
 }
 
-.logo:hover .sponsor {
+.slot:hover .sponsor {
     opacity: 1;
 }
 
-@keyframes stackMarquee {
-    from {
-        transform: translateX(0);
+@media screen and (max-width: 750px) {
+    .container {
+        height: 80px;
+        margin: var(--space-5) auto;
     }
-    to {
-        transform: translateX(-50%);
+
+    .slot {
+        padding: 0 var(--space-4);
     }
 }
