@@ -22,6 +22,11 @@ export interface IWorkPlaceProps {
     })[]
 }
 
+const ACCENT_BY_COLOR: Record<string, string> = {
+    skyblue: 'var(--color-accent-bifit)',
+    red: 'var(--color-accent-recode)',
+};
+
 export function WorkPlace({
     logo,
     dateStart,
@@ -33,15 +38,17 @@ export function WorkPlace({
     project,
     responsibilities
 }: IWorkPlaceProps) {
+    const accent = ACCENT_BY_COLOR[color] ?? color;
+
     return <Parallax
         opacity={ [ 0.25, 2 ] }
     >
         <div
             className={WorkPlaceModule.WorkPlace}
+            style={{ ['--job-accent' as any]: accent }}
         >
             <div
                 className={WorkPlaceModule.colDates}
-                style={{ color }}
             >
                 <span>
                     { format(dateStart, "LLLL yyyy", { locale: ru }) }
@@ -66,7 +73,7 @@ export function WorkPlace({
             <div
                 className={WorkPlaceModule.colInfo}
             >
-                
+
                 <div>
                     <img
                         src={logo}

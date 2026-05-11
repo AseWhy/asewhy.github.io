@@ -1,5 +1,6 @@
 import { Parallax } from "react-scroll-parallax";
 import { TypeAnimation } from "react-type-animation";
+import { Link } from "react-scroll";
 
 import MainContentModule from "./MainContent.module.scss";
 
@@ -25,5 +26,15 @@ export function MainContent() {
                 </p>
             </Parallax>
         </div>
+
+        <Link
+            to="about"
+            smooth={true}
+            offset={-200}
+            className={MainContentModule.scrollHint}
+            aria-label="Листать вниз"
+        >
+            <span/>
+        </Link>
     </div>
 }

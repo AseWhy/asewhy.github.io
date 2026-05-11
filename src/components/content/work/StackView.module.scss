@@ -5,6 +5,28 @@
     flex-direction: row;
     height: 150px;
     width: 100%;
+    margin: var(--space-6) 0;
+
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: clamp(40px, 10%, 140px);
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    &::before {
+        left: 0;
+        background: linear-gradient(to right, var(--color-bg), transparent);
+    }
+
+    &::after {
+        right: 0;
+        background: linear-gradient(to left, var(--color-bg), transparent);
+    }
 }
 
 .logo {
@@ -16,4 +38,5 @@
 .sponsor {
     object-fit: contain;
     object-position: center;
+    opacity: 0.9;
 }
